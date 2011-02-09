@@ -49,6 +49,8 @@ Gem::Specification.new do |s|
 
   ## List your runtime dependencies here. Runtime dependencies are those
   ## that are needed for an end user to actually USE your code.
+  s.add_dependency('typhoeus')
+  s.add_dependency('yajl-ruby')
   s.add_dependency('faraday')
   s.add_dependency('json')
 
@@ -70,7 +72,6 @@ Gem::Specification.new do |s|
     lib/papertrail-cli.rb
     lib/papertrail/search_client.rb
     papertrail-cli.gemspec
-    papertrail.gemspec
   ]
   # = MANIFEST =
 

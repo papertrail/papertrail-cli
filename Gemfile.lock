@@ -4,6 +4,8 @@ PATH
     papertrail-cli (0.1.0)
       faraday
       json
+      typhoeus
+      yajl-ruby
 
 GEM
   remote: http://rubygems.org/
@@ -16,6 +18,8 @@ GEM
     json (1.5.1)
     multipart-post (1.1.0)
     rack (1.2.1)
+    typhoeus (0.2.0)
+    yajl-ruby (0.7.8)
 
 PLATFORMS
   ruby
@@ -24,3 +28,5 @@ DEPENDENCIES
   faraday
   json
   papertrail-cli!
+  typhoeus
+  yajl-ruby

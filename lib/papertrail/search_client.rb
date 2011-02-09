@@ -16,6 +16,8 @@ module Papertrail
       @max_id_seen = {}    
     end
     
+    # search for all events or a specific query, defaulting to all events since
+    # last result set (call with since=0 for all).
     def search(q = nil, since = nil)
       response = @conn.get('/api/v1/events/search.json') do |r|
         r.params = params_for_query(q, since)
@@ -31,7 +33,7 @@ module Papertrail
       params = {}
       params[:q] = q if q
       params[:min_id] = @max_id_seen[q] if @max_id_seen[q]
-      #params[:min_id] = since if since
+      params[:min_id] = since if since
       params
     end
     
