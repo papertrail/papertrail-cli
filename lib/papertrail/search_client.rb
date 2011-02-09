@@ -39,7 +39,7 @@ module Papertrail
     
     def self.format_events(events, &block)
       events.each do |event|
-        yield "#{Time.parse(event['received_at']).strftime('%b %e %X')} #{event['hostname']} #{event['message']}"
+        yield "#{Time.parse(event['received_at']).strftime('%b %e %X')} #{event['hostname']} #{event['program']} #{event['message']}"
       end
     end
   end
