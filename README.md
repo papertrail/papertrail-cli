@@ -11,7 +11,7 @@ or follow (tail) events matching a given query (interface may change).
 
 Install the gem, which includes a binary called "papertrail":
 
-    gem install papertrail
+    gem install papertrail-api
 
 
 ## Configuration
@@ -21,10 +21,13 @@ that file with -c. Example (from examples/papertrail.yml.example):
     username: your@account.com
     password: yourpassword
 
+You may want to alias "trail" to "papertrail", like:
+    echo "alias trail=papertrail" >> ~/.bashrc
+
 
 ## Usage & Examples
 
-    $ bin/papertrail -h
+    $ papertrail -h
     papertrail - command-line tail and search for Papertrail log management service
         -h, --help                       Show usage
         -f, --follow                     Continue running and print new events (off)
@@ -48,13 +51,13 @@ that file with -c. Example (from examples/papertrail.yml.example):
 Bug report:
 
 1. See whether the issue has already been reported:
-   http://github.com/papertrail/papertrail/issues/
+   http://github.com/papertrail/papertrail-api/issues/
 2. If you don't find one, create an issue with a repro case.
 
 Enhancement or fix:
 
 1. Fork the project:
-   http://github.com/papertrail/papertrail
+   http://github.com/papertrail/papertrail-api
 2. Make your changes with tests.
 3. Commit the changes without changing the Rakefile or other files unrelated 
 to your enhancement.

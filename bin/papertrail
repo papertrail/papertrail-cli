@@ -6,7 +6,7 @@ require 'yaml'
 require 'faraday'
 
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
-require 'papertrail'
+require 'papertrail-api'
 
 class PapertrailSearch
   def run
