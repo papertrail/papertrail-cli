@@ -54,7 +54,12 @@ class PapertrailSearch
   
   def search_and_print(client)
     events = client.search(ARGV[0])
-    Papertrail::SearchClient.format_events(events) { |e| puts e } if events
+    return unless events
+
+    Papertrail::SearchClient.format_events(events) do |e|
+      puts e
+      $stdout.flush
+    end
   end
 
   def usage
