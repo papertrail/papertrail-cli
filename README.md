@@ -1,23 +1,32 @@
 # papertrail Command-line tail & search client for Papertrail log management service
 
-Ask [Papertrail] for recent log messages, optionally with a search query (the output
-can also be piped through grep). Optionally poll for new events, like tail -f.
+Small standalone [binary] to retrieve, search, and tail recent app
+server log and system syslog messages from [Papertrail].
 
-Papertrail::SearchClient class can also be used to perform one-off API searches
-or follow (tail) events matching a given query (interface may change).
+Supports optional Boolean search queries and polling for new events
+(like "tail -f").  Example:
+
+    papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
+
+Output is line-buffered so it can be fed into a pipe, like for grep.
+
+The [SearchClient] class can be used by other apps to perform one-off
+API searches or follow (tail) events matching a given query. Interface
+may change.
 
 
 ## Installation
 
-Install the gem, which includes a binary called "papertrail":
+Install the gem ([RubyGems]), which includes a binary called "papertrail":
 
     gem install papertrail-cli
 
 
 ## Configuration
 
-Create ~/.papertrail.yml containing your credentials, or specify the path to 
-that file with -c. Example (from examples/papertrail.yml.example):
+Create ~/.papertrail.yml containing your credentials, or specify the
+path to that file with -c. Example (from
+examples/papertrail.yml.example):
     username: your@account.com
     password: yourpassword
 
@@ -63,4 +72,7 @@ Enhancement or fix:
 to your enhancement.
 4. Send a pull request.
 
+[binary]: https://github.com/papertrail/papertrail-cli/blob/master/bin/papertrail
 [Papertrail]: http://papertrailapp.com/
+[SearchClient]: https://github.com/papertrail/papertrail-cli/blob/master/lib/papertrail/search_client.rb
+[RubyGems]: https://rubygems.org/gems/papertrail-cli
