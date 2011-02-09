@@ -12,10 +12,10 @@ Gem::Specification.new do |s|
   ## Leave these as is they will be modified for you by the rake gemspec task.
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
-  s.name              = NAME
+  s.name              = 'papertrail-cli'
   s.version           = '0.1.0'
   s.date              = '2011-02-08'
-  s.rubyforge_project = NAME
+  s.rubyforge_project = 'papertrail-cli'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -49,7 +49,6 @@ Gem::Specification.new do |s|
 
   ## List your runtime dependencies here. Runtime dependencies are those
   ## that are needed for an end user to actually USE your code.
-  s.add_dependency('bundler')
   s.add_dependency('faraday')
   s.add_dependency('json')
 
@@ -62,7 +61,16 @@ Gem::Specification.new do |s|
   ## THE MANIFEST COMMENTS, they are used as delimiters by the task.
   # = MANIFEST =
   s.files = %w[
-
+    Gemfile
+    Gemfile.lock
+    README.md
+    Rakefile
+    bin/papertrail
+    examples/papertrail.yml.example
+    lib/papertrail-cli.rb
+    lib/papertrail/search_client.rb
+    papertrail-cli.gemspec
+    papertrail.gemspec
   ]
   # = MANIFEST =
 

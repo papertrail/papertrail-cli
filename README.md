@@ -11,7 +11,7 @@ or follow (tail) events matching a given query (interface may change).
 
 Install the gem, which includes a binary called "papertrail":
 
-    gem install papertrail-api
+    gem install papertrail-cli
 
 
 ## Configuration
@@ -51,13 +51,13 @@ You may want to alias "trail" to "papertrail", like:
 Bug report:
 
 1. See whether the issue has already been reported:
-   http://github.com/papertrail/papertrail-api/issues/
+   http://github.com/papertrail/papertrail-cli/issues/
 2. If you don't find one, create an issue with a repro case.
 
 Enhancement or fix:
 
 1. Fork the project:
-   http://github.com/papertrail/papertrail-api
+   http://github.com/papertrail/papertrail-cli
 2. Make your changes with tests.
 3. Commit the changes without changing the Rakefile or other files unrelated 
 to your enhancement.
