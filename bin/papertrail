@@ -2,6 +2,7 @@
 
 require 'optparse'
 require 'yaml'
+require 'time'
 
 require 'faraday'
 
