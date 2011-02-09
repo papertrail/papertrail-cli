@@ -1,0 +1,78 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'yaml'
+
+require 'faraday'
+
+$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+require 'papertrail'
+
+class PapertrailSearch
+  def run
+    options = {
+      :configfile => File.expand_path('~/.papertrail.yml'),
+      :delay  => 30,
+      :follow => false
+    }
+
+    OptionParser.new do |opts|
+      opts.banner = "papertrail - command-line tail and search for Papertrail log management service"
+      
+      opts.on("-h", "--help", "Show usage") do |v|
+        puts opts
+        exit
+      end
+      opts.on("-f", "--follow", "Continue running and print new events (off)") do |v|
+        options[:follow] = true
+      end
+      opts.on("-d", "--delay SECONDS", "Delay between refresh (30)") do |v|
+        options[:delay] = v.to_i
+      end
+      opts.on("-c", "--configfile PATH", "Path to config (~/.papertrail.yml)") do |v|
+        options[:configfile] = File.expand_path(v)
+      end
+      
+      opts.separator usage
+    end.parse!
+    
+    credentials = open(options[:configfile]) do |f|
+      YAML.load(f)
+    end
+
+    client = Papertrail::SearchClient.new(credentials['username'], credentials['password'])
+
+    search_and_print(client)
+
+    if options[:follow]
+      loop do
+        sleep options[:delay]
+        search_and_print(client)
+      end
+    end
+  end
+  
+  def search_and_print(client)
+    events = client.search(ARGV[0])
+    Papertrail::SearchClient.format_events(events) { |e| puts e } if events
+  end
+
+  def usage
+    <<EOF
+    
+Usage: papertrail [-f] [-d seconds] [-c /path/to/papertrail.yml] [query]
+
+Examples:
+  papertrail -f
+  papertrail something
+  papertrail 1.2.3 Failure
+  papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
+  papertrail -f -d 10 "ns1 OR 'connection refused'"
+
+More: http://papertrailapp.com/
+
+EOF
+  end
+end
+
+PapertrailSearch.new.run
