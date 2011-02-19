@@ -68,7 +68,9 @@ Pipe through [MultiTail]:
     papertrail | multitail -c -j
 
 For complete control, pipe through anything capable of inserting ANSI
-control characters. Here's an example:
+control characters. Here's an example that colorizes 3 fields separately
+- the first 15 characters for the date, a word for the hostname, and a
+word for the program name:
 
     papertrail | perl -pe 's/^(.{15})(.)([\S]+)(.)([\S]+)/\e[1;31;43m\1\e[0m\2\e[1;31;43m\3\e[0m\4\e[1;31;43m\5\e[0m/g'
 
