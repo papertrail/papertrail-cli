@@ -62,6 +62,21 @@ You may want to alias "trail" to "papertrail", like:
     More: http://papertrailapp.com/
 
 
+## Colorize
+
+Pipe through [MultiTail]:
+    papertrail | multitail -c -j
+
+For complete control, pipe through anything capable of inserting ANSI
+control characters. Here's an example:
+
+    papertrail | perl -pe
+'s/^(.{15})(.)([\S]+)(.)([\S]+)/\e[1;31;43m\1\e[0m\2\e[1;31;43m\3\e[0m\4\e[1;31;43m\5\e[0m/g'
+
+the "1;31;43" are bold (1), foreground red (31), background yellow (43),
+and can be any ANSI [escape characters].
+
+
 ## Contribute
 
 Bug report:
@@ -83,3 +98,5 @@ to your enhancement.
 [Papertrail]: http://papertrailapp.com/
 [SearchClient]: https://github.com/papertrail/papertrail-cli/blob/master/lib/papertrail/search_client.rb
 [RubyGems]: https://rubygems.org/gems/papertrail-cli
+[MultiTail]: http://www.vanheusden.com/multitail/index.html
+[escape characters]: http://en.wikipedia.org/wiki/ANSI_escape_code#Colors
