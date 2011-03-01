@@ -64,7 +64,7 @@ You may want to alias "trail" to "papertrail", like:
 
 ## Colorize
 
-Pipe through [MultiTail]:
+Pipe through [MultiTail] or [colortail]. For example:
     papertrail | multitail -c -j
 
 For complete control, pipe through anything capable of inserting ANSI
@@ -100,4 +100,5 @@ to your enhancement.
 [SearchClient]: https://github.com/papertrail/papertrail-cli/blob/master/lib/papertrail/search_client.rb
 [RubyGems]: https://rubygems.org/gems/papertrail-cli
 [MultiTail]: http://www.vanheusden.com/multitail/index.html
+[colortail]: http://www.codaset.com/elubow/colortail
 [escape characters]: http://en.wikipedia.org/wiki/ANSI_escape_code#Colors
