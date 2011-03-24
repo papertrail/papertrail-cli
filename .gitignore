@@ -4,3 +4,4 @@
 *.sw?
 pkg/*
 Gemfile.lock
+.bundle
