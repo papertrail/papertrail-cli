@@ -17,16 +17,16 @@ may change.
 
 ## Quickstart
 
-    sudo gem install papertrail-cli
-    echo "username: your@account.com\r\npassword: yourpass" > ~/.papertrail.yml
-    papertrail -h
+    $ [sudo] gem install papertrail-cli
+    $ echo "username: your@account.com\npassword: yourpass" > ~/.papertrail.yml
+    $ papertrail
 
 
 ## Installation
 
 Install the gem ([RubyGems]), which includes a binary called "papertrail":
 
-    gem install papertrail-cli
+   $ [sudo] gem install papertrail-cli
 
 
 ## Configuration
@@ -65,14 +65,14 @@ You may want to alias "trail" to "papertrail", like:
 ## Colorize
 
 Pipe through [MultiTail] or [colortail]. For example:
-    papertrail | multitail -c -j
+    $ papertrail | multitail -c -j
 
 For complete control, pipe through anything capable of inserting ANSI
 control characters. Here's an example that colorizes 3 fields separately
 - the first 15 characters for the date, a word for the hostname, and a
 word for the program name:
 
-    papertrail | perl -pe 's/^(.{15})(.)([\S]+)(.)([\S]+)/\e[1;31;43m\1\e[0m\2\e[1;31;43m\3\e[0m\4\e[1;31;43m\5\e[0m/g'
+    $ papertrail | perl -pe 's/^(.{15})(.)([\S]+)(.)([\S]+)/\e[1;31;43m\1\e[0m\2\e[1;31;43m\3\e[0m\4\e[1;31;43m\5\e[0m/g'
 
 the "1;31;43" are bold (1), foreground red (31), background yellow (43),
 and can be any ANSI [escape characters].

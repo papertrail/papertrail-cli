@@ -1,3 +1,7 @@
+require 'faraday'
+require 'time'
+require 'always_verify_ssl_certificates'
+
 module Papertrail
   class SearchClient
     attr_accessor :username, :password, :conn
@@ -6,14 +10,14 @@ module Papertrail
       @username = username
       @password = password
     
-      @conn = Faraday::Connection.new(:url => 'https://papertrailapp.com', :ssl => { :verify => true }) do |builder|
+      @conn = Faraday::Connection.new(:url => 'https://papertrailapp.com', :ssl => { :verify => OpenSSL::SSL::VERIFY_PEER }) do |builder|
         builder.basic_auth(@username, @password)
 
-        builder.adapter  :typhoeus
+        builder.adapter  Faraday.default_adapter
         builder.response :yajl
       end
 
-      @max_id_seen = {}    
+      @max_id_seen = {}
     end
     
     # search for all events or a specific query, defaulting to all events since

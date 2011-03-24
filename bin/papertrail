@@ -2,9 +2,6 @@
 
 require 'optparse'
 require 'yaml'
-require 'time'
-
-require 'faraday'
 
 require 'papertrail-cli'
 
@@ -74,7 +71,7 @@ Examples:
   papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
   papertrail -f -d 10 "ns1 OR 'connection refused'"
 
-More: http://papertrailapp.com/
+More: https://papertrailapp.com/
 
 EOF
   end
