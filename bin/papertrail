@@ -9,7 +9,7 @@ class PapertrailSearch
   def run
     options = {
       :configfile => File.expand_path('~/.papertrail.yml'),
-      :delay  => 30,
+      :delay  => 10,
       :follow => false
     }
 
