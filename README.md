@@ -35,10 +35,12 @@ Install the gem (details on [RubyGems]), which includes a binary called
 Create ~/.papertrail.yml containing your credentials, or specify the
 path to that file with -c. Example (from
 examples/papertrail.yml.example):
+
     username: your@account.com
     password: yourpassword
 
 You may want to alias "trail" to "papertrail", like:
+
     echo "alias trail=papertrail" >> ~/.bashrc
 
 
@@ -66,6 +68,7 @@ You may want to alias "trail" to "papertrail", like:
 ## Colorize
 
 Pipe through [MultiTail] or [colortail]. For example:
+
     $ papertrail | multitail -c -j
 
 For complete control, pipe through anything capable of inserting ANSI
