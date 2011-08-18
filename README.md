@@ -15,7 +15,7 @@ API searches or follow (tail) events matching a given query. Interface
 may change.
 
 
-## Quickstart
+## Quick Start
 
     $ [sudo] gem install papertrail-cli
     $ echo "username: your@account.com\npassword: yourpass" > ~/.papertrail.yml
@@ -24,9 +24,10 @@ may change.
 
 ## Installation
 
-Install the gem ([RubyGems]), which includes a binary called "papertrail":
+Install the gem (details on [RubyGems]), which includes a binary called 
+"papertrail":
 
-   $ [sudo] gem install papertrail-cli
+    $ [sudo] gem install papertrail-cli
 
 
 ## Configuration
