@@ -4,11 +4,12 @@ Small standalone [binary] to retrieve, search, and tail recent app
 server log and system syslog messages from [Papertrail].
 
 Supports optional Boolean search queries and polling for new events
-(like "tail -f").  Example:
+(like "tail -f"). Example:
 
     papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
 
 Output is line-buffered so it can be fed into a pipe, like for grep.
+See below for colorization setup.
 
 The [SearchClient] class can be used by other apps to perform one-off
 API searches or follow (tail) events matching a given query. Interface
@@ -65,11 +66,27 @@ You may want to alias "trail" to "papertrail", like:
     More: http://papertrailapp.com/
 
 
-## Colorize
+## Colors
 
-Pipe through [MultiTail] or [colortail]. For example:
+Pipe through [colortail] or [MultiTail]. We recommend colortail:
 
-    $ papertrail | multitail -c -j
+    $ sudo gem install colortail
+
+Save [colortailrc] as `~/.colortailrc` and edit it to enable:
+
+    $ papertrail -f -d 5 | colortail -g papertrail
+
+### Shorthand
+
+If you're using bash, create a function that accepts arguments, then 
+invoke `pt` with optional search operators:
+
+    $ function pt() { papertrail -f -d 5 $_ | colortail -g papertrail }
+    $ pt 1.2.3 Failure
+
+Add the function line to your `~/.bashrc`.
+
+### Advanced
 
 For complete control, pipe through anything capable of inserting ANSI
 control characters. Here's an example that colorizes 3 fields separately
@@ -103,6 +120,7 @@ to your enhancement.
 [Papertrail]: http://papertrailapp.com/
 [SearchClient]: https://github.com/papertrail/papertrail-cli/blob/master/lib/papertrail/search_client.rb
 [RubyGems]: https://rubygems.org/gems/papertrail-cli
+[colortail]: http://rubydoc.info/gems/colortail
+[colortailrc]: https://github.com/papertrail/papertrail-cli/wiki/colortailrc
 [MultiTail]: http://www.vanheusden.com/multitail/index.html
-[colortail]: http://www.codaset.com/elubow/colortail
 [escape characters]: http://en.wikipedia.org/wiki/ANSI_escape_code#Colors
