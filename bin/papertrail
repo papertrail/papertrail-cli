@@ -40,7 +40,7 @@ class PapertrailSearch
     if credentials['token']
       client = Papertrail::SearchClient.new(:token => credentials['token'])
     else
-      client = Papertrail::SearchClient.new(credentials['username'], credentials['password'])
+      client = Papertrail::SearchClient.new(:username => credentials['username'], :password => credentials['password'])
     end
 
     search_and_print(client)

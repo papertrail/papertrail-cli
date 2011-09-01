@@ -4,16 +4,7 @@ require 'always_verify_ssl_certificates'
 
 module Papertrail
   class SearchClient
-    attr_accessor :username, :password, :conn
-
-    def initialize(username, password)
-      if username.is_a?(Hash)
-        @options = username
-        @token = options[:token]
-      else
-        @username = username
-        @password = password
-      end
+    def initialize(options)
 
       ssl_options = { :verify => OpenSSL::SSL::VERIFY_PEER }
 
@@ -26,7 +17,11 @@ module Papertrail
       end
 
       @conn = Faraday::Connection.new(:url => 'https://papertrailapp.com', :ssl => ssl_options) do |builder|
-        builder.basic_auth(@username, @password) if @username && @password
+        if options[:username] && options[:password]
+          builder.basic_auth(options[:username], options[:password])
+        else
+          builder.headers['X-Papertrail-Token'] = options[:token]
+        end
 
         builder.adapter  Faraday.default_adapter
         builder.response :yajl
@@ -53,7 +48,6 @@ module Papertrail
       params[:q] = q if q
       params[:min_id] = @max_id_seen[q] if @max_id_seen[q]
       params[:min_id] = since if since
-      params[:token] = @token if @token
       params
     end
 
