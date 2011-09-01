@@ -7,8 +7,13 @@ module Papertrail
     attr_accessor :username, :password, :conn
 
     def initialize(username, password)
-      @username = username
-      @password = password
+      if username.is_a?(Hash)
+        @options = username
+        @token = options[:token]
+      else
+        @username = username
+        @password = password
+      end
 
       ssl_options = { :verify => OpenSSL::SSL::VERIFY_PEER }
 
@@ -21,7 +26,7 @@ module Papertrail
       end
 
       @conn = Faraday::Connection.new(:url => 'https://papertrailapp.com', :ssl => ssl_options) do |builder|
-        builder.basic_auth(@username, @password)
+        builder.basic_auth(@username, @password) if @username && @password
 
         builder.adapter  Faraday.default_adapter
         builder.response :yajl
@@ -48,6 +53,7 @@ module Papertrail
       params[:q] = q if q
       params[:min_id] = @max_id_seen[q] if @max_id_seen[q]
       params[:min_id] = since if since
+      params[:token] = @token if @token
       params
     end
 

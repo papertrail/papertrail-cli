@@ -37,7 +37,11 @@ class PapertrailSearch
       YAML.load(f)
     end
 
-    client = Papertrail::SearchClient.new(credentials['username'], credentials['password'])
+    if credentials['token']
+      client = Papertrail::SearchClient.new(:token => credentials['token'])
+    else
+      client = Papertrail::SearchClient.new(credentials['username'], credentials['password'])
+    end
 
     search_and_print(client)
 

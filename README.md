@@ -19,8 +19,10 @@ may change.
 ## Quick Start
 
     $ [sudo] gem install papertrail-cli
-    $ echo "username: your@account.com\npassword: yourpass" > ~/.papertrail.yml
+    $ echo "token: 123456789012345678901234567890ab" > ~/.papertrail.yml
     $ papertrail
+
+Retrieve token from Papertrail [Account Settings].
 
 
 ## Installation
@@ -33,12 +35,14 @@ Install the gem (details on [RubyGems]), which includes a binary called
 
 ## Configuration
 
-Create ~/.papertrail.yml containing your credentials, or specify the
+Create ~/.papertrail.yml containing your API token, or specify the
 path to that file with -c. Example (from
 examples/papertrail.yml.example):
 
-    username: your@account.com
-    password: yourpassword
+    token: 123456789012345678901234567890ab
+
+Retrieve token from Papertrail [Account Settings]. For compatibility with 
+older config files, `username` and `password` keys are also supported.
 
 You may want to alias "trail" to "papertrail", like:
 
@@ -119,6 +123,7 @@ to your enhancement.
 [binary]: https://github.com/papertrail/papertrail-cli/blob/master/bin/papertrail
 [Papertrail]: http://papertrailapp.com/
 [SearchClient]: https://github.com/papertrail/papertrail-cli/blob/master/lib/papertrail/search_client.rb
+[Account Settings]: https://papertrailapp.com/account
 [RubyGems]: https://rubygems.org/gems/papertrail-cli
 [colortail]: http://rubydoc.info/gems/colortail
 [colortailrc]: https://github.com/papertrail/papertrail-cli/wiki/colortailrc
