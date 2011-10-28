@@ -23,7 +23,7 @@ class PapertrailSearch
       opts.on("-f", "--follow", "Continue running and print new events (off)") do |v|
         options[:follow] = true
       end
-      opts.on("-d", "--delay SECONDS", "Delay between refresh (30)") do |v|
+      opts.on("-d", "--delay SECONDS", "Delay between refresh (3)") do |v|
         options[:delay] = v.to_i
       end
       opts.on("-c", "--configfile PATH", "Path to config (~/.papertrail.yml)") do |v|

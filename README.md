@@ -55,7 +55,7 @@ You may want to alias "trail" to "papertrail", like:
     papertrail - command-line tail and search for Papertrail log management service
         -h, --help                       Show usage
         -f, --follow                     Continue running and print new events (off)
-        -d, --delay SECONDS              Delay between refresh (30)
+        -d, --delay SECONDS              Delay between refresh (3)
         -c, --configfile PATH            Path to config (~/.papertrail.yml)
 
     Usage: papertrail [-f] [-d seconds] [-c /path/to/papertrail.yml] [query]
