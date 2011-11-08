@@ -51,7 +51,6 @@ Gem::Specification.new do |s|
   ## that are needed for an end user to actually USE your code.
   s.add_dependency('yajl-ruby')
   s.add_dependency('faraday', [ '~> 0.5.7' ])
-  s.add_dependency('always_verify_ssl_certificates')
 
   ## List your development dependencies here. Development dependencies are
   ## those that are only needed during development

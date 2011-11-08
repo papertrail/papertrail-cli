@@ -1,6 +1,6 @@
 require 'faraday'
 require 'time'
-require 'always_verify_ssl_certificates'
+require 'openssl'
 
 module Papertrail
   class SearchClient
