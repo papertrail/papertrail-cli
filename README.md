@@ -22,7 +22,7 @@ may change.
     $ echo "token: 123456789012345678901234567890ab" > ~/.papertrail.yml
     $ papertrail
 
-Retrieve token from Papertrail [Account Settings].
+Retrieve token from Papertrail [User Profile].
 
 
 ## Installation
@@ -41,7 +41,7 @@ examples/papertrail.yml.example):
 
     token: 123456789012345678901234567890ab
 
-Retrieve token from Papertrail [Account Settings]. For compatibility with 
+Retrieve token from Papertrail [User Profile]. For compatibility with 
 older config files, `username` and `password` keys are also supported.
 
 You may want to alias "trail" to "papertrail", like:
@@ -123,7 +123,7 @@ to your enhancement.
 [binary]: https://github.com/papertrail/papertrail-cli/blob/master/bin/papertrail
 [Papertrail]: http://papertrailapp.com/
 [SearchClient]: https://github.com/papertrail/papertrail-cli/blob/master/lib/papertrail/search_client.rb
-[Account Settings]: https://papertrailapp.com/account
+[User Profile]: https://papertrailapp.com/user/edit
 [RubyGems]: https://rubygems.org/gems/papertrail-cli
 [colortail]: http://rubydoc.info/gems/colortail
 [colortailrc]: https://github.com/papertrail/papertrail-cli/wiki/colortailrc
