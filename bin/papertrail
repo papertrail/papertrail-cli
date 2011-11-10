@@ -81,4 +81,8 @@ EOF
   end
 end
 
-PapertrailSearch.new.run
+begin
+  PapertrailSearch.new.run
+rescue Interrupt
+  exit(0)
+end
