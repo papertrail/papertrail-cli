@@ -1,11 +1,11 @@
 require 'faraday'
 require 'time'
 require 'openssl'
+require 'faraday_stack'
 
 module Papertrail
   class SearchClient
     def initialize(options)
-
       ssl_options = { :verify => OpenSSL::SSL::VERIFY_PEER }
 
       # Make Ubuntu OpenSSL work
@@ -17,14 +17,14 @@ module Papertrail
       end
 
       @conn = Faraday::Connection.new(:url => 'https://papertrailapp.com', :ssl => ssl_options) do |builder|
+        builder.adapter Faraday.default_adapter
+        builder.use     FaradayStack::ResponseJSON
+      end.tap do |conn|
         if options[:username] && options[:password]
-          builder.basic_auth(options[:username], options[:password])
+          conn.basic_auth(options[:username], options[:password])
         else
-          builder.headers['X-Papertrail-Token'] = options[:token]
+          conn.headers['X-Papertrail-Token'] = options[:token]
         end
-
-        builder.adapter  Faraday.default_adapter
-        builder.response :yajl
       end
 
       @max_id_seen = {}
