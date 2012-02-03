@@ -10,7 +10,7 @@ module Papertrail
 
     def search
       response = @connection.get('/api/v1/events/search.json') do |r|
-        r.params = @options.dup
+        r.params.merge!(@options)
 
         r.params[:q]      = @query  if @query
         r.params[:min_id] = @max_id if @max_id
