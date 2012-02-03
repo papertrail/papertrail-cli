@@ -13,8 +13,8 @@ Feature: Search Queries
     When I papertrail
     Then it should pass with exactly:
       """
-      Feb  3 15:16:17 server1 app1 startup
-      Feb  4 02:22:22 server1 app1 disk space warning
-      Mar  5 03:33:33 server1 app1 crash
+      Feb  3 15:16:17 server1 app1: startup
+      Feb  4 02:22:22 server1 app1: disk space warning
+      Mar  5 03:33:33 server1 app1: crash
 
       """
