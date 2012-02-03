@@ -57,6 +57,10 @@ Gem::Specification.new do |s|
   ## those that are only needed during development
   #  s.add_development_dependency('DEVDEPNAME', [">= 1.1.0", "< 2.0.0"])
 
+  s.add_development_dependency('aruba')
+  s.add_development_dependency('cucumber')
+  s.add_development_dependency('webmock')
+
   ## Leave this section as-is. It will be automatically generated from the
   ## contents of your Git repository via the gemspec task. DO NOT REMOVE
   ## THE MANIFEST COMMENTS, they are used as delimiters by the task.
