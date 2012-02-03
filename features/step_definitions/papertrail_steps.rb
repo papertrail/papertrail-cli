@@ -29,6 +29,6 @@ When /^I papertrail$/ do
     ruby
   )
 
-  cmd = "ruby -r./#{stubbing_file} ../../bin/papertrail"
+  cmd = "ruby -rbundler/setup -rwebmock -r./#{stubbing_file} ../../bin/papertrail"
   run_simple(cmd)
 end
