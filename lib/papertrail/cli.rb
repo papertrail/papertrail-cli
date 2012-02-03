@@ -58,8 +58,6 @@ module Papertrail
         query_options[:group_id] = connection.find_id_for_group(options[:group])
       end
 
-      puts query_options.inspect
-
       search_query = connection.query(ARGV[0], query_options)
 
       if options[:follow]
