@@ -33,15 +33,13 @@ class PapertrailSearch
       opts.separator usage
     end.parse!
 
-    credentials = open(options[:configfile]) do |f|
+    configfile_options = open(options[:configfile]) do |f|
       YAML.load(f)
     end
+    configfile_options = symbolize_keys(configfile_options)
+    options.merge!(configfile_options)
 
-    if credentials['token']
-      client = Papertrail::SearchClient.new(:token => credentials['token'])
-    else
-      client = Papertrail::SearchClient.new(:username => credentials['username'], :password => credentials['password'])
-    end
+    client = Papertrail::SearchClient.new(options)
 
     search_and_print(client)
 
@@ -71,6 +69,14 @@ class PapertrailSearch
     end
 
     file_path
+  end
+
+  def symbolize_keys(hash)
+    new_hash = {}
+    hash.each_key do |key|
+      new_hash[(key.to_sym rescue key) || key] = hash[key]
+    end
+    new_hash
   end
 
   def usage
