@@ -8,14 +8,14 @@ require 'papertrail-cli'
 class PapertrailSearch
   def run
     options = {
-      :configfile => File.expand_path('~/.papertrail.yml'),
+      :configfile => configfile_path,
       :delay  => 10,
       :follow => false
     }
 
     OptionParser.new do |opts|
       opts.banner = "papertrail - command-line tail and search for Papertrail log management service"
-      
+
       opts.on("-h", "--help", "Show usage") do |v|
         puts opts
         exit
@@ -29,10 +29,10 @@ class PapertrailSearch
       opts.on("-c", "--configfile PATH", "Path to config (~/.papertrail.yml)") do |v|
         options[:configfile] = File.expand_path(v)
       end
-      
+
       opts.separator usage
     end.parse!
-    
+
     credentials = open(options[:configfile]) do |f|
       YAML.load(f)
     end
@@ -52,7 +52,7 @@ class PapertrailSearch
       end
     end
   end
-  
+
   def search_and_print(client)
     events = client.search(ARGV[0])
     return unless events
@@ -63,9 +63,19 @@ class PapertrailSearch
     end
   end
 
+  def configfile_path
+    if File.exists?(file_name = '.papertrail.yml')
+      file_path = File.expand_path(file_name)
+    else
+      file_path = File.expand_path('~/.papertrail.yml')
+    end
+
+    file_path
+  end
+
   def usage
     <<EOF
-    
+
 Usage: papertrail [-f] [-d seconds] [-c /path/to/papertrail.yml] [query]
 
 Examples:
