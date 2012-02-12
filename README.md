@@ -1,4 +1,4 @@
-# papertrail Command-line tail & search client for Papertrail log management service
+# papertrail command-line tail & search client for Papertrail log management service
 
 Small standalone [binary] to retrieve, search, and tail recent app
 server log and system syslog messages from [Papertrail].
@@ -6,7 +6,7 @@ server log and system syslog messages from [Papertrail].
 Supports optional Boolean search queries and polling for new events
 (like "tail -f"). Example:
 
-    papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
+    $ papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
 
 Output is line-buffered so it can be fed into a pipe, like for grep.
 See below for colorization setup.
