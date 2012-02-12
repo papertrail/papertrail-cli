@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   ## the sub! line in the Rakefile
   s.name              = 'papertrail'
   s.version           = '0.8.2'
-  s.date              = '2011-12-28'
+  s.date              = '2012-02-11'
   s.rubyforge_project = 'papertrail'
 
   ## Make sure your summary is short. The description may be as long
