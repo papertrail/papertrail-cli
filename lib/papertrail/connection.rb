@@ -1,6 +1,7 @@
 require 'faraday'
 require 'openssl'
-require 'faraday_stack'
+require 'faraday_middleware'
+require 'yajl/json_gem'
 
 require 'papertrail/search_query'
 
@@ -25,7 +26,8 @@ module Papertrail
 
       @connection = Faraday::Connection.new(:url => 'https://papertrailapp.com', :ssl => ssl_options) do |builder|
         builder.adapter Faraday.default_adapter
-        builder.use     FaradayStack::ResponseJSON
+        builder.use Faraday::Response::RaiseError
+        builder.use FaradayMiddleware::ParseJson, :content_type => /\bjson$/
       end.tap do |conn|
         if options[:username] && options[:password]
           conn.basic_auth(options[:username], options[:password])

@@ -50,8 +50,8 @@ Gem::Specification.new do |s|
   ## List your runtime dependencies here. Runtime dependencies are those
   ## that are needed for an end user to actually USE your code.
   s.add_dependency('yajl-ruby')
-  s.add_dependency('faraday', [ '~> 0.6' ])
-  s.add_dependency('faraday-stack', [ '~> 0.1' ])
+  s.add_dependency('faraday', [ '>= 0.6', '< 0.9' ])
+  s.add_dependency('faraday_middleware', [ '~> 0.8.4' ])
 
   ## List your development dependencies here. Development dependencies are
   ## those that are only needed during development
