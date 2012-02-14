@@ -8,7 +8,7 @@ module Papertrail
     def run
       options = {
         :configfile => nil,
-        :delay  => 10,
+        :delay  => 2,
         :follow => false
       }
 
