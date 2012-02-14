@@ -1,4 +1,4 @@
-# papertrail Command-line tail & search client for Papertrail log management service
+# papertrail command-line tail & search client for Papertrail log management service
 
 Small standalone [binary] to retrieve, search, and tail recent app
 server log and system syslog messages from [Papertrail].
@@ -6,19 +6,19 @@ server log and system syslog messages from [Papertrail].
 Supports optional Boolean search queries and polling for new events
 (like "tail -f"). Example:
 
-    papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
+    $ papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
 
 Output is line-buffered so it can be fed into a pipe, like for grep.
 See below for colorization setup.
 
-The [SearchClient] class can be used by other apps to perform one-off
+The [Connection] class can be used by other apps to perform one-off
 API searches or follow (tail) events matching a given query. Interface
 may change.
 
 
 ## Quick Start
 
-    $ [sudo] gem install papertrail-cli
+    $ [sudo] gem install papertrail
     $ echo "token: 123456789012345678901234567890ab" > ~/.papertrail.yml
     $ papertrail
 
@@ -27,10 +27,10 @@ Retrieve token from Papertrail [User Profile].
 
 ## Installation
 
-Install the gem (details on [RubyGems]), which includes a binary called 
+Install the gem (details on [RubyGems]), which includes a binary called
 "papertrail":
 
-    $ [sudo] gem install papertrail-cli
+    $ [sudo] gem install papertrail
 
 
 ## Configuration
@@ -41,7 +41,7 @@ examples/papertrail.yml.example):
 
     token: 123456789012345678901234567890ab
 
-Retrieve token from Papertrail [User Profile]. For compatibility with 
+Retrieve token from Papertrail [User Profile]. For compatibility with
 older config files, `username` and `password` keys are also supported.
 
 You may want to alias "trail" to "papertrail", like:
@@ -82,7 +82,7 @@ Save [colortailrc] as `~/.colortailrc` and edit it to enable:
 
 ### Shorthand
 
-If you're using bash, create a function that accepts arguments, then 
+If you're using bash, create a function that accepts arguments, then
 invoke `pt` with optional search operators:
 
     $ function pt() { papertrail -f -d 5 $_ | colortail -g papertrail }
@@ -116,13 +116,13 @@ Enhancement or fix:
 1. Fork the project:
    http://github.com/papertrail/papertrail-cli
 2. Make your changes with tests.
-3. Commit the changes without changing the Rakefile or other files unrelated 
+3. Commit the changes without changing the Rakefile or other files unrelated
 to your enhancement.
 4. Send a pull request.
 
 [binary]: https://github.com/papertrail/papertrail-cli/blob/master/bin/papertrail
 [Papertrail]: http://papertrailapp.com/
-[SearchClient]: https://github.com/papertrail/papertrail-cli/blob/master/lib/papertrail/search_client.rb
+[Connection]: https://github.com/papertrail/papertrail-cli/blob/master/lib/papertrail/connection.rb
 [User Profile]: https://papertrailapp.com/user/edit
 [RubyGems]: https://rubygems.org/gems/papertrail-cli
 [colortail]: http://rubydoc.info/gems/colortail
