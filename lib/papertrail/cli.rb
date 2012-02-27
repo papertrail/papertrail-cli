@@ -6,13 +6,19 @@ require 'papertrail/connection'
 module Papertrail
   class Cli
     def run
+      options, local_args = *parse
+      credentials = load_credentials(options)
+      connection = Papertrail::Connection.new(credentials)
+      process(connection, options, local_args)
+    end
+
+    def parse(args = nil)
       options = {
-        :configfile => File.expand_path('~/.papertrail.yml'),
         :delay  => 2,
         :follow => false
       }
 
-      OptionParser.new do |opts|
+      parser = OptionParser.new do |opts|
         opts.banner = "papertrail - command-line tail and search for Papertrail log management service"
 
         opts.on("-h", "--help", "Show usage") do |v|
@@ -36,18 +42,23 @@ module Papertrail
         end
 
         opts.separator usage
-      end.parse!
-
-      credentials = open(options[:configfile]) do |f|
-        YAML.load(f)
       end
 
-      if credentials['token']
-        connection = Papertrail::Connection.new(:token => credentials['token'])
-      else
-        connection = Papertrail::Connection.new(:username => credentials['username'], :password => credentials['password'])
-      end
+      local_args = (args || parser.default_argv).dup
+      parser.parse!(local_args)
 
+      [options, local_args]
+    end
+
+    def load_credentials(options)
+      return {:token => options[:token]} if options[:token]
+      config_file = options[:configfile] || File.expand_path('~/.papertrail.yml')
+      conf = YAML.load_file(config_file)
+      return { :token => conf['token']} if conf['token']
+      return { :username => conf['username'], :password => conf['password'] }
+    end
+
+    def process(connection, options, local_args)
       query_options = {}
 
       if options[:system]
@@ -58,7 +69,7 @@ module Papertrail
         query_options[:group_id] = connection.find_id_for_group(options[:group])
       end
 
-      search_query = connection.query(ARGV[0], query_options)
+      search_query = connection.query(local_args[0], query_options)
 
       if options[:follow]
         loop do
