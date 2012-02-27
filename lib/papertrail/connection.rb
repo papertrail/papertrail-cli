@@ -14,7 +14,9 @@ module Papertrail
     def_delegators :@connection, :get, :put, :post
 
     def initialize(options)
-      ssl_options = { :verify => OpenSSL::SSL::VERIFY_PEER }
+      ssl_options = {
+        :verify => options.fetch(:verify_ssl) { OpenSSL::SSL::VERIFY_PEER }
+      }
 
       # Make Ubuntu OpenSSL work
       #

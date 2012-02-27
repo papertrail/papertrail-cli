@@ -7,10 +7,15 @@ module Papertrail
   class Cli
     def run
       options = {
-        :configfile => File.expand_path('~/.papertrail.yml'),
+        :configfile => nil,
         :delay  => 2,
         :follow => false
       }
+
+      if configfile = find_configfile
+        configfile_options = load_configfile(configfile)
+        options.merge!(configfile_options)
+      end
 
       OptionParser.new do |opts|
         opts.banner = "papertrail - command-line tail and search for Papertrail log management service"
@@ -38,15 +43,12 @@ module Papertrail
         opts.separator usage
       end.parse!
 
-      credentials = open(options[:configfile]) do |f|
-        YAML.load(f)
+      if options[:configfile]
+        configfile_options = load_configfile(options[:configfile])
+        options.merge!(configfile_options)
       end
 
-      if credentials['token']
-        connection = Papertrail::Connection.new(:token => credentials['token'])
-      else
-        connection = Papertrail::Connection.new(:username => credentials['username'], :password => credentials['password'])
-      end
+      connection = Papertrail::Connection.new(options)
 
       query_options = {}
 
@@ -73,6 +75,31 @@ module Papertrail
           $stdout.puts event
         end
       end
+    end
+
+    def find_configfile
+      if File.exists?(path = File.expand_path('.papertrail.yml'))
+        return path
+      end
+      if File.exists?(path = File.expand_path('~/.papertrail.yml'))
+        return path
+      end
+
+      false
+    end
+
+    def load_configfile(file_path)
+      configfile_options = open(file_path) { |f| YAML.load(f) }
+      symbolize_keys(configfile_options)
+    end
+
+    def symbolize_keys(hash)
+      new_hash = {}
+      hash.each_key do |key|
+        new_hash[(key.to_sym rescue key) || key] = hash[key]
+      end
+
+      new_hash
     end
 
     def usage
