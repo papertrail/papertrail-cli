@@ -78,14 +78,16 @@ module Papertrail
     def usage
       <<-EOF
 
-  Usage: papertrail [-f] [-d seconds] [-c /path/to/papertrail.yml] [query]
+  Usage: 
+    papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [query]
 
   Examples:
     papertrail -f
     papertrail something
     papertrail 1.2.3 Failure
+    papertrail -s ns1 "connection refused"
     papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
-    papertrail -f -d 10 "ns1 OR 'connection refused'"
+    papertrail -f -g Production "(nginx OR pgsql) -accepted"
 
   More: https://papertrailapp.com/
 

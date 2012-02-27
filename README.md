@@ -46,7 +46,7 @@ older config files, `username` and `password` keys are also supported.
 
 You may want to alias "trail" to "papertrail", like:
 
-    echo "alias trail=papertrail" >> ~/.bashrc
+    echo "alias pt=papertrail" >> ~/.bashrc
 
 
 ## Usage & Examples
@@ -55,17 +55,21 @@ You may want to alias "trail" to "papertrail", like:
     papertrail - command-line tail and search for Papertrail log management service
         -h, --help                       Show usage
         -f, --follow                     Continue running and print new events (off)
-        -d, --delay SECONDS              Delay between refresh (3)
+        -d, --delay SECONDS              Delay between refresh (2)
         -c, --configfile PATH            Path to config (~/.papertrail.yml)
+        -s, --system SYSTEM              System to search
+        -g, --group GROUP                Group to search
 
-    Usage: papertrail [-f] [-d seconds] [-c /path/to/papertrail.yml] [query]
+    Usage: 
+      papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [query]
 
     Examples:
       papertrail -f
       papertrail something
       papertrail 1.2.3 Failure
+      papertrail -s ns1 "connection refused"
       papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
-      papertrail -f -d 10 "ns1 OR 'connection refused'"
+      papertrail -f -g Production "(nginx OR pgsql) -accepted"
 
     More: http://papertrailapp.com/
 
