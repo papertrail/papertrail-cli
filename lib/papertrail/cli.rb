@@ -84,19 +84,16 @@ module Papertrail
       if File.exists?(path = File.expand_path('~/.papertrail.yml'))
         return path
       end
-
-      false
     end
 
     def load_configfile(file_path)
-      configfile_options = open(file_path) { |f| YAML.load(f) }
-      symbolize_keys(configfile_options)
+      symbolize_keys(YAML.load_file(file_path))
     end
 
     def symbolize_keys(hash)
       new_hash = {}
-      hash.each_key do |key|
-        new_hash[(key.to_sym rescue key) || key] = hash[key]
+      hash.each do |(key, value)|
+        new_hash[(key.to_sym rescue key) || key] = value
       end
 
       new_hash
