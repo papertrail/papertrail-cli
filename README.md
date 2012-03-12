@@ -59,9 +59,10 @@ You may want to alias "trail" to "papertrail", like:
         -c, --configfile PATH            Path to config (~/.papertrail.yml)
         -s, --system SYSTEM              System to search
         -g, --group GROUP                Group to search
+        -j, --json                       Output raw json data
 
     Usage: 
-      papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [query]
+      papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [query]
 
     Examples:
       papertrail -f

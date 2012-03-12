@@ -39,6 +39,9 @@ module Papertrail
         opts.on("-g", "--group GROUP", "Group to search") do |v|
           options[:group] = v
         end
+        opts.on("-j", "--json", "Output raw json data") do |v|
+          options[:json] = true
+        end
 
         opts.separator usage
       end.parse!
@@ -64,15 +67,23 @@ module Papertrail
 
       if options[:follow]
         loop do
-          search_query.search.events.each do |event|
-            $stdout.puts event
+          if options[:json]
+            $stdout.puts search_query.search.data.to_json
+          else
+            search_query.search.events.each do |event|
+              $stdout.puts event
+            end
           end
           $stdout.flush
           sleep options[:delay]
         end
       else
-        search_query.search.events.each do |event|
-          $stdout.puts event
+        if options[:json]
+          $stdout.puts search_query.search.data.to_json
+        else
+          search_query.search.events.each do |event|
+            $stdout.puts event
+          end
         end
       end
     end
@@ -103,7 +114,7 @@ module Papertrail
       <<-EOF
 
   Usage: 
-    papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [query]
+    papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [query]
 
   Examples:
     papertrail -f
