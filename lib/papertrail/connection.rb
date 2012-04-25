@@ -40,21 +40,23 @@ module Papertrail
     def find_id_for_source(name)
       response = @connection.get('/api/v1/systems.json')
 
-      response.body.each do |source|
-        return source['id'] if source['name'] =~ /#{Regexp.escape(name)}/i
-      end
-
-      return nil
+      find_id_for_item(response.body, name)
     end
 
     def find_id_for_group(name)
       response = @connection.get('/api/v1/groups.json')
 
-      response.body.each do |group|
-        return group['id'] if group['name'] =~ /#{Regexp.escape(name)}/i
+      find_id_for_item(response.body, name)
+    end
+
+    def find_id_for_item(items, name_wanted)
+      items.each do |item|
+        return item['id'] if item['name'] == name_wanted
       end
 
-      return nil
+      items.each do |item|
+        return item['id'] if item['name'] =~ /#{Regexp.escape(name_wanted)}/i
+      end
     end
 
     def query(query = nil, options = {})
