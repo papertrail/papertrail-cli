@@ -52,10 +52,18 @@ module Papertrail
 
       if options[:system]
         query_options[:system_id] = connection.find_id_for_source(options[:system])
+        unless query_options[:system_id]
+          puts "System \"#{options[:system]}\" not found"
+          exit
+        end
       end
 
       if options[:group]
         query_options[:group_id] = connection.find_id_for_group(options[:group])
+        unless query_options[:group_id]
+          puts "Group \"#{options[:group]}\" not found"
+          exit
+        end
       end
 
       search_query = connection.query(ARGV[0], query_options)
