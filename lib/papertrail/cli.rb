@@ -6,6 +6,11 @@ require 'papertrail/connection'
 module Papertrail
   class Cli
     def run
+      # Let it slide if we have invalid JSON
+      if JSON.respond_to?(:default_options)
+        JSON.default_options[:check_utf8] = false
+      end
+
       options = {
         :configfile => nil,
         :delay  => 2,
