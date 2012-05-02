@@ -1,5 +1,5 @@
 module Papertrail
- VERSION = "0.9.2.pre1"
+ VERSION = "0.9.2"
 end
 
 require 'papertrail/search_client'
