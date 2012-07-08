@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+require 'papertrail/cli_add_group'
+
+begin
+  Papertrail::CliAddGroup.new.run
+rescue Interrupt
+  exit(0)
+end

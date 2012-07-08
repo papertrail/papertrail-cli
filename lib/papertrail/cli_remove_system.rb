@@ -1,0 +1,69 @@
+require 'optparse'
+require 'yaml'
+
+require 'papertrail/cli'
+require 'papertrail/connection'
+
+module Papertrail
+  class CliRemoveSystem<Cli
+    def run
+      # Let it slide if we have invalid JSON
+      if JSON.respond_to?(:default_options)
+        JSON.default_options[:check_utf8] = false
+      end
+
+      options = {
+        :configfile => nil,
+      }
+
+      if configfile = find_configfile
+        configfile_options = load_configfile(configfile)
+        options.merge!(configfile_options)
+      end
+
+      OptionParser.new do |opts|
+        opts.banner = "papertrail-remove-system"
+
+        opts.on("-h", "--help", "Show usage") do |v|
+          puts opts
+          exit
+        end
+        opts.on("-c", "--configfile PATH", "Path to config (~/.papertrail.yml)") do |v|
+          options[:configfile] = File.expand_path(v)
+        end
+        opts.on("-s", "--system SYSTEM", "Name of system to remove") do |v|
+          options[:system] = v
+        end
+
+        opts.separator usage
+      end.parse!
+
+      if options[:configfile]
+        configfile_options = load_configfile(options[:configfile])
+        options.merge!(configfile_options)
+      end
+
+      raise OptionParser::MissingArgument if options[:system].nil?
+
+      connection = Papertrail::Connection.new(options)
+
+      if connection.unregister_source(options[:system])
+        exit 0
+      end
+
+      exit 1
+    end
+
+    def usage
+      <<-EOF
+
+  Usage: 
+    papertrail-remove-system [-s system] [-c papertrail.yml] 
+
+  Example:
+    papertrail-remove-system -s mysystemname
+
+  EOF
+    end
+  end
+end
