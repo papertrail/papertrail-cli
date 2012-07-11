@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   ## the sub! line in the Rakefile
   s.name              = 'papertrail'
   s.version           = '0.9.2'
-  s.date              = '2012-05-02'
+  s.date              = '2012-07-10'
   s.rubyforge_project = 'papertrail'
 
   ## Make sure your summary is short. The description may be as long
@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
 #  s.extensions = %w[ext/extconf.rb]
 
   ## If your gem includes any executables, list them here.
-  s.executables = ["papertrail"]
+  s.executables = ["papertrail", "papertrail-add-system", "papertrail-remove-system", "papertrail-add-group", "papertrail-join-group"]
   s.default_executable = 'papertrail'
 
   ## Specify any RDoc options here. You'll want to add your README and
@@ -49,6 +49,7 @@ Gem::Specification.new do |s|
 
   ## List your runtime dependencies here. Runtime dependencies are those
   ## that are needed for an end user to actually USE your code.
+  s.add_dependency('addressable')
   s.add_dependency('yajl-ruby')
   s.add_dependency('faraday', [ '>= 0.6', '< 0.9' ])
   s.add_dependency('faraday_middleware', [ '~> 0.8.4' ])
@@ -67,9 +68,17 @@ Gem::Specification.new do |s|
     README.md
     Rakefile
     bin/papertrail
+    bin/papertrail-add-group
+    bin/papertrail-add-system
+    bin/papertrail-join-group
+    bin/papertrail-remove-system
     examples/papertrail.yml.example
     lib/papertrail.rb
     lib/papertrail/cli.rb
+    lib/papertrail/cli_add_group.rb
+    lib/papertrail/cli_add_system.rb
+    lib/papertrail/cli_join_group.rb
+    lib/papertrail/cli_remove_system.rb
     lib/papertrail/connection.rb
     lib/papertrail/event.rb
     lib/papertrail/search_query.rb
