@@ -1,11 +1,13 @@
 require 'optparse'
 require 'yaml'
 
-require 'papertrail/cli'
+require 'papertrail/cli_helpers'
 require 'papertrail/connection'
 
 module Papertrail
-  class CliJoinGroup<Cli
+  class CliJoinGroup
+    include Papertrail::CliHelpers
+
     def run
       # Let it slide if we have invalid JSON
       if JSON.respond_to?(:default_options)
@@ -46,8 +48,8 @@ module Papertrail
         options.merge!(configfile_options)
       end
 
-      raise OptionParser::MissingArgument if options[:system].nil?
-      raise OptionParser::MissingArgument if options[:group].nil?
+      raise OptionParser::MissingArgument, 'system' if options[:system].nil?
+      raise OptionParser::MissingArgument, 'group' if options[:group].nil?
 
       connection = Papertrail::Connection.new(options)
 
@@ -55,6 +57,10 @@ module Papertrail
         exit 0
       end
 
+      exit 1
+    rescue OptionParser::ParseError => e
+      puts "Error: #{e}"
+      puts usage
       exit 1
     end
 

@@ -2,9 +2,12 @@ require 'optparse'
 require 'yaml'
 
 require 'papertrail/connection'
+require 'papertrail/cli_helpers'
 
 module Papertrail
   class Cli
+    include Papertrail::CliHelpers
+
     def run
       # Let it slide if we have invalid JSON
       if JSON.respond_to?(:default_options)
@@ -97,28 +100,6 @@ module Papertrail
           end
         end
       end
-    end
-
-    def find_configfile
-      if File.exists?(path = File.expand_path('.papertrail.yml'))
-        return path
-      end
-      if File.exists?(path = File.expand_path('~/.papertrail.yml'))
-        return path
-      end
-    end
-
-    def load_configfile(file_path)
-      symbolize_keys(YAML.load_file(file_path))
-    end
-
-    def symbolize_keys(hash)
-      new_hash = {}
-      hash.each do |(key, value)|
-        new_hash[(key.to_sym rescue key) || key] = value
-      end
-
-      new_hash
     end
 
     def usage

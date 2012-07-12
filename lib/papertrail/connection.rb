@@ -15,10 +15,6 @@ module Papertrail
     def_delegators :@connection, :get, :put, :post, :delete
 
     def initialize(options)
-      @api_prefix = '/api/v1'
-      @groups_api = "#{@api_prefix}/groups"
-      @systems_api = "#{@api_prefix}/systems"
-
       ssl_options = {
         :verify => options.fetch(:verify_ssl) { OpenSSL::SSL::VERIFY_PEER }
       }
@@ -31,10 +27,10 @@ module Papertrail
         ssl_options[:ca_file] = '/etc/ssl/certs/ca-certificates.crt'
       end
 
-      @connection = Faraday::Connection.new(:url => 'https://papertrailapp.com', :ssl => ssl_options) do |builder|
+      @connection = Faraday::Connection.new(:url => 'https://papertrailapp.com/api/v1', :ssl => ssl_options) do |builder|
+        builder.use Faraday::Request::UrlEncoded
         builder.adapter Faraday.default_adapter
         builder.use Faraday::Response::RaiseError
-        builder.use Faraday::Request::UrlEncoded
         builder.use FaradayMiddleware::ParseJson, :content_type => /\bjson$/
       end.tap do |conn|
         if options[:username] && options[:password]
@@ -46,13 +42,13 @@ module Papertrail
     end
 
     def find_id_for_source(name)
-      response = @connection.get('/api/v1/systems.json')
+      response = @connection.get('systems.json')
 
       find_id_for_item(response.body, name)
     end
 
     def find_id_for_group(name)
-      response = @connection.get('/api/v1/groups.json')
+      response = @connection.get('groups.json')
       find_id_for_item(response.body, name)
     end
 
@@ -69,54 +65,39 @@ module Papertrail
 
     def create_group(name, system_wildcard = nil)
       group = { :group => { :name => name } }
-      if (system_wildcard)
+      if system_wildcard
         group[:group][:system_wildcard] = system_wildcard
       end
-      group_query = Addressable::URI.new
-      group_query.query_values = group
-      response = @connection.post("#{@groups_api}.json", group_query.query)
-      return response.status == 200
+      @connection.post("groups.json", group)
     end
 
     def show_group(name)
-      id = find_id_for_group(name)
-      if (id)
-        response = @connection.get("#{@groups_api}/#{id}.json")
-        return response.body
+      if id = find_id_for_group(name)
+        @connection.get("groups/#{id}.json").body
       end
     end
 
     def show_source(name)
-      id = find_id_for_source(name)
-      if (id)
-        response = @connection.get("#{@systems_api}/#{id}.json")
-        return response.body
+      if id = find_id_for_source(name)
+        @connection.get("systems/#{id}.json").body
       end
     end
 
     def join_group(source_name, group_name)
       source_id = find_id_for_source(source_name)
       group_id = find_id_for_group(group_name)
-      if (source_id && group_id)
-        group_query = Addressable::URI.new
-        group_query.query_values = { :group_id => group_id }
-        response = @connection.post("#{@systems_api}/#{source_id}/join.json", group_query.query)
-        return response.status == 200
+      if source_id && group_id
+        @connection.post("systems/#{source_id}/join.json", :group_id => group_id)
       end
     end
 
     def register_source(name, ip_address)
-      system_query = Addressable::URI.new
-      system_query.query_values = { :system => { :name => name, :ip_address => ip_address } }
-      response = @connection.post("#{@systems_api}.json", system_query.query)
-      return response.status == 200
+      @connection.post("systems.json", :system => { :name => name, :ip_address => ip_address })
     end
 
     def unregister_source(name)
-      source_id = find_id_for_source(name)
-      if (source_id)
-        response = @connection.delete("#{@systems_api}/#{source_id}.json")
-        return response.status == 200
+      if source_id = find_id_for_source(name)
+        @connection.delete("systems/#{source_id}.json")
       end
     end
 
