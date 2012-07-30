@@ -101,6 +101,8 @@ module Papertrail
       if File.exists?(path = File.expand_path('~/.papertrail.yml'))
         return path
       end
+
+      abort 'Config file not found. Try: echo "token: abc123" > ~/.papertrail.yml"'
     end
 
     def load_configfile(file_path)
@@ -123,12 +125,15 @@ module Papertrail
     papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [query]
 
   Examples:
-    papertrail -f
-    papertrail something
-    papertrail 1.2.3 Failure
-    papertrail -s ns1 "connection refused"
-    papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
-    papertrail -f -g Production "(nginx OR pgsql) -accepted"
+    $ papertrail -f
+    $ papertrail something
+    $ papertrail 1.2.3 Failure
+    $ papertrail -s ns1 "connection refused"
+    $ papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
+    $ papertrail -f -g Production "(nginx OR pgsql) -accepted"
+
+  Setup:
+    $ echo "token: 123456789012345678901234567890ab" > ~/.papertrail.yml
 
   More: https://papertrailapp.com/
 
