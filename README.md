@@ -107,6 +107,21 @@ word for the program name:
 the "1;31;43" are bold (1), foreground red (31), background yellow (43),
 and can be any ANSI [escape characters].
 
+### UTF-8 (non-English searches)
+
+When searching in a language other than English, if you get no matches, you 
+may need to explicitly tell Ruby to use UTF-8. Ruby 1.9 honors the `LANG` 
+shell environment variable, and your shell may not set it to `UTF-8`.
+
+To test, try:
+
+    ruby -E:UTF-8 -S papertrail your_search
+
+If that works, add `-E:UTF-8` to the `RUBYOPT` variable to set the encoding 
+at invocation. For example, to persist that in a `.bashrc`:
+
+    export RUBYOPT="-E:UTF-8"
+
 
 ## Contribute
 
