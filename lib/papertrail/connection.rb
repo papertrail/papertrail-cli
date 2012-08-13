@@ -3,6 +3,7 @@ require 'faraday'
 require 'openssl'
 require 'faraday_middleware'
 require 'yajl/json_gem'
+require 'zlib'
 
 require 'papertrail/search_query'
 
