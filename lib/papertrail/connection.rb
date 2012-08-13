@@ -20,6 +20,10 @@ module Papertrail
         :verify => options.fetch(:verify_ssl) { OpenSSL::SSL::VERIFY_PEER }
       }
 
+      unless (options[:username] && options[:password]) || options[:token]
+        raise ArgumentError, "Must provide a username and password or a token"
+      end
+
       # Make Ubuntu OpenSSL work
       #
       # From: https://bugs.launchpad.net/ubuntu/+source/openssl/+bug/396818
