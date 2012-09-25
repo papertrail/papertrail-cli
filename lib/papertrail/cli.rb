@@ -115,7 +115,7 @@ module Papertrail
       <<-EOF
 
   Usage: 
-    papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [query]
+    papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [-m mintime [-M maxtime]] [query]
 
   Examples:
     papertrail -f
@@ -124,6 +124,7 @@ module Papertrail
     papertrail -s ns1 "connection refused"
     papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
     papertrail -f -g Production "(nginx OR pgsql) -accepted"
+    papertrail -g Production -m 'yesterday at noon' -M 'today at 4am'
 
   More: https://papertrailapp.com/
 
