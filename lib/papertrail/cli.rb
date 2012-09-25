@@ -1,5 +1,6 @@
 require 'optparse'
 require 'yaml'
+require 'chronic'
 
 require 'papertrail/connection'
 require 'papertrail/cli_helpers'
@@ -50,6 +51,12 @@ module Papertrail
         opts.on("-j", "--json", "Output raw json data") do |v|
           options[:json] = true
         end
+        opts.on("-m", "--min-time MIN", "Earliest time to search from.") do |v|
+          options[:min_time] = v
+        end
+        opts.on("-M", "--max-time MAX", "Latest time to search from. (Ignored if no min-time.)") do |v|
+          options[:max_time] = v
+        end
 
         opts.separator usage
       end.parse!
@@ -76,6 +83,8 @@ module Papertrail
           abort "Group \"#{options[:group]}\" not found"
         end
       end
+
+      set_min_max_time!(options, query_options)
 
       search_query = connection.query(ARGV[0], query_options)
 

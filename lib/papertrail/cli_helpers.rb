@@ -21,5 +21,23 @@ module Papertrail
 
       new_hash
     end
+
+    def set_min_max_time!(opts, q_opts)
+      if opts[:min_time]
+        min_time = Chronic.parse(opts[:min_time])
+        if min_time
+          q_opts[:min_time] = min_time.to_i
+          if opts[:max_time]
+            max_time = Chronic.parse(opts[:max_time])
+            if max_time
+              q_opts[:max_time] = max_time.to_i
+            else
+              q_opts[:max_time] = Time.now.to_i
+            end
+          end
+        end
+      end
+    end
+
   end
 end
