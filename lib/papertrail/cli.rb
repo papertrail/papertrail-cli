@@ -54,7 +54,7 @@ module Papertrail
         opts.on("--min-time MIN", "Earliest time to search from.") do |v|
           options[:min_time] = v
         end
-        opts.on("--max-time MAX", "Latest time to search from. (Ignored if no min-time.)") do |v|
+        opts.on("--max-time MAX", "Latest time to search from.") do |v|
           options[:max_time] = v
         end
 
@@ -115,7 +115,7 @@ module Papertrail
       <<-EOF
 
   Usage: 
-    papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [--min-time mintime [--max-time maxtime]] [query]
+    papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [--min-time mintime] [--max-time maxtime] [query]
 
   Examples:
     papertrail -f

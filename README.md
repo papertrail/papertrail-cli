@@ -61,12 +61,12 @@ You may want to alias "trail" to "papertrail", like:
         -g, --group GROUP                Group to search
         -j, --json                       Output raw json data
         --min-time MIN                   Earliest time to search from.
-        --max-time MAX                   Latest time to search from. (Ignored if no min-time.)
+        --max-time MAX                   Latest time to search from.
 
 
 
     Usage: 
-      papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [--min-time mintime [--max-time maxtime]] [query]
+      papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [--min-time mintime] [--max-time maxtime] [query]
 
     Examples:
       papertrail -f
