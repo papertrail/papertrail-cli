@@ -56,11 +56,6 @@ module Papertrail
 
       connection = Papertrail::Connection.new(options)
 
-      # Bail if system already exists
-      if connection.show_source(options[:system])
-        exit 0
-      end
-
       if connection.register_source(options[:system], options[:ip], options[:hostname])
         exit 0
       end

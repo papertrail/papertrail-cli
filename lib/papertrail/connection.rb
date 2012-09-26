@@ -99,7 +99,13 @@ module Papertrail
     def register_source(name, ip_address, hostname = nil)
       opts = { :name => name, :ip_address => ip_address }
       opts.merge! :hostname => hostname unless hostname.nil?
-      @connection.post("systems.json", :system => opts)
+      # if system with the same name exists, then update
+      existing_system = show_source(name)
+      if existing_system
+        @connection.put("systems/#{existing_system['id']}.json", :system => opts)
+      else
+        @connection.post("systems.json", :system => opts)
+      end
     end
 
     def unregister_source(name)
