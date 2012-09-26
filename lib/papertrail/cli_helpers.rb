@@ -25,7 +25,8 @@ module Papertrail
     def set_min_max_time!(opts, q_opts)
       if opts[:min_time]
         q_opts[:min_time] = parse_time(opts[:min_time]).to_i
-        q_opts[:max_time] = parse_time(opts[:max_time], Time.now).to_i
+        default_max = opts[:max_time] ? nil : Time.now
+        q_opts[:max_time] = parse_time(opts[:max_time], default_max).to_i
       end
     end
 
