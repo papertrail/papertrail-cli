@@ -66,7 +66,7 @@ You may want to alias "trail" to "papertrail", like:
 
 
     Usage: 
-      papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [query]
+      papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [-m mintime [-M maxtime]] [query]
 
     Examples:
       papertrail -f

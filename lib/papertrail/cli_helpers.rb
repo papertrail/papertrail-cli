@@ -24,17 +24,15 @@ module Papertrail
 
     def set_min_max_time!(opts, q_opts)
       if opts[:min_time]
-        if min_time = Chronic.parse(opts[:min_time])
-          q_opts[:min_time] = min_time.to_i
-          if opts[:max_time]
-            if max_time = Chronic.parse(opts[:max_time])
-              q_opts[:max_time] = max_time.to_i
-            else
-              q_opts[:max_time] = Time.now.to_i
-            end
-          end
-        end
+        q_opts[:min_time] = parse_time(opts[:min_time]).to_i
+        q_opts[:max_time] = parse_time(opts[:max_time], Time.now).to_i
       end
+    end
+
+    def parse_time(tstring, default = nil)
+      Chronic.parse(tstring) ||
+        default ||
+        raise(ArgumentError, "Could not parse time string '#{tstring}'")
     end
 
   end
