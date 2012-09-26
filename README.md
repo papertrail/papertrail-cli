@@ -60,13 +60,13 @@ You may want to alias "trail" to "papertrail", like:
         -s, --system SYSTEM              System to search
         -g, --group GROUP                Group to search
         -j, --json                       Output raw json data
-        -m, --min-time MIN               Earliest time to search from.
-        -M, --max-time MAX               Latest time to search from. (Ignored if no min-time.)
+        --min-time MIN                   Earliest time to search from.
+        --max-time MAX                   Latest time to search from. (Ignored if no min-time.)
 
 
 
     Usage: 
-      papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [-m mintime [-M maxtime]] [query]
+      papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [--min-time mintime [--max-time maxtime]] [query]
 
     Examples:
       papertrail -f
@@ -75,7 +75,7 @@ You may want to alias "trail" to "papertrail", like:
       papertrail -s ns1 "connection refused"
       papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
       papertrail -f -g Production "(nginx OR pgsql) -accepted"
-      papertrail -g Production -m 'yesterday at noon' -M 'today at 4am'
+      papertrail -g Production --min-time 'yesterday at noon' --max-time 'today at 4am'
 
     More: http://papertrailapp.com/
 
