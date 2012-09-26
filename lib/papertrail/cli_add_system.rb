@@ -36,6 +36,9 @@ module Papertrail
         opts.on("-s", "--system SYSTEM", "Name of system to add") do |v|
           options[:system] = v
         end
+        opts.on("-n", "--hostname HOSTNAME", "Optional hostname which can be used to filter events from the same IP by syslog hostname") do |v|
+          options[:hostname] = v
+        end
         opts.on("-i", "--ip-address IP_ADDRESS", "IP address of system") do |v|
           options[:ip] = v
         end
@@ -52,13 +55,13 @@ module Papertrail
       raise OptionParser::MissingArgument, 'ip' if options[:ip].nil?
 
       connection = Papertrail::Connection.new(options)
-      
+
       # Bail if system already exists
       if connection.show_source(options[:system])
         exit 0
       end
 
-      if connection.register_source(options[:system], options[:ip])
+      if connection.register_source(options[:system], options[:ip], options[:hostname])
         exit 0
       end
 
@@ -72,8 +75,8 @@ module Papertrail
     def usage
       <<-EOF
 
-  Usage: 
-    papertrail-add-system [-s system] [-i ip-address] [-c papertrail.yml] 
+  Usage:
+    papertrail-add-system [-s system] [-i ip-address] [-n hostname] [-c papertrail.yml]
 
   Example:
     papertrail-add-system -s mysystemname -i 1.2.3.4
