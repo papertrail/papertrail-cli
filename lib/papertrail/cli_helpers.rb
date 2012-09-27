@@ -21,5 +21,16 @@ module Papertrail
 
       new_hash
     end
+
+    def set_min_max_time!(opts, q_opts)
+      q_opts[:min_time] = parse_time(opts[:min_time]).to_i if opts[:min_time]
+      q_opts[:max_time] = parse_time(opts[:max_time]).to_i if opts[:max_time]
+    end
+
+    def parse_time(tstring)
+      Chronic.parse(tstring) ||
+        raise(ArgumentError, "Could not parse time string '#{tstring}'")
+    end
+
   end
 end
