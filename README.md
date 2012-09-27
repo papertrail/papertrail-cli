@@ -64,7 +64,6 @@ You may want to alias "trail" to "papertrail", like:
         --max-time MAX                   Latest time to search from.
 
 
-
     Usage: 
       papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [--min-time mintime] [--max-time maxtime] [query]
 
