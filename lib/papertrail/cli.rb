@@ -1,5 +1,6 @@
 require 'optparse'
 require 'yaml'
+require 'chronic'
 
 require 'papertrail/connection'
 require 'papertrail/cli_helpers'
@@ -50,6 +51,12 @@ module Papertrail
         opts.on("-j", "--json", "Output raw json data") do |v|
           options[:json] = true
         end
+        opts.on("--min-time MIN", "Earliest time to search from.") do |v|
+          options[:min_time] = v
+        end
+        opts.on("--max-time MAX", "Latest time to search from.") do |v|
+          options[:max_time] = v
+        end
 
         opts.separator usage
       end.parse!
@@ -76,6 +83,8 @@ module Papertrail
           abort "Group \"#{options[:group]}\" not found"
         end
       end
+
+      set_min_max_time!(options, query_options)
 
       search_query = connection.query(ARGV[0], query_options)
 
@@ -106,7 +115,7 @@ module Papertrail
       <<-EOF
 
   Usage: 
-    papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [query]
+    papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [--min-time mintime] [--max-time maxtime] [query]
 
   Examples:
     papertrail -f
@@ -115,6 +124,7 @@ module Papertrail
     papertrail -s ns1 "connection refused"
     papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
     papertrail -f -g Production "(nginx OR pgsql) -accepted"
+    papertrail -g Production --min-time 'yesterday at noon' --max-time 'today at 4am'
 
   More: https://papertrailapp.com/
 
