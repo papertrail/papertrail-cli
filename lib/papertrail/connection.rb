@@ -96,10 +96,37 @@ module Papertrail
       end
     end
 
-    def register_source(name, ip_address, hostname = nil)
-      opts = { :name => name, :ip_address => ip_address }
-      opts.merge! :hostname => hostname unless hostname.nil?
-      @connection.post("systems.json", :system => opts)
+    def register_source(name, *args)
+      options = args.last.is_a?(Hash) ? args.pop.dup : {}
+
+      if ip_address = args.shift
+        options[:ip_address] = ip_address
+      end
+
+      if hostname = args.shift
+        options[:hostname] = hostname
+      end
+
+      request = {
+        :system => {
+          :name => name
+        }
+      }
+
+      if options[:ip_address]
+        request[:system][:ip_address] = options[:ip_address]
+      end
+
+      if options[:hostname]
+        request[:system][:hostname] = options[:hostname]
+      end
+
+      if options[:destination_port]
+        request[:destination_port] = options[:destination_port]
+      end
+
+      response = @connection.post("systems.json", request)
+      raise response.body.inspect unless response.success?
     end
 
     def unregister_source(name)
