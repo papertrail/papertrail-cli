@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'papertrail'
-  s.version           = '0.9.5'
-  s.date              = '2012-09-27'
+  s.version           = '0.9.6'
+  s.date              = '2012-10-05'
   s.rubyforge_project = 'papertrail'
 
   ## Make sure your summary is short. The description may be as long
