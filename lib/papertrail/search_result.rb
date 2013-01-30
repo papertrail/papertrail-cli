@@ -19,5 +19,9 @@ module Papertrail
     def min_id
       @data['min_id']
     end
+
+    def max_time
+      @data['max_time_at']
+    end
   end
 end

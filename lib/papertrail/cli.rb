@@ -1,5 +1,6 @@
 require 'optparse'
 require 'yaml'
+require 'time'
 
 require 'papertrail/connection'
 
@@ -42,6 +43,9 @@ module Papertrail
         opts.on("-j", "--json", "Output raw json data") do |v|
           options[:json] = true
         end
+        opts.on("-t", "--time", "Retrieve logs after a start timestamp or between two timestamps") do |v|
+          options[:start_time], options[:end_time] = v.split('-')
+        end
 
         opts.separator usage
       end.parse!
@@ -69,9 +73,21 @@ module Papertrail
         end
       end
 
+      if options[:start_time]
+        if options[:follow]
+          abort "End time (-t) does not make sense when following current logs (-f)"
+        end
+
+        query_options[:min_time] = Time.parse(options[:start_time]).gmtime.to_i
+        if options[:end_time]
+          query_options[:max_time] = Time.parse(options[:end_time]).gmtime.to_i
+        end
+        options[:delay] = 0
+      end
+
       search_query = connection.query(ARGV[0], query_options)
 
-      if options[:follow]
+      if options[:follow] || query_options[:min_time]
         loop do
           if options[:json]
             $stdout.puts search_query.search.data.to_json
@@ -81,6 +97,10 @@ module Papertrail
             end
           end
           $stdout.flush
+
+          if query_options[:max_time] && query_options[:max_time] < search_query.max_time
+            break
+          end
           sleep options[:delay]
         end
       else
