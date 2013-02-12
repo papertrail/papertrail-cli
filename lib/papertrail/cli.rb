@@ -9,17 +9,23 @@ module Papertrail
   class Cli
     include Papertrail::CliHelpers
 
+    attr_reader :options, :query_options, :connection
+
+    def initialize
+      @options = {
+        :configfile => nil,
+        :delay  => 2,
+        :follow => false
+      }
+
+      @query_options = {}
+    end
+
     def run
       # Let it slide if we have invalid JSON
       if JSON.respond_to?(:default_options)
         JSON.default_options[:check_utf8] = false
       end
-
-      options = {
-        :configfile => nil,
-        :delay  => 2,
-        :follow => false
-      }
 
       if configfile = find_configfile
         configfile_options = load_configfile(configfile)
@@ -66,9 +72,7 @@ module Papertrail
         options.merge!(configfile_options)
       end
 
-      connection = Papertrail::Connection.new(options)
-
-      query_options = {}
+      @connection = Papertrail::Connection.new(options)
 
       if options[:system]
         query_options[:system_id] = connection.find_id_for_source(options[:system])
@@ -84,32 +88,71 @@ module Papertrail
         end
       end
 
-      set_min_max_time!(options, query_options)
-
-      search_query = connection.query(ARGV[0], query_options)
-
       if options[:follow]
+        search_query = connection.query(ARGV[0], query_options)
+
         loop do
-          if options[:json]
-            $stdout.puts search_query.search.data.to_json
-          else
-            search_query.search.events.each do |event|
-              $stdout.puts event
-            end
-          end
-          $stdout.flush
+          display_results(search_query.search)
           sleep options[:delay]
         end
+      elsif options[:min_time]
+        query_time_range
       else
-        if options[:json]
-          $stdout.puts search_query.search.data.to_json
-        else
-          search_query.search.events.each do |event|
+        set_min_max_time!(options, query_options)
+        search_query = connection.query(ARGV[0], query_options)
+        display_results(search_query.search)
+      end
+    end
+
+    def query_time_range
+      min_time = parse_time(options[:min_time])
+
+      if options[:max_time]
+        max_time = parse_time(options[:max_time])
+      end
+
+      search_results = connection.query(ARGV[0], query_options.merge(:min_time => min_time.to_i, :tail => false)).search
+
+      loop do
+        search_results.events.each do |event|
+          # If we've found an event beyond what we were looking for, we're done
+          if max_time && event.received_at > max_time
+            break
+          end
+
+          if options[:json]
+            $stdout.puts event.data.to_json
+          else
             $stdout.puts event
           end
         end
+
+        # If we've found the end of what we're looking for, we're done
+        if max_time && search_results.max_time_at > max_time
+          break
+        end
+
+        if search_results.reached_end?
+          break
+        end
+
+        # Perform the next search
+        search_results = connection.query(ARGV[0], query_options.merge(:min_id => search_results.max_id, :tail => false)).search
       end
     end
+
+    def display_results(results)
+      if options[:json]
+        $stdout.puts results.data.to_json
+      else
+        results.events.each do |event|
+          $stdout.puts event
+        end
+      end
+
+      $stdout.flush
+    end
+
 
     def usage
       <<-EOF
