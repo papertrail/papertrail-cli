@@ -8,8 +8,12 @@ module Papertrail
       @data = data
     end
 
+    def received_at
+      @received_at ||= Time.parse(data['received_at'])
+    end
+
     def to_s
-      "#{Time.parse(data['received_at']).strftime('%b %e %X')} #{data['hostname']} #{data['program']}: #{data['message']}"
+      "#{received_at.strftime('%b %e %X')} #{data['hostname']} #{data['program']}: #{data['message']}"
     end
   end
 end
