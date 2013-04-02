@@ -70,7 +70,7 @@ You may want to alias "trail" to "papertrail", like:
     Examples:
       papertrail -f
       papertrail something
-      papertrail 1.2.3 Failure
+      papertrail --min-time "20 minutes ago" 1.2.3 Failure
       papertrail -s ns1 "connection refused"
       papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
       papertrail -f -g Production "(nginx OR pgsql) -accepted"
