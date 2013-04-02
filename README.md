@@ -15,6 +15,10 @@ The [Connection] class can be used by other apps to perform one-off
 API searches or follow (tail) events matching a given query. Interface
 may change.
 
+Also includes `papertrail-add-system`, `papertrail-remove-system`, 
+`papertrail-add-group`, and `papertrail-join-group` binaries, which 
+invoke the corresponding Papertrail [HTTP API] call.
+
 
 ## Quick Start
 
@@ -80,35 +84,9 @@ You may want to alias "trail" to "papertrail", like:
       papertrail-add-group, papertrail-leave-group. Run with --help or see README.
 
     More: http://papertrailapp.com/
+  
 
-
-## Add/Remove Systems, Join/Leave Groups
-
-In addition to tail and search, `papertrail-cli` ships with 4 other binaries 
-which wrap other parts of Papertrail's [HTTP API](http://help.papertrailapp.com/kb/how-it-works/http-api).
-These are not not necessary in most cases.
-
-To see usage, run any one of these commands with `--help`: `papertrail-add-system`, 
-`papertrail-remove-system`, `papertrail-add-group`, `papertrail-leave-group`.
-
-### `papertrail-add-system`
-
-Register the system explicitly. Takes either 
-
-Optional hostname if system name is not hostname.
-
-### `papertrail-remove-system`
-
-Remove the system. `papertrail-remove-syslog --system abc123`
-
-### `papertrail-add-group`:
-
-### `papertrail-leave-group`:
-
-They all take the same 1
-
-
-## Colors
+### Colors
 
 Pipe through [colortail] or [MultiTail]. We recommend colortail:
 
@@ -156,6 +134,18 @@ at invocation. For example, to persist that in a `.bashrc`:
     export RUBYOPT="-E:UTF-8"
 
 
+## Add/Remove Systems, Create Group, Join Group
+
+In addition to tail and search with the `papertrail` binary, the gem includes 
+4 other binaries which wrap other parts of Papertrail's [HTTP API] to explicitly 
+add or remove a system, to create a new group, and to join a system to a group.
+
+In most cases, configuration is automatic and these are not not necessary.
+
+To see usage, run any of these commands with `--help`: `papertrail-add-system`, 
+`papertrail-remove-system`, `papertrail-add-group`, `papertrail-join-group`.
+
+
 ## Contribute
 
 Bug report:
@@ -176,6 +166,7 @@ to your enhancement.
 [binary]: https://github.com/papertrail/papertrail-cli/blob/master/bin/papertrail
 [Papertrail]: http://papertrailapp.com/
 [Connection]: https://github.com/papertrail/papertrail-cli/blob/master/lib/papertrail/connection.rb
+[HTTP API]: http://help.papertrailapp.com/kb/how-it-works/http-api
 [User Profile]: https://papertrailapp.com/user/edit
 [RubyGems]: https://rubygems.org/gems/papertrail-cli
 [colortail]: http://rubydoc.info/gems/colortail
