@@ -76,7 +76,36 @@ You may want to alias "trail" to "papertrail", like:
       papertrail -f -g Production "(nginx OR pgsql) -accepted"
       papertrail -g Production --min-time 'yesterday at noon' --max-time 'today at 4am'
 
+    Includes 4 binaries to change Papertrail settings: papertrail-add-system, papertrail-remove-system,
+      papertrail-add-group, papertrail-leave-group. Run with --help or see README.
+
     More: http://papertrailapp.com/
+
+
+## Add/Remove Systems, Join/Leave Groups
+
+In addition to tail and search, `papertrail-cli` ships with 4 other binaries 
+which wrap other parts of Papertrail's [HTTP API](http://help.papertrailapp.com/kb/how-it-works/http-api).
+These are not not necessary in most cases.
+
+To see usage, run any one of these commands with `--help`: `papertrail-add-system`, 
+`papertrail-remove-system`, `papertrail-add-group`, `papertrail-leave-group`.
+
+### `papertrail-add-system`
+
+Register the system explicitly. Takes either 
+
+Optional hostname if system name is not hostname.
+
+### `papertrail-remove-system`
+
+Remove the system. `papertrail-remove-syslog --system abc123`
+
+### `papertrail-add-group`:
+
+### `papertrail-leave-group`:
+
+They all take the same 1
 
 
 ## Colors
