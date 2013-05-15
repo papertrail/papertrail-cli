@@ -9,7 +9,8 @@ Supports optional Boolean search queries and polling for new events
     $ papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
 
 Output is line-buffered so it can be fed into a pipe, like for grep.
-See below for colorization setup.
+ANSI color codes are rendered in color on suitable terminals; see below for 
+additional colorization options.
 
 The [Connection] class can be used by other apps to perform one-off
 API searches or follow (tail) events matching a given query. Interface
@@ -88,7 +89,11 @@ You may want to alias "trail" to "papertrail", like:
 
 ### Colors
 
-Pipe through [colortail] or [MultiTail]. We recommend colortail:
+ANSI color codes are retained, so log messages which are already colorized 
+will automatically render in color on ANSI-capable terminals.
+
+To manually colorize monochrome logs, pipe through [colortail] or 
+[MultiTail]. We recommend `colortail``:
 
     $ sudo gem install colortail
 
