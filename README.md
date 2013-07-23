@@ -115,12 +115,12 @@ Add the function line to your `~/.bashrc`.
 
 For complete control, pipe through anything capable of inserting ANSI
 control characters. Here's an example that colorizes 3 fields separately
-- the first 15 characters for the date, a word for the hostname, and a
-word for the program name:
+(the first 15 characters for the date, a word for the hostname, and a
+word for the program name):
 
     $ papertrail | perl -pe 's/^(.{15})(.)([\S]+)(.)([\S]+)/\e[1;31;43m\1\e[0m\2\e[1;31;43m\3\e[0m\4\e[1;31;43m\5\e[0m/g'
 
-the "1;31;43" are bold (1), foreground red (31), background yellow (43),
+the `1;31;43` are bold (1), foreground red (31), background yellow (43),
 and can be any ANSI [escape characters].
 
 ### UTF-8 (non-English searches)
