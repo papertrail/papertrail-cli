@@ -138,6 +138,16 @@ at invocation. For example, to persist that in a `.bashrc`:
 
     export RUBYOPT="-E:UTF-8"
 
+### Negation-only queries
+
+Unix shells handle arguments beginning with hyphens (`-`) differently 
+([why](http://unix.stackexchange.com/questions/11376/what-does-double-dash-mean)).
+Usually this is moot because most searches start with a positive match.
+To search only for log messages without a given string, use `--`. For
+example, to search for `-whatever`, run:
+
+    papertrail -- -whatever
+
 
 ## Add/Remove Systems, Create Group, Join Group
 
