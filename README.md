@@ -49,7 +49,7 @@ examples/papertrail.yml.example):
 Retrieve token from Papertrail [User Profile]. For compatibility with
 older config files, `username` and `password` keys are also supported.
 
-You may want to alias "trail" to "papertrail", like:
+You may want to alias "pt" to "papertrail", like:
 
     echo "alias pt=papertrail" >> ~/.bashrc
 
