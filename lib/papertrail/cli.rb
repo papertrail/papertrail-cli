@@ -34,7 +34,11 @@ module Papertrail
 
       OptionParser.new do |opts|
         opts.banner = "papertrail - command-line tail and search for Papertrail log management service"
+        opts.separator ''
+        opts.separator usage
 
+        opts.separator ''
+        opts.separator 'Arguments:'
         opts.on("-h", "--help", "Show usage") do |v|
           puts opts
           exit
@@ -64,7 +68,8 @@ module Papertrail
           options[:max_time] = v
         end
 
-        opts.separator usage
+        opts.separator ''
+        opts.separator examples
       end.parse!
 
       if options[:configfile]
@@ -153,14 +158,17 @@ module Papertrail
       $stdout.flush
     end
 
-
     def usage
+      'Usage: papertrail [arguments] [query]'
+      <<EOF
+Usage: papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml]
+                  [-j] [--min-time mintime] [--max-time maxtime] [query]
+EOF
+    end
+
+    def examples
       <<-EOF
-
-  Usage: 
-    papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [--min-time mintime] [--max-time maxtime] [query]
-
-  Examples:
+Examples:
     papertrail -f
     papertrail something
     papertrail 1.2.3 Failure
@@ -168,10 +176,10 @@ module Papertrail
     papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
     papertrail -f -g Production "(nginx OR pgsql) -accepted"
     papertrail -g Production --min-time 'yesterday at noon' --max-time 'today at 4am'
+  
+More: https://papertrailapp.com
 
-  More: https://papertrailapp.com/
-
-  EOF
+EOF
     end
   end
 end
