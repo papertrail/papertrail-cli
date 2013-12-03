@@ -1,6 +1,4 @@
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'papertrail/version'
+require File.expand_path('../lib/papertrail/version', __FILE__)
 
 Gem::Specification.new do |spec|
   spec.name        = 'papertrail'
