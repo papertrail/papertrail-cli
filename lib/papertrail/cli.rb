@@ -1,6 +1,4 @@
 require 'optparse'
-require 'yaml'
-require 'chronic'
 
 require 'papertrail/connection'
 require 'papertrail/cli_helpers'
