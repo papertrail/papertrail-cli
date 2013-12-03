@@ -127,18 +127,28 @@ $ papertrail -- -Error
 ### Full Usage
 
 ```bash
-Usage: 
-  papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j]
-             [--min-time mintime] [--max-time maxtime] [query]
+Usage: papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml]
+                  [-j] [--min-time mintime] [--max-time maxtime] [query]
+
+Arguments:
+    -h, --help                       Show usage
+    -f, --follow                     Continue running and print new events (off)
+    -d, --delay SECONDS              Delay between refresh (2)
+    -c, --configfile PATH            Path to config (~/.papertrail.yml)
+    -s, --system SYSTEM              System to search
+    -g, --group GROUP                Group to search
+    -j, --json                       Output raw json data
+        --min-time MIN               Earliest time to search from.
+        --max-time MAX               Latest time to search from.
 
 Examples:
-  papertrail -f
-  papertrail something
-  papertrail 1.2.3 Failure
-  papertrail -s ns1 "connection refused"
-  papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
-  papertrail -f -g Production "(nginx OR pgsql) -accepted"
-  papertrail -g Production --min-time 'yesterday at noon' --max-time 'today at 4am'
+    papertrail -f
+    papertrail Error
+    papertrail 1.2.3 Failure
+    papertrail -s ns1 "connection refused"
+    papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
+    papertrail -f -g Production "(nginx OR pgsql) -accepted"
+    papertrail -g Production --min-time 'yesterday at noon' --max-time 'today at 4am'
 ```
 
 
