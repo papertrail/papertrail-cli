@@ -1,15 +1,11 @@
 # Papertrail CLI
 
 A command-line tail & search client for the [Papertrail] log management
-service. It consists of a small executable to retrieve, search, and tail
-recent app server log and system syslog messages. Supports Boolean search
-queries and has a follow option similar to `tail -f` which watches for new
-events.
-
+service. [Retrieve, search, and tail][tail] recent logs and [manage systems
+and groups][systems-groups]. Supports Boolean search queries and has a follow
+option similar to `tail -f` which watches for new events.
 
 ## Quick Start
-
-Retrieve API token from the [user profile].
 
 ```bash
 $ [sudo] gem install papertrail
@@ -52,16 +48,11 @@ $ papertrail -f -g Production "(nginx OR pgsql) -accepted"
 $ papertrail -g Production --min-time 'yesterday at noon' --max-time 'today at 4am'
 ```
 
-Use the `--help` switch to see full usage details.
+Use the `--help` switch to see [full usage details][full-usage].
 
 Output is line-buffered so it can be piped into another program like grep.
 [ANSI color codes][ansi] are rendered in color on suitable terminals. See
 below for additional [colorization options][colors].
-
-The gem also includes `papertrail-add-system`, `papertrail-remove-system`,
-`papertrail-add-group`, and `papertrail-join-group` executables. See
-[systems and groups] usage below.
-
 
 ### Colors
 
@@ -133,14 +124,31 @@ a given string, use `--`. For example, to search for `-Error`, run:
 $ papertrail -- -Error
 ```
 
+### Full Usage
+
+```bash
+Usage: 
+  papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j]
+             [--min-time mintime] [--max-time maxtime] [query]
+
+Examples:
+  papertrail -f
+  papertrail something
+  papertrail 1.2.3 Failure
+  papertrail -s ns1 "connection refused"
+  papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
+  papertrail -f -g Production "(nginx OR pgsql) -accepted"
+  papertrail -g Production --min-time 'yesterday at noon' --max-time 'today at 4am'
+```
+
 
 ## Systems & Groups
 
-In addition to tail and search with the `papertrail` executable, the gem
-includes other executables to add or remove a system, create a new group, and
-add a system to a group. Use the `--help` switch for any of the following
-executables for detailed usage and examples: `papertrail-add-system`,
+The gem includes other executables to add or remove a system, create a new
+group, and add a system to a group: `papertrail-add-system`,
 `papertrail-remove-system`, `papertrail-add-group`, `papertrail-join-group`
+Pass the `--help` switch to any of those executables for detailed usage and
+examples.
 
 
 ## Contribute
@@ -165,7 +173,9 @@ executables for detailed usage and examples: `papertrail-add-system`,
 [colortailrc]: https://github.com/papertrail/papertrail-cli/wiki/colortailrc
 [MultiTail]: http://www.vanheusden.com/multitail/index.html
 [ansi]: http://en.wikipedia.org/wiki/ANSI_escape_code#Colors
-[systems and groups]: #systems--groups
+[tail]: #usage--examples
+[systems-groups]: #systems--groups
 [colors]: #colors
 [bash-double-dash]: http://unix.stackexchange.com/questions/11376/what-does-double-dash-mean
 [issues]: http://github.com/papertrail/papertrail-cli/issues
+[full-usage]: #full-usage
