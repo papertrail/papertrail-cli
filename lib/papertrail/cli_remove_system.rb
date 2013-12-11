@@ -9,11 +9,6 @@ module Papertrail
     include Papertrail::CliHelpers
 
     def run
-      # Let it slide if we have invalid JSON
-      if JSON.respond_to?(:default_options)
-        JSON.default_options[:check_utf8] = false
-      end
-
       options = {
         :configfile => nil,
       }
@@ -63,8 +58,8 @@ module Papertrail
     def usage
       <<-EOF
 
-  Usage: 
-    papertrail-remove-system [-s system] [-c papertrail.yml] 
+  Usage:
+    papertrail-remove-system [-s system] [-c papertrail.yml]
 
   Example:
     papertrail-remove-system -s mysystemname
