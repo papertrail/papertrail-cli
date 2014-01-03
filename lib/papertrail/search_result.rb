@@ -12,6 +12,14 @@ module Papertrail
       end
     end
 
+    def reached_end?
+      @data['reached_end']
+    end
+
+    def max_time_at
+      @max_time_at ||= Time.parse(@data['max_time_at'])
+    end
+
     def max_id
       @data['max_id']
     end

@@ -1,20 +1,37 @@
 require 'optparse'
 require 'yaml'
+require 'chronic'
 
 require 'papertrail/connection'
+require 'papertrail/cli_helpers'
 
 module Papertrail
   class Cli
-    def run
-      options = {
+    include Papertrail::CliHelpers
+
+    attr_reader :options, :query_options, :connection
+
+    def initialize
+      @options = {
         :configfile => nil,
         :delay  => 2,
         :follow => false
       }
 
+      @query_options = {}
+    end
+
+    def run
+      # Let it slide if we have invalid JSON
+      if JSON.respond_to?(:default_options)
+        JSON.default_options[:check_utf8] = false
+      end
+
       if configfile = find_configfile
         configfile_options = load_configfile(configfile)
         options.merge!(configfile_options)
+      else
+        abort 'Config file not found. Try: echo "token: abc123" > ~/.papertrail.yml"'
       end
 
       OptionParser.new do |opts|
@@ -42,6 +59,12 @@ module Papertrail
         opts.on("-j", "--json", "Output raw json data") do |v|
           options[:json] = true
         end
+        opts.on("--min-time MIN", "Earliest time to search from.") do |v|
+          options[:min_time] = v
+        end
+        opts.on("--max-time MAX", "Latest time to search from.") do |v|
+          options[:max_time] = v
+        end
 
         opts.separator usage
       end.parse!
@@ -51,9 +74,7 @@ module Papertrail
         options.merge!(configfile_options)
       end
 
-      connection = Papertrail::Connection.new(options)
-
-      query_options = {}
+      @connection = Papertrail::Connection.new(options)
 
       if options[:system]
         query_options[:system_id] = connection.find_id_for_source(options[:system])
@@ -69,71 +90,87 @@ module Papertrail
         end
       end
 
-      search_query = connection.query(ARGV[0], query_options)
-
       if options[:follow]
+        search_query = connection.query(ARGV[0], query_options)
+
         loop do
-          if options[:json]
-            $stdout.puts search_query.search.data.to_json
-          else
-            search_query.search.events.each do |event|
-              $stdout.puts event
-            end
-          end
-          $stdout.flush
+          display_results(search_query.search)
           sleep options[:delay]
         end
+      elsif options[:min_time]
+        query_time_range
       else
-        if options[:json]
-          $stdout.puts search_query.search.data.to_json
-        else
-          search_query.search.events.each do |event|
+        set_min_max_time!(options, query_options)
+        search_query = connection.query(ARGV[0], query_options)
+        display_results(search_query.search)
+      end
+    end
+
+    def query_time_range
+      min_time = parse_time(options[:min_time])
+
+      if options[:max_time]
+        max_time = parse_time(options[:max_time])
+      end
+    end
+
+      search_results = connection.query(ARGV[0], query_options.merge(:min_time => min_time.to_i, :tail => false)).search
+
+      loop do
+        search_results.events.each do |event|
+          # If we've found an event beyond what we were looking for, we're done
+          if max_time && event.received_at > max_time
+            break
+          end
+
+          if options[:json]
+            $stdout.puts event.data.to_json
+          else
             $stdout.puts event
           end
         end
+
+        # If we've found the end of what we're looking for, we're done
+        if max_time && search_results.max_time_at > max_time
+          break
+        end
+
+        if search_results.reached_end?
+          break
+        end
+
+        # Perform the next search
+        search_results = connection.query(ARGV[0], query_options.merge(:min_id => search_results.max_id, :tail => false)).search
       end
     end
 
-    def find_configfile
-      if File.exists?(path = File.expand_path('.papertrail.yml'))
-        return path
-      end
-      if File.exists?(path = File.expand_path('~/.papertrail.yml'))
-        return path
-      end
-
-      abort 'Config file not found. Try: echo "token: abc123" > ~/.papertrail.yml"'
-    end
-
-    def load_configfile(file_path)
-      symbolize_keys(YAML.load_file(file_path))
-    end
-
-    def symbolize_keys(hash)
-      new_hash = {}
-      hash.each do |(key, value)|
-        new_hash[(key.to_sym rescue key) || key] = value
+    def display_results(results)
+      if options[:json]
+        $stdout.puts results.data.to_json
+      else
+        results.events.each do |event|
+          $stdout.puts event
+        end
       end
 
-      new_hash
+      $stdout.flush
     end
+
 
     def usage
       <<-EOF
 
   Usage: 
-    papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [query]
+    papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [--min-time mintime] [--max-time maxtime] [query]
 
   Examples:
-    $ papertrail -f
-    $ papertrail something
-    $ papertrail 1.2.3 Failure
-    $ papertrail -s ns1 "connection refused"
-    $ papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
-    $ papertrail -f -g Production "(nginx OR pgsql) -accepted"
-
-  Setup:
-    $ echo "token: 123456789012345678901234567890ab" > ~/.papertrail.yml
+    papertrail -f
+    papertrail something
+    papertrail 1.2.3 Failure
+    papertrail -s ns1 "connection refused"
+    papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
+    papertrail -f -g Production "(nginx OR pgsql) -accepted"
+    papertrail -g Production --min-time 'yesterday at noon' --max-time 'today at 4am'
 
   More: https://papertrailapp.com/
 
