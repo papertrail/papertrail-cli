@@ -22,11 +22,6 @@ module Papertrail
     end
 
     def run
-      # Let it slide if we have invalid JSON
-      if JSON.respond_to?(:default_options)
-        JSON.default_options[:check_utf8] = false
-      end
-
       if configfile = find_configfile
         configfile_options = load_configfile(configfile)
         options.merge!(configfile_options)
@@ -157,7 +152,7 @@ module Papertrail
     def usage
       <<-EOF
 
-  Usage: 
+  Usage:
     papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [--min-time mintime] [--max-time maxtime] [query]
 
   Examples:

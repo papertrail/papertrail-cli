@@ -1,10 +1,7 @@
-require 'addressable/uri'
-require 'faraday'
+require 'forwardable'
 require 'openssl'
-require 'faraday_middleware'
-require 'yajl/json_gem'
-require 'zlib'
 
+require 'papertrail/http_client'
 require 'papertrail/search_query'
 
 module Papertrail
@@ -32,16 +29,11 @@ module Papertrail
         ssl_options[:ca_file] = '/etc/ssl/certs/ca-certificates.crt'
       end
 
-      @connection = Faraday::Connection.new(:url => 'https://papertrailapp.com/api/v1', :ssl => ssl_options) do |builder|
-        builder.use Faraday::Request::UrlEncoded
-        builder.adapter Faraday.default_adapter
-        builder.use Faraday::Response::RaiseError
-        builder.use FaradayMiddleware::ParseJson, :content_type => /\bjson$/
-      end.tap do |conn|
+      @connection = Papertrail::HttpClient.new(ssl_options).tap do |conn|
         if options[:username] && options[:password]
           conn.basic_auth(options[:username], options[:password])
         else
-          conn.headers['X-Papertrail-Token'] = options[:token]
+          conn.token_auth(options[:token])
         end
       end
     end
@@ -125,8 +117,7 @@ module Papertrail
         request[:destination_port] = options[:destination_port]
       end
 
-      response = @connection.post("systems.json", request)
-      raise response.body.inspect unless response.success?
+      @connection.post("systems.json", request)
     end
 
     def unregister_source(name)

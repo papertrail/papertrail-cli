@@ -49,11 +49,7 @@ Gem::Specification.new do |s|
 
   ## List your runtime dependencies here. Runtime dependencies are those
   ## that are needed for an end user to actually USE your code.
-  s.add_dependency('addressable')
-  s.add_dependency('yajl-ruby')
   s.add_dependency('chronic')
-  s.add_dependency('faraday', [ '>= 0.6', '< 0.9' ])
-  s.add_dependency('faraday_middleware', [ '~> 0.8.4' ])
 
   ## List your development dependencies here. Development dependencies are
   ## those that are only needed during development
@@ -83,6 +79,8 @@ Gem::Specification.new do |s|
     lib/papertrail/cli_remove_system.rb
     lib/papertrail/connection.rb
     lib/papertrail/event.rb
+    lib/papertrail/http_client.rb
+    lib/papertrail/okjson.rb
     lib/papertrail/search_query.rb
     lib/papertrail/search_result.rb
     papertrail.gemspec

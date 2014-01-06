@@ -11,11 +11,6 @@ module Papertrail
     attr_reader :program_name
 
     def run
-      # Let it slide if we have invalid JSON
-      if JSON.respond_to?(:default_options)
-        JSON.default_options[:check_utf8] = false
-      end
-
       options = {
         :configfile => nil,
       }
