@@ -27,7 +27,13 @@ invoke the corresponding Papertrail [HTTP API] call.
     $ echo "token: 123456789012345678901234567890ab" > ~/.papertrail.yml
     $ papertrail
 
-Retrieve token from Papertrail [User Profile].
+Retrieve the token from Papertrail [User Profile].
+
+The API token can also be passed in the `PAPERTRAIL_API_TOKEN`
+environment variable instead of a configuration file. Example:
+
+    $ export PAPERTRAIL_API_TOKEN='abc123'
+    $ papertrail
 
 
 ## Installation
