@@ -117,6 +117,15 @@ invoke `pt` with optional search operators:
 
 Add the function line to your `~/.bashrc`.
 
+NOTE: On Mac OSX `~/.bashrc` you might have to format the function like this and change $_ to $* for it to work:
+```
+    function pt() 
+    { 
+	    echo "$* is the search"
+	    papertrail -f -d 5 $* | colortail -g papertrail 
+    }
+```
+
 ### Advanced
 
 For complete control, pipe through anything capable of inserting ANSI
