@@ -112,7 +112,7 @@ Save [colortailrc] as `~/.colortailrc` and edit it to enable:
 If you're using bash, create a function that accepts arguments, then
 invoke `pt` with optional search operators:
 
-    $ function pt() { papertrail -f -d 5 $_ | colortail -g papertrail }
+    $ function pt() { papertrail -f -d 5 $* | colortail -g papertrail; }
     $ pt 1.2.3 Failure
 
 Add the function line to your `~/.bashrc`.
