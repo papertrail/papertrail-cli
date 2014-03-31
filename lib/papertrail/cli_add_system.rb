@@ -102,6 +102,13 @@ module Papertrail
     rescue OptionParser::ParseError => e
       error(e, true)
       exit 1
+    rescue Net::HTTPServerException => e
+      if e.response && e.response.body
+        puts "Error: #{e.response.body}\n"
+      end
+
+      puts e
+      exit 1
     end
 
     def error(message, try_help = false)
