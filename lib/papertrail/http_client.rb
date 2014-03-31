@@ -98,7 +98,6 @@ module Papertrail
         when Net::HTTPSuccess
           Papertrail::HttpResponse.new(response)
         else
-          puts "Error: #{response.body}\n"
           response.error!
       end
     end
