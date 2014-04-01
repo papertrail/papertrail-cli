@@ -13,7 +13,7 @@ module Papertrail
     end
 
     def body
-      @body ||= Papertrail::OkJson.decode(__getobj__.body)
+      @body ||= Papertrail::OkJson.decode(__getobj__.body.dup.force_encoding('UTF-8'))
     end
 
   end
