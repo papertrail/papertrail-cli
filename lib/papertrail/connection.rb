@@ -49,14 +49,29 @@ module Papertrail
       find_id_for_item(response.body, name)
     end
 
-    def find_id_for_item(items, name_wanted)
+    def find_search(name)
+      response = @connection.get('searches.json')
+
+      find_item_by_name(response.body, name)
+    end
+
+    def find_item_by_name(items, name_wanted)
       items.each do |item|
-        return item['id'] if item['name'] == name_wanted
+        return item if item['name'] == name_wanted
       end
 
       items.each do |item|
-        return item['id'] if item['name'] =~ /#{Regexp.escape(name_wanted)}/i
+        return item if item['name'] =~ /#{Regexp.escape(name_wanted)}/i
       end
+      return nil
+    end
+
+    def find_id_for_item(items, name_wanted)
+      item = find_item_by_name(items, name_wanted)
+      if item
+        return item['id']
+      end
+
       return nil
     end
 
