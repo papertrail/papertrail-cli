@@ -111,7 +111,7 @@ module Papertrail
         query_time_range
       else
         set_min_max_time!(options, query_options)
-        search_query = connection.query(query, query_options)
+        search_query = connection.query(@query, query_options)
         display_results(search_query.search)
       end
     end
@@ -149,7 +149,7 @@ module Papertrail
         end
 
         # Perform the next search
-        search_results = connection.query(ARGV[0], query_options.merge(:min_id => search_results.max_id, :tail => false)).search
+        search_results = connection.query(@query, query_options.merge(:min_id => search_results.max_id, :tail => false)).search
       end
     end
 
@@ -170,7 +170,8 @@ module Papertrail
       <<-EOF
 
   Usage:
-    papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [--min-time mintime] [--max-time maxtime] [query]
+    papertrail [-f] [-s system] [-g group] [-S search] [-d seconds] \
+      [-c papertrail.yml] [-j] [--min-time time] [--max-time time] [query]
 
   Examples:
     papertrail -f
