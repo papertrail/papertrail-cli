@@ -89,7 +89,7 @@ module Papertrail
       end
 
       if options[:search]
-        search = connection.find_search(options[:search])
+        search = connection.find_search(options[:search], query_options[:group_id])
         unless search
           abort "Search \"#{options[:search]}\" not found"
         end
