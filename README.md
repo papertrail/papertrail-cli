@@ -154,17 +154,25 @@ example, to search for `-whatever`, run:
 
     papertrail -- -whatever
 
-### Quoted strings
+### Quoted phrases
 
-To use quoted strings in a search, wrap the string in single-quotes and
-double-quotes. The shell parses and strips the outer quotes, providing
-Papertrail with a string including the inner quotes. For example:
+Because the Unix shell parses and strips one set of quotes around a
+phrase, to search for a phrase, wrap the string in both single-quotes
+and double-quotes. For example:
 
     papertrail -f '"Connection reset by peer"'
 
-Many phrases are unique enough that searching for the un-quoted words
-yields the same results as searching for the quoted phrase. As a result,
-quoting strings twice is often not actually necessary.
+Use one set of double-quotes and one set of single-quotes. The order
+does not matter as long as the pairs are consistent.
+
+Note that many phrases are unique enough that searching for the
+words yields the same results as searching for the quoted phrase. As a
+result, quoting strings twice is often not actually necessary. For
+example, these two searches are likely to yield the same log messages,
+even though one is for 4 words (AND) while the other is for a phrase:
+
+    papertrail -f Connection reset by peer
+    papertrail -f '"Connection reset by peer"'
 
 ## Add/Remove Systems, Create Group, Join Group
 
