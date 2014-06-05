@@ -55,11 +55,7 @@ module Papertrail
       puts usage
       exit 1
     rescue Net::HTTPServerException => e
-      if e.response && e.response.body
-        puts "Error: #{e.response.body}\n"
-      end
-
-      puts e
+      output_http_error(e)
       exit 1
     end
 
