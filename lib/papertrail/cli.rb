@@ -110,7 +110,6 @@ module Papertrail
       if options[:max_time]
         max_time = parse_time(options[:max_time])
       end
-    end
 
       search_results = connection.query(ARGV[0], query_options.merge(:min_time => min_time.to_i, :tail => false)).search
 
