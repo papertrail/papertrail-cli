@@ -27,7 +27,13 @@ invoke the corresponding Papertrail [HTTP API] call.
     $ echo "token: 123456789012345678901234567890ab" > ~/.papertrail.yml
     $ papertrail
 
-Retrieve token from Papertrail [User Profile].
+Retrieve the token from Papertrail [User Profile].
+
+The API token can also be passed in the `PAPERTRAIL_API_TOKEN`
+environment variable instead of a configuration file. Example:
+
+    $ export PAPERTRAIL_API_TOKEN='abc123'
+    $ papertrail
 
 
 ## Installation
@@ -106,7 +112,7 @@ Save [colortailrc] as `~/.colortailrc` and edit it to enable:
 If you're using bash, create a function that accepts arguments, then
 invoke `pt` with optional search operators:
 
-    $ function pt() { papertrail -f -d 5 $_ | colortail -g papertrail }
+    $ function pt() { papertrail -f -d 5 $* | colortail -g papertrail; }
     $ pt 1.2.3 Failure
 
 Add the function line to your `~/.bashrc`.
@@ -148,6 +154,25 @@ example, to search for `-whatever`, run:
 
     papertrail -- -whatever
 
+### Quoted phrases
+
+Because the Unix shell parses and strips one set of quotes around a
+phrase, to search for a phrase, wrap the string in both single-quotes
+and double-quotes. For example:
+
+    papertrail -f '"Connection reset by peer"'
+
+Use one set of double-quotes and one set of single-quotes. The order
+does not matter as long as the pairs are consistent.
+
+Note that many phrases are unique enough that searching for the
+words yields the same results as searching for the quoted phrase. As a
+result, quoting strings twice is often not actually necessary. For
+example, these two searches are likely to yield the same log messages,
+even though one is for 4 words (AND) while the other is for a phrase:
+
+    papertrail -f Connection reset by peer
+    papertrail -f '"Connection reset by peer"'
 
 ## Add/Remove Systems, Create Group, Join Group
 

@@ -9,13 +9,9 @@ module Papertrail
     include Papertrail::CliHelpers
 
     def run
-      # Let it slide if we have invalid JSON
-      if JSON.respond_to?(:default_options)
-        JSON.default_options[:check_utf8] = false
-      end
-
       options = {
         :configfile => nil,
+        :token => ENV['PAPERTRAIL_API_TOKEN'],
       }
 
       if configfile = find_configfile
@@ -67,8 +63,8 @@ module Papertrail
     def usage
       <<-EOF
 
-  Usage: 
-    papertrail-join-group [-s system] [-g group] [-c papertrail.yml] 
+  Usage:
+    papertrail-join-group [-s system] [-g group] [-c papertrail.yml]
 
   Example:
     papertrail-join-group -s mymachine -g mygroup
