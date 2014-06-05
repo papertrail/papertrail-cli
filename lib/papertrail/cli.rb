@@ -26,8 +26,6 @@ module Papertrail
       if configfile = find_configfile
         configfile_options = load_configfile(configfile)
         options.merge!(configfile_options)
-      else
-        abort 'Config file not found. Try: echo "token: abc123" > ~/.papertrail.yml"'
       end
 
       OptionParser.new do |opts|
@@ -68,6 +66,10 @@ module Papertrail
       if options[:configfile]
         configfile_options = load_configfile(options[:configfile])
         options.merge!(configfile_options)
+      end
+      
+      unless options[:token]
+        abort 'Authentication token not found. Set config file "token" attribute or PAPERTRAIL_API_TOKEN.'
       end
 
       @connection = Papertrail::Connection.new(options)
