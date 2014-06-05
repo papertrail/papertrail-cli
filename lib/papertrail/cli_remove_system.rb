@@ -11,6 +11,7 @@ module Papertrail
     def run
       options = {
         :configfile => nil,
+        :token => ENV['PAPERTRAIL_API_TOKEN'],
       }
 
       if configfile = find_configfile

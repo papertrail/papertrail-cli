@@ -15,7 +15,8 @@ module Papertrail
       @options = {
         :configfile => nil,
         :delay  => 2,
-        :follow => false
+        :follow => false,
+        :token  => ENV['PAPERTRAIL_API_TOKEN']
       }
 
       @query_options = {}
