@@ -62,6 +62,9 @@ module Papertrail
       puts "Error: #{e}"
       puts usage
       exit 1
+    rescue Net::HTTPServerException => e
+      output_http_error(e)
+      exit 1
     end
 
     def usage

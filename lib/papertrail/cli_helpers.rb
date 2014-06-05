@@ -35,5 +35,12 @@ module Papertrail
         raise(ArgumentError, "Could not parse time string '#{tstring}'")
     end
 
+    def output_http_error(e)
+      if e.response && e.response.body
+        puts "Error: #{e.response.body}\n\n"
+      end
+
+      puts e
+    end
   end
 end

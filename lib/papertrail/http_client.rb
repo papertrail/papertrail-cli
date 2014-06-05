@@ -5,7 +5,7 @@ require 'papertrail/okjson'
 
 module Papertrail
 
-  # Used because Net::HTTPOK in Ruby 1.8 hasn't method body=
+  # Used because Net::HTTPOK in Ruby 1.8 has no body= method
   class HttpResponse < SimpleDelegator
 
     def initialize(response)

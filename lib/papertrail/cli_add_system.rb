@@ -103,6 +103,9 @@ module Papertrail
     rescue OptionParser::ParseError => e
       error(e, true)
       exit 1
+    rescue Net::HTTPServerException => e
+      output_http_error(e)
+      exit 1
     end
 
     def error(message, try_help = false)
