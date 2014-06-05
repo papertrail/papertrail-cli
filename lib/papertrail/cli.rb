@@ -20,6 +20,7 @@ module Papertrail
       }
 
       @query_options = {}
+      @query = nil
     end
 
     def run
@@ -49,6 +50,9 @@ module Papertrail
         end
         opts.on("-g", "--group GROUP", "Group to search") do |v|
           options[:group] = v
+        end
+        opts.on("-S", "--search SEARCH", "Saved search to search") do |v|
+          options[:search] = v
         end
         opts.on("-j", "--json", "Output raw json data") do |v|
           options[:json] = true
@@ -88,8 +92,20 @@ module Papertrail
         end
       end
 
+      if options[:search]
+        search = connection.find_search(options[:search], query_options[:group_id])
+        unless search
+          abort "Search \"#{options[:search]}\" not found"
+        end
+
+        query_options[:group_id] ||= search['group_id']
+        @query = search['query']
+      end
+
+      @query ||= ARGV[0]
+
       if options[:follow]
-        search_query = connection.query(ARGV[0], query_options)
+        search_query = connection.query(@query, query_options)
 
         loop do
           display_results(search_query.search)
@@ -99,7 +115,7 @@ module Papertrail
         query_time_range
       else
         set_min_max_time!(options, query_options)
-        search_query = connection.query(ARGV[0], query_options)
+        search_query = connection.query(@query, query_options)
         display_results(search_query.search)
       end
     end
@@ -111,7 +127,7 @@ module Papertrail
         max_time = parse_time(options[:max_time])
       end
 
-      search_results = connection.query(ARGV[0], query_options.merge(:min_time => min_time.to_i, :tail => false)).search
+      search_results = connection.query(@query, query_options.merge(:min_time => min_time.to_i, :tail => false)).search
 
       loop do
         search_results.events.each do |event|
@@ -137,7 +153,7 @@ module Papertrail
         end
 
         # Perform the next search
-        search_results = connection.query(ARGV[0], query_options.merge(:min_id => search_results.max_id, :tail => false)).search
+        search_results = connection.query(@query, query_options.merge(:min_id => search_results.max_id, :tail => false)).search
       end
     end
 
@@ -158,7 +174,8 @@ module Papertrail
       <<-EOF
 
   Usage:
-    papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [--min-time mintime] [--max-time maxtime] [query]
+    papertrail [-f] [-s system] [-g group] [-S search] [-d seconds] \
+      [-c papertrail.yml] [-j] [--min-time time] [--max-time time] [query]
 
   Examples:
     papertrail -f
