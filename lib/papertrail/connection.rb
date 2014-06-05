@@ -52,7 +52,7 @@ module Papertrail
     def find_search(name, group_id = nil)
       response = @connection.get('searches.json')
 
-      candidates = find_item_by_name(response.body, name)
+      candidates = find_items_by_name(response.body, name)
       return nil if candidates.empty?
 
       candidates.each do |item|
@@ -76,6 +76,10 @@ module Papertrail
       end
       
       results
+    end
+
+    def find_item_by_name(items, name_wanted)
+      find_items_by_name(items, name_wanted).first
     end
 
     def find_id_for_item(items, name_wanted)
