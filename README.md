@@ -154,6 +154,20 @@ example, to search for `-whatever`, run:
 
     papertrail -- -whatever
 
+### Time zones
+
+Times are interpreted in the client itself, which means it uses the time
+zone that your local PC is set to. Log timestamps are also output in the
+same local PC time zone.
+
+When providing absolute times, append `UTC` to provide the input time in
+UTC. For example, regardless of the local PC time zone, this will show
+messages beginning from 1 PM UTC:
+
+    papertrail --min-time "2014-04-27 13:00:00 UTC"
+
+Output timestamps will still be in the local PC time zone.
+
 ### Quoted phrases
 
 Because the Unix shell parses and strips one set of quotes around a
