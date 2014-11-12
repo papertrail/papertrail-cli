@@ -4,6 +4,7 @@ require 'chronic'
 
 require 'papertrail/connection'
 require 'papertrail/cli_helpers'
+require 'papertrail/okjson'
 
 module Papertrail
   class Cli
@@ -137,7 +138,7 @@ module Papertrail
           end
 
           if options[:json]
-            $stdout.puts event.data.to_json
+            $stdout.puts Papertrail::OkJson.encode(event.data)
           else
             $stdout.puts event
           end
@@ -159,7 +160,7 @@ module Papertrail
 
     def display_results(results)
       if options[:json]
-        $stdout.puts results.data.to_json
+        $stdout.puts Papertrail::OkJson.encode(results.data)
       else
         results.events.each do |event|
           $stdout.puts event
