@@ -74,7 +74,7 @@ module Papertrail
       items.each do |item|
         results << item if item['name'] =~ /#{Regexp.escape(name_wanted)}/i
       end
-      
+
       results
     end
 
@@ -159,6 +159,65 @@ module Papertrail
 
     def query(query = nil, options = {})
       Papertrail::SearchQuery.new(self, query, options)
+    end
+
+    def each_event(query_term = nil, options = {}, &block)
+      # If there was no query but there were options, shuffle around
+      # the parameters
+      if query_term.is_a?(Hash)
+        options, query_term = query_term, nil
+      end
+
+      # Remove all of the options that shouldn't be in each query
+      options  = options.dup
+      min_id   = options.delete(:min_id)
+      max_id   = options.delete(:max_id)
+      min_time = options.delete(:min_time)
+      max_time = options.delete(:max_time)
+
+      # Figure out where to start querying
+      if min_id
+        search_results = query(query_term, options.merge(:min_id => min_id, :tail => false)).search
+      elsif min_time
+        search_results = query(query_term, options.merge(:min_time => min_time.to_i, :tail => false)).search
+      else
+        raise ArgumentError, "Either :min_id or :min_time must be specified"
+      end
+
+      # Start processing events
+      loop do
+        search_results.events.each do |event|
+          # If we've found an event beyond what we were looking for, we're done
+          if max_time && event.received_at > max_time
+            break
+          end
+
+          if max_id && event.id > max_id
+            break
+          end
+
+          block.call(event)
+        end
+
+        # If we've found the end of what we're looking for, we're done
+        if max_time && search_results.max_time_at > max_time
+          break
+        end
+
+        if max_id && search_results.max_id > max_id
+          break
+        end
+
+        # If we've reached the most current log message, we're done
+        if search_results.reached_end?
+          break
+        end
+
+        # Perform the next search
+        search_results = query(query_term, options.merge(:min_id => search_results.max_id, :tail => false)).search
+      end
+
+      nil
     end
   end
 end

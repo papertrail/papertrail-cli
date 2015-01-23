@@ -128,33 +128,12 @@ module Papertrail
         max_time = parse_time(options[:max_time])
       end
 
-      search_results = connection.query(@query, query_options.merge(:min_time => min_time.to_i, :tail => false)).search
-
-      loop do
-        search_results.events.each do |event|
-          # If we've found an event beyond what we were looking for, we're done
-          if max_time && event.received_at > max_time
-            break
-          end
-
-          if options[:json]
-            $stdout.puts Papertrail::OkJson.encode(event.data)
-          else
-            $stdout.puts event
-          end
+      connection.each_event(@query, query_options.merge(:min_time => min_time, :max_time => max_time)) do |event|
+        if options[:json]
+          $stdout.puts Papertrail::OkJson.encode(event.data)
+        else
+          $stdout.puts event
         end
-
-        # If we've found the end of what we're looking for, we're done
-        if max_time && search_results.max_time_at > max_time
-          break
-        end
-
-        if search_results.reached_end?
-          break
-        end
-
-        # Perform the next search
-        search_results = connection.query(@query, query_options.merge(:min_id => search_results.max_id, :tail => false)).search
       end
     end
 
