@@ -99,13 +99,13 @@ ANSI color codes are retained, so log messages which are already colorized
 will automatically render in color on ANSI-capable terminals.
 
 To manually colorize monochrome logs, pipe through [colortail] or 
-[MultiTail]. We recommend `colortail``:
+[MultiTail]. To use `colortail`:
 
     $ sudo gem install colortail
 
 Save [colortailrc] as `~/.colortailrc` and edit it to enable:
 
-    $ papertrail -f -d 5 | colortail -g papertrail
+    $ papertrail -f | colortail -g papertrail
 
 ### Shorthand
 
@@ -225,5 +225,5 @@ to your enhancement.
 [RubyGems]: https://rubygems.org/gems/papertrail-cli
 [colortail]: http://rubydoc.info/gems/colortail
 [colortailrc]: https://github.com/papertrail/papertrail-cli/wiki/colortailrc
-[MultiTail]: http://www.vanheusden.com/multitail/index.html
+[MultiTail]: http://www.vanheusden.com/multitail/
 [escape characters]: http://en.wikipedia.org/wiki/ANSI_escape_code#Colors
