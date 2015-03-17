@@ -9,15 +9,15 @@ Supports optional Boolean search queries and polling for new events
     $ papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
 
 Output is line-buffered so it can be fed into a pipe, like for grep.
-ANSI color codes are rendered in color on suitable terminals; see below for 
+ANSI color codes are rendered in color on suitable terminals; see below for
 additional colorization options.
 
 The [Connection] class can be used by other apps to perform one-off
 API searches or follow (tail) events matching a given query. Interface
 may change.
 
-Also includes `papertrail-add-system`, `papertrail-remove-system`, 
-`papertrail-add-group`, and `papertrail-join-group` binaries, which 
+Also includes `papertrail-add-system`, `papertrail-remove-system`,
+`papertrail-add-group`, and `papertrail-join-group` binaries, which
 invoke the corresponding Papertrail [HTTP API] call.
 
 
@@ -75,7 +75,7 @@ You may want to alias "pt" to "papertrail", like:
         --max-time MAX                   Latest time to search from.
 
 
-    Usage: 
+    Usage:
       papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [--min-time mintime] [--max-time maxtime] [query]
 
     Examples:
@@ -91,14 +91,37 @@ You may want to alias "pt" to "papertrail", like:
       papertrail-add-group, papertrail-leave-group. Run with --help or see README.
 
     More: http://papertrailapp.com/
-  
+
+
+### Count, pivot, and summarize
+
+To count the number of matches, pipe to `wc -l`. For example, count how
+many logs contained `Failure` in the last minute:
+
+    $ papertrail --min-time '1 minute ago' Failure | wc -l
+    42
+
+Output only the program/file name (which is output as field 5):
+
+    $ papertrail --min-time '1 minute ago' | cut -f 5 -d ' '
+    passenger.log:
+    sshd:
+    app/web.2:
+
+Count by source/system name (field 4):
+
+    $ papertrail --min-time '1 minute ago' | cut -f 4 -d ' ' | sort | uniq -c
+      98 www42
+      39 acmedb-core01
+      2 fastly
+
 
 ### Colors
 
-ANSI color codes are retained, so log messages which are already colorized 
+ANSI color codes are retained, so log messages which are already colorized
 will automatically render in color on ANSI-capable terminals.
 
-To manually colorize monochrome logs, pipe through [colortail] or 
+To manually colorize monochrome logs, pipe through [colortail] or
 [MultiTail]. To use `colortail`:
 
     $ sudo gem install colortail
@@ -131,22 +154,22 @@ and can be any ANSI [escape characters].
 
 ### UTF-8 (non-English searches)
 
-When searching in a language other than English, if you get no matches, you 
-may need to explicitly tell Ruby to use UTF-8. Ruby 1.9 honors the `LANG` 
+When searching in a language other than English, if you get no matches, you
+may need to explicitly tell Ruby to use UTF-8. Ruby 1.9 honors the `LANG`
 shell environment variable, and your shell may not set it to `UTF-8`.
 
 To test, try:
 
     ruby -E:UTF-8 -S papertrail your_search
 
-If that works, add `-E:UTF-8` to the `RUBYOPT` variable to set the encoding 
+If that works, add `-E:UTF-8` to the `RUBYOPT` variable to set the encoding
 at invocation. For example, to persist that in a `.bashrc`:
 
     export RUBYOPT="-E:UTF-8"
 
 ### Negation-only queries
 
-Unix shells handle arguments beginning with hyphens (`-`) differently 
+Unix shells handle arguments beginning with hyphens (`-`) differently
 ([why](http://unix.stackexchange.com/questions/11376/what-does-double-dash-mean)).
 Usually this is moot because most searches start with a positive match.
 To search only for log messages without a given string, use `--`. For
@@ -190,13 +213,13 @@ even though one is for 4 words (AND) while the other is for a phrase:
 
 ## Add/Remove Systems, Create Group, Join Group
 
-In addition to tail and search with the `papertrail` binary, the gem includes 
-4 other binaries which wrap other parts of Papertrail's [HTTP API] to explicitly 
+In addition to tail and search with the `papertrail` binary, the gem includes
+4 other binaries which wrap other parts of Papertrail's [HTTP API] to explicitly
 add or remove a system, to create a new group, and to join a system to a group.
 
 In most cases, configuration is automatic and these are not not necessary.
 
-To see usage, run any of these commands with `--help`: `papertrail-add-system`, 
+To see usage, run any of these commands with `--help`: `papertrail-add-system`,
 `papertrail-remove-system`, `papertrail-add-group`, `papertrail-join-group`.
 
 
