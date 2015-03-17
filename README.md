@@ -115,6 +115,8 @@ Count by source/system name (field 4):
       39 acmedb-core01
       2 fastly
 
+For sum, mean, and statistics, see
+[datamash](http://www.gnu.org/software/datamash/).
 
 ### Colors
 
