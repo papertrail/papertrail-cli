@@ -70,6 +70,7 @@ You may want to alias "pt" to "papertrail", like:
         -c, --configfile PATH            Path to config (~/.papertrail.yml)
         -s, --system SYSTEM              System to search
         -g, --group GROUP                Group to search
+        -S, --search SEARCH              Saved search to search
         -j, --json                       Output raw json data
         --min-time MIN                   Earliest time to search from.
         --max-time MAX                   Latest time to search from.
@@ -85,6 +86,7 @@ You may want to alias "pt" to "papertrail", like:
       papertrail -s ns1 "connection refused"
       papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
       papertrail -f -g Production "(nginx OR pgsql) -accepted"
+      papertrail -S "Critical errors"
       papertrail -g Production --min-time 'yesterday at noon' --max-time 'today at 4am'
 
     Includes 4 binaries to change Papertrail settings: papertrail-add-system, papertrail-remove-system,
