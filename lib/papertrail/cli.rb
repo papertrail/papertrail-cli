@@ -55,7 +55,7 @@ module Papertrail
         opts.on("-S", "--search SEARCH", "Saved search to search") do |v|
           options[:search] = v
         end
-        opts.on("-j", "--json", "Output raw json data") do |v|
+        opts.on("-j", "--json", "Output raw JSON data") do |v|
           options[:json] = true
         end
         opts.on("--min-time MIN", "Earliest time to search from.") do |v|
@@ -72,7 +72,7 @@ module Papertrail
         configfile_options = load_configfile(options[:configfile])
         options.merge!(configfile_options)
       end
-      
+
       unless options[:token]
         abort 'Authentication token not found. Set config file "token" attribute or PAPERTRAIL_API_TOKEN.'
       end
