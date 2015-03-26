@@ -42,19 +42,48 @@ module Papertrail
       if params.size > 0
         path = "#{path}?#{build_nested_query(params)}"
       end
-      on_complete(https.get(request_uri(path), @headers))
+      attempts = 0
+      begin
+        on_complete(https.get(request_uri(path), @headers))
+      rescue SystemCallError => e
+        sleep 5.0
+        attempts += 1
+        retry if (e.class.name.start_with?('Errno::') and attempts < 3)
+        raise e
+      end
     end
 
     def put(path, params)
-      on_complete(https.put(request_uri(path), build_nested_query(params), @headers))
+      attempts = 0
+      begin
+        on_complete(https.put(request_uri(path), build_nested_query(params), @headers))
+      rescue SystemCallError => e
+        attempts += 1
+        retry if (e.class.name.start_with?('Errno::') and attempts < 3)
+        raise e
+      end
     end
 
     def post(path, params)
-      on_complete(https.post(request_uri(path), build_nested_query(params), @headers))
+      attempts = 0
+      begin
+        on_complete(https.post(request_uri(path), build_nested_query(params), @headers))
+      rescue SystemCallError => e
+        attempts += 1
+        retry if (e.class.name.start_with?('Errno::') and attempts < 3)
+        raise e
+      end
     end
 
     def delete(path)
-      on_complete(https.delete(request_uri(path), @headers))
+      attempts = 0
+      begin
+        on_complete(https.delete(request_uri(path), @headers))
+      rescue SystemCallError => e
+        attempts += 1
+        retry if (e.class.name.start_with?('Errno::') and attempts < 3)
+        raise e
+      end
     end
 
     private
