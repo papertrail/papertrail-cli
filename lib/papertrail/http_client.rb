@@ -45,10 +45,10 @@ module Papertrail
       attempts = 0
       begin
         on_complete(https.get(request_uri(path), @headers))
-      rescue SystemCallError, StandardError => e
+      rescue SystemCallError, Net::HTTPFatalError => e
         sleep 5.0
         attempts += 1
-        retry if (e.class.name.start_with?('Errno::', 'Net::') and attempts < 3)
+        retry if (attempts < 3)
         raise e
       end
     end
@@ -57,9 +57,9 @@ module Papertrail
       attempts = 0
       begin
         on_complete(https.put(request_uri(path), build_nested_query(params), @headers))
-      rescue SystemCallError, StandardError => e
+      rescue SystemCallError, Net::HTTPFatalError => e
         attempts += 1
-        retry if (e.class.name.start_with?('Errno::', 'Net::') and attempts < 3)
+        retry if (attempts < 3)
         raise e
       end
     end
@@ -68,9 +68,9 @@ module Papertrail
       attempts = 0
       begin
         on_complete(https.post(request_uri(path), build_nested_query(params), @headers))
-      rescue SystemCallError, StandardError => e
+      rescue SystemCallError, Net::HTTPFatalError => e
         attempts += 1
-        retry if (e.class.name.start_with?('Errno::', 'Net::') and attempts < 3)
+        retry if (attempts < 3)
         raise e
       end
     end
@@ -79,9 +79,9 @@ module Papertrail
       attempts = 0
       begin
         on_complete(https.delete(request_uri(path), @headers))
-      rescue SystemCallError, StandardError => e
+      rescue SystemCallError, Net::HTTPFatalError => e
         attempts += 1
-        retry if (e.class.name.start_with?('Errno::', 'Net::') and attempts < 3)
+        retry if (attempts < 3)
         raise e
       end
     end
