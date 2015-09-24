@@ -125,21 +125,19 @@ For sum, mean, and statistics, see
 ANSI color codes are retained, so log messages which are already colorized
 will automatically render in color on ANSI-capable terminals.
 
-To manually colorize monochrome logs, pipe through [colortail] or
-[MultiTail]. To use `colortail`:
+To colorize monochrome logs, pipe through [lnav]. Install `lnav` from your
+preferred package repository, such as `brew install lnav` or
+`apt-get install lnav`, then:
 
-    $ sudo gem install colortail
-
-Save [colortailrc] as `~/.colortailrc` and edit it to enable:
-
-    $ papertrail -f | colortail -g papertrail
+    $ papertrail -f | lnav
+    $ papertrail --min-time "1 hour ago" error | lnav
 
 ### Shorthand
 
 If you're using bash, create a function that accepts arguments, then
 invoke `pt` with optional search operators:
 
-    $ function pt() { papertrail -f -d 5 $* | colortail -g papertrail; }
+    $ function pt() { papertrail -f -d 5 $* | lnav; }
     $ pt 1.2.3 Failure
 
 Add the function line to your `~/.bashrc`.
@@ -250,7 +248,5 @@ to your enhancement.
 [HTTP API]: http://help.papertrailapp.com/kb/how-it-works/http-api
 [User Profile]: https://papertrailapp.com/user/edit
 [RubyGems]: https://rubygems.org/gems/papertrail-cli
-[colortail]: http://rubydoc.info/gems/colortail
-[colortailrc]: https://github.com/papertrail/papertrail-cli/wiki/colortailrc
-[MultiTail]: http://www.vanheusden.com/multitail/
+[lnav]: http://lnav.org/
 [escape characters]: http://en.wikipedia.org/wiki/ANSI_escape_code#Colors
