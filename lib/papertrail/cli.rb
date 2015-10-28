@@ -1,6 +1,7 @@
 require 'optparse'
 require 'yaml'
 require 'chronic'
+require 'ansi/core'
 
 require 'papertrail/connection'
 require 'papertrail/cli_helpers'
@@ -17,7 +18,8 @@ module Papertrail
         :configfile => nil,
         :delay  => 2,
         :follow => false,
-        :token  => ENV['PAPERTRAIL_API_TOKEN']
+        :token  => ENV['PAPERTRAIL_API_TOKEN'],
+        :force_colors => false
       }
 
       @query_options = {}
@@ -63,6 +65,9 @@ module Papertrail
         end
         opts.on("--max-time MAX", "Latest time to search from.") do |v|
           options[:max_time] = v
+        end
+        opts.on("--force-colors", "Force colored output") do |v|
+          options[:force_colors] = true
         end
 
         opts.separator usage
@@ -137,12 +142,31 @@ module Papertrail
       end
     end
 
+    COLORS = [:cyan, :yellow, :green, :magenta, :red]
+
+    def colorize(event)
+      idx = (event.data["hostname"].length + event.data["program"].length) % 5
+      color = COLORS[idx]
+      pre = "#{event.received_at.strftime('%b %e %X')} #{event.data['hostname']} #{event.data['program']}:"
+      post =  " #{event.data['message']}"
+      pre.ansi(color) + post
+    end
+
+    def display_colors?
+      options[:force_colors] || (STDOUT.isatty && ENV.has_key?("TERM"))
+    end
+
     def display_results(results)
       if options[:json]
         $stdout.puts Papertrail::OkJson.encode(results.data)
       else
         results.events.each do |event|
-          $stdout.puts event
+          if display_colors?
+            event_str = colorize event 
+          else
+            event_str = event.to_s
+          end
+          $stdout.puts event_str
         end
       end
 
