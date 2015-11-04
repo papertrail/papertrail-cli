@@ -66,8 +66,13 @@ module Papertrail
         opts.on("--max-time MAX", "Latest time to search from.") do |v|
           options[:max_time] = v
         end
-        opts.on("--force-colors", "Force colored output") do |v|
-          options[:force_colors] = true
+        opts.on("--force-color", "Force colored output") do |v|
+          options[:force_color] = true
+        end
+        opts.on("--color [ATTRIBUTES]",
+                [:host_program, :host, :program, :off],
+                "Select attributes to colorize output by") do |v|
+          options[:color] = v
         end
 
         opts.separator usage
@@ -80,6 +85,10 @@ module Papertrail
 
       unless options[:token]
         abort 'Authentication token not found. Set config file "token" attribute or PAPERTRAIL_API_TOKEN.'
+      end
+
+      unless options[:color]
+        options[:color] = :host_program
       end
 
       @connection = Papertrail::Connection.new(options)
@@ -145,7 +154,13 @@ module Papertrail
     COLORS = [:cyan, :yellow, :green, :magenta, :red]
 
     def colorize(event)
-      idx = (event.data["hostname"].length + event.data["program"].length) % 5
+      attribs = ""
+      attribs += event.data["hostname"] if
+        options[:color] == :host || options[:color] == :host_program
+      attribs += event.data["program"] if
+        options[:color] == :program || options[:color] == :host_program
+      
+      idx = attribs.hash % 5
       color = COLORS[idx]
       pre = "#{event.received_at.strftime('%b %e %X')} #{event.data['hostname']} #{event.data['program']}:"
       post =  " #{event.data['message']}"
@@ -153,7 +168,8 @@ module Papertrail
     end
 
     def display_colors?
-      options[:force_colors] || (STDOUT.isatty && ENV.has_key?("TERM"))
+      options[:color] != :off &&
+        (options[:force_colors] || (STDOUT.isatty && ENV.has_key?("TERM")))
     end
 
     def display_results(results)
