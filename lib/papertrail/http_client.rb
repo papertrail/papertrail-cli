@@ -1,7 +1,6 @@
 require 'delegate'
 require 'net/https'
 require 'open-uri'
-require 'progressbar'
 
 require 'papertrail/okjson'
 
@@ -89,25 +88,10 @@ module Papertrail
     end
 
     def download(path, filepath)
-
-      pbar = nil # FIXME
-      args = @headers.merge ({
-        content_length_proc: lambda {|t|
-          if t && 0 < t
-            pbar = ProgressBar.new("...", t)
-            pbar.file_transfer_mode
-          end
-        },
-        progress_proc: lambda {|s|
-          pbar.set s if pbar
-        }
-      })
-
       open("https://papertrailapp.com#{request_uri(path)}",
-           args) do |conn|
+           @headers) do |conn|
         FileUtils.copy_stream(conn, filepath)
       end
-      
     end
 
     private
