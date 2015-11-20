@@ -32,7 +32,7 @@ module Papertrail
           options[:configfile] = File.expand_path(v)
         end
         opts.on("--newest N", OptionParser::DecimalInteger,
-                "Get newest N entries") do |v|
+                "Get newest N archive files") do |v|
           options[:newest] = v
         end
         opts.on("--min-time MIN", "Get only entries after MIN") do |v|
@@ -59,9 +59,27 @@ module Papertrail
 
       connection = Papertrail::Connection.new(options)
 
-      connection.each_event(nil, options) do |event|
-        puts event # for testing
+            seconds_per_day = 60 * 60 * 24
+      
+      if options[:newest]
+        start_date = Time.now - options[:newest] * seconds_per_day
+      elsif options[:min_time]
+        start_date = options[:min_time]
+      else
+        raise ArgumentError, "Either :newest or :min-time must be specified"
       end
+
+      result = []
+      
+      days = ((Time.now - start_date) / seconds_per_day).floor
+      days.times do |offset|
+        d = (start_date + offset).strftime("%Y-%m-%d")
+
+        # FIXME this needs to know about redirects
+        # FIXME this will need to write files as the dowload happens, not keep them in memory
+        connection.connection.download("archives/#{d}/download", "#{d}.tgz")
+      end
+
 
     end
 
