@@ -36,10 +36,10 @@ module Papertrail
           options[:newest] = v
         end
         opts.on("--min-time MIN", "Get only entries after MIN") do |v|
-          options[:min_time] = Time.parse(v)
+          options[:min_time] = parse_time(v)
         end
         opts.on("--max-time MAX", "Get only entries before MAX") do |v|
-          options[:max_time] = Time.parse(v)
+          options[:max_time] = parse_time(v)
         end
 
         opts.separator usage
@@ -59,20 +59,22 @@ module Papertrail
 
       connection = Papertrail::Connection.new(options)
 
-            seconds_per_day = 60 * 60 * 24
-      
+      seconds_per_day = 60 * 60 * 24
+      end_date = (options[:max_time] + seconds_per_day) or Time.now
       if options[:newest]
         start_date = Time.now - options[:newest] * seconds_per_day
+        end_date = Time.now # newest and max-time together don't make sense together
       elsif options[:min_time]
         start_date = options[:min_time]
       else
         raise ArgumentError, "Either :newest or :min-time must be specified"
       end
 
-      days = ((Time.now - start_date) / seconds_per_day).floor
+      days = ((end_date - start_date) / seconds_per_day).floor
 
       days.times do |offset|
         d = (start_date + offset * seconds_per_day).strftime("%Y-%m-%d")
+        puts d
         connection.connection.download("archives/#{d}/download", "#{d}.tgz")
       end
 
