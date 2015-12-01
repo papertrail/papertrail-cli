@@ -219,5 +219,6 @@ module Papertrail
 
       nil
     end
+
   end
 end

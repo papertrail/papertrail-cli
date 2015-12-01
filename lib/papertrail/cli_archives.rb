@@ -69,14 +69,10 @@ module Papertrail
         raise ArgumentError, "Either :newest or :min-time must be specified"
       end
 
-      result = []
-      
       days = ((Time.now - start_date) / seconds_per_day).floor
-      days.times do |offset|
-        d = (start_date + offset).strftime("%Y-%m-%d")
 
-        # FIXME this needs to know about redirects
-        # FIXME this will need to write files as the dowload happens, not keep them in memory
+      days.times do |offset|
+        d = (start_date + offset * seconds_per_day).strftime("%Y-%m-%d")
         connection.connection.download("archives/#{d}/download", "#{d}.tgz")
       end
 
