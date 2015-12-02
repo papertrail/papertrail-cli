@@ -54,14 +54,14 @@ module Papertrail
         opts.on("-c", "--configfile PATH", "Path to config (~/.papertrail.yml)") do |v|
           options[:configfile] = File.expand_path(v)
         end
-        opts.on("-s", "--system SYSTEM", "System to search") do |v|
-          options[:system] = v
-        end
         opts.on("-g", "--group GROUP", "Group to search") do |v|
           options[:group] = v
         end
         opts.on("-S", "--search SEARCH", "Saved search to search") do |v|
           options[:search] = v
+        end
+        opts.on("-s", "--system SYSTEM", "System to search") do |v|
+          options[:system] = v
         end
         opts.on("-j", "--json", "Output raw JSON data (off)") do |v|
           options[:json] = true
@@ -194,8 +194,9 @@ module Papertrail
       <<-EOF
 
   Usage:
-    papertrail [-f] [-s system] [-g group] [-S search] [-d seconds] \
-      [-c papertrail.yml] [-j] [--min-time time] [--max-time time] [query]
+    papertrail [-f] [--min-time time] [--max-time time] [-g group] [-S search]
+      [-s system] [-d seconds] [-c papertrail.yml] [-j] [--color attributes]
+      [--force-color] [query]
 
   Examples:
     papertrail -f
@@ -203,11 +204,11 @@ module Papertrail
     papertrail 1.2.3 Failure
     papertrail -s ns1 "connection refused"
     papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
-    papertrail -f -g Production "(nginx OR pgsql) -accepted"
-    papertrail -g Production --min-time 'yesterday at noon' --max-time 'today at 4am'
+    papertrail -f -g Production --color program "(nginx OR pgsql) -accepted"
+    papertrail --min-time 'yesterday at noon' --max-time 'today at 4am' -g Production
 
   More: https://papertrailapp.com/
-
+        https://github.com/papertrail/papertrail-cli
   EOF
     end
   end
