@@ -119,6 +119,14 @@ module Papertrail
       end
     end
 
+    def leave_group(source_name, group_name)
+      source_id = find_id_for_source(source_name)
+      group_id = find_id_for_group(group_name)
+      if source_id && group_id
+        @connection.post("systems/#{source_id}/leave.json", :group_id => group_id)
+      end
+    end
+
     def register_source(name, *args)
       options = args.last.is_a?(Hash) ? args.pop.dup : {}
 

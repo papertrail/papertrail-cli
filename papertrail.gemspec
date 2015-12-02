@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
 #  s.extensions = %w[ext/extconf.rb]
 
   ## If your gem includes any executables, list them here.
-  s.executables = ["papertrail", "papertrail-add-system", "papertrail-remove-system", "papertrail-add-group", "papertrail-join-group"]
+  s.executables = ["papertrail", "papertrail-add-system", "papertrail-remove-system", "papertrail-add-group", "papertrail-join-group", "papertrail-leave-group"]
   s.default_executable = 'papertrail'
 
   ## Specify any RDoc options here. You'll want to add your README and
@@ -69,6 +69,7 @@ Gem::Specification.new do |s|
     bin/papertrail-add-group
     bin/papertrail-add-system
     bin/papertrail-join-group
+    bin/papertrail-leave-group
     bin/papertrail-remove-system
     examples/papertrail.yml.example
     lib/papertrail.rb
@@ -77,6 +78,7 @@ Gem::Specification.new do |s|
     lib/papertrail/cli_add_system.rb
     lib/papertrail/cli_helpers.rb
     lib/papertrail/cli_join_group.rb
+    lib/papertrail/cli_leave_group.rb
     lib/papertrail/cli_remove_system.rb
     lib/papertrail/connection.rb
     lib/papertrail/event.rb
