@@ -207,8 +207,8 @@ module Papertrail
     papertrail -f -g Production --color program "(nginx OR pgsql) -accepted"
     papertrail --min-time 'yesterday at noon' --max-time 'today at 4am' -g Production
 
-  More: https://papertrailapp.com/
-        https://github.com/papertrail/papertrail-cli
+  More: https://github.com/papertrail/papertrail-cli
+        https://papertrailapp.com/
   EOF
     end
   end
