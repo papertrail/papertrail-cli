@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require '/Users/troy/Code/papertrail-cli/lib/papertrail/cli'
+require 'papertrail/cli'
 
 begin
   Papertrail::Cli.new.run
