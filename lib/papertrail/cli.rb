@@ -19,7 +19,7 @@ module Papertrail
         :delay  => 2,
         :follow => false,
         :token  => ENV['PAPERTRAIL_API_TOKEN'],
-        :force_colors => false
+        :force_color => false
       }
 
       @query_options = {}
@@ -66,7 +66,7 @@ module Papertrail
         opts.on("--max-time MAX", "Latest time to search from.") do |v|
           options[:max_time] = v
         end
-        opts.on("--force-color", "Force colored output") do |v|
+        opts.on("--force-color", "Force colorized output") do |v|
           options[:force_color] = true
         end
         opts.on("--color [ATTRIBUTES]",
@@ -159,7 +159,7 @@ module Papertrail
         options[:color] == :host || options[:color] == :host_program
       attribs += event.data["program"] if
         options[:color] == :program || options[:color] == :host_program
-      
+
       idx = attribs.hash % 5
       color = COLORS[idx]
       pre = "#{event.received_at.strftime('%b %e %X')} #{event.data['hostname']} #{event.data['program']}:"
@@ -169,7 +169,7 @@ module Papertrail
 
     def display_colors?
       options[:color] != :off &&
-        (options[:force_colors] || (STDOUT.isatty && ENV.has_key?("TERM")))
+        (options[:force_color] || (STDOUT.isatty && ENV.has_key?("TERM")))
     end
 
     def display_results(results)
@@ -178,7 +178,7 @@ module Papertrail
       else
         results.events.each do |event|
           if display_colors?
-            event_str = colorize event 
+            event_str = colorize event
           else
             event_str = event.to_s
           end
