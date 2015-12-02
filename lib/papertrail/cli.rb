@@ -42,6 +42,12 @@ module Papertrail
         opts.on("-f", "--follow", "Continue running and print new events (off)") do |v|
           options[:follow] = true
         end
+        opts.on("--min-time MIN", "Earliest time to search from") do |v|
+          options[:min_time] = v
+        end
+        opts.on("--max-time MAX", "Latest time to search from") do |v|
+          options[:max_time] = v
+        end
         opts.on("-d", "--delay SECONDS", "Delay between refresh (2)") do |v|
           options[:delay] = v.to_i
         end
@@ -60,19 +66,13 @@ module Papertrail
         opts.on("-j", "--json", "Output raw JSON data") do |v|
           options[:json] = true
         end
-        opts.on("--min-time MIN", "Earliest time to search from.") do |v|
-          options[:min_time] = v
-        end
-        opts.on("--max-time MAX", "Latest time to search from.") do |v|
-          options[:max_time] = v
+        opts.on("--color [host_program|host|program|off]",
+                [:host_program, :host, :program, :off],
+                "Attribute(s) to colorize output based on") do |v|
+          options[:color] = v
         end
         opts.on("--force-color", "Force colorized output") do |v|
           options[:force_color] = true
-        end
-        opts.on("--color [ATTRIBUTES]",
-                [:host_program, :host, :program, :off],
-                "Select attributes to colorize output by") do |v|
-          options[:color] = v
         end
 
         opts.separator usage
