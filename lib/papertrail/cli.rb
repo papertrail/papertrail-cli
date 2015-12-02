@@ -146,7 +146,7 @@ module Papertrail
         if options[:json]
           $stdout.puts Papertrail::OkJson.encode(event.data)
         else
-          $stdout.puts event
+          display_result(event)
         end
       end
     end
@@ -172,23 +172,26 @@ module Papertrail
         (options[:force_color] || (STDOUT.isatty && ENV.has_key?("TERM")))
     end
 
+    def display_result(event)
+      if display_colors?
+        event_str = colorize event
+      else
+        event_str = event.to_s
+      end
+      $stdout.puts event_str
+    end
+
     def display_results(results)
       if options[:json]
         $stdout.puts Papertrail::OkJson.encode(results.data)
       else
         results.events.each do |event|
-          if display_colors?
-            event_str = colorize event
-          else
-            event_str = event.to_s
-          end
-          $stdout.puts event_str
+          display_result(event)
         end
       end
 
       $stdout.flush
     end
-
 
     def usage
       <<-EOF
