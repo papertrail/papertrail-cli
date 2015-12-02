@@ -39,7 +39,7 @@ module Papertrail
           puts opts
           exit
         end
-        opts.on("-f", "--follow", "Continue running and print new events (off)") do |v|
+        opts.on("-f", "--follow", "Continue running and printing new events (off)") do |v|
           options[:follow] = true
         end
         opts.on("--min-time MIN", "Earliest time to search from") do |v|
@@ -63,12 +63,12 @@ module Papertrail
         opts.on("-S", "--search SEARCH", "Saved search to search") do |v|
           options[:search] = v
         end
-        opts.on("-j", "--json", "Output raw JSON data") do |v|
+        opts.on("-j", "--json", "Output raw JSON data (off)") do |v|
           options[:json] = true
         end
-        opts.on("--color [host_program|host|program|off]",
+        opts.on("--color [host_program|host|program|off] (host_program)",
                 [:host_program, :host, :program, :off],
-                "Attribute(s) to colorize output based on") do |v|
+                "Attribute(s) to colorize based on") do |v|
           options[:color] = v
         end
         opts.on("--force-color", "Force colorized output") do |v|
