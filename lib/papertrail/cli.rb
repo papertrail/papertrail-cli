@@ -71,7 +71,7 @@ module Papertrail
                 "Attribute(s) to colorize based on") do |v|
           options[:color] = v
         end
-        opts.on("--force-color", "Force colorized output") do |v|
+        opts.on("--force-color", "Force use of ANSI color characters even on non-tty outputs (off)") do |v|
           options[:force_color] = true
         end
 
