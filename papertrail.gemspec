@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   ## the sub! line in the Rakefile
   s.name              = 'papertrail'
   s.version           = '0.9.12'
-  s.date              = '2015-01-23'
+  s.date              = '2015-11-19'
   s.rubyforge_project = 'papertrail'
 
   ## Make sure your summary is short. The description may be as long
@@ -67,6 +67,7 @@ Gem::Specification.new do |s|
     bin/papertrail
     bin/papertrail-add-group
     bin/papertrail-add-system
+    bin/papertrail-archives
     bin/papertrail-join-group
     bin/papertrail-leave-group
     bin/papertrail-remove-system
@@ -75,6 +76,7 @@ Gem::Specification.new do |s|
     lib/papertrail/cli.rb
     lib/papertrail/cli_add_group.rb
     lib/papertrail/cli_add_system.rb
+    lib/papertrail/cli_archives.rb
     lib/papertrail/cli_helpers.rb
     lib/papertrail/cli_join_group.rb
     lib/papertrail/cli_leave_group.rb

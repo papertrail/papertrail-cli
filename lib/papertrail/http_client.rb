@@ -1,5 +1,6 @@
 require 'delegate'
 require 'net/https'
+require 'open-uri'
 
 require 'papertrail/okjson'
 
@@ -83,6 +84,13 @@ module Papertrail
         attempts += 1
         retry if (attempts < 3)
         raise e
+      end
+    end
+
+    def download(path, filepath)
+      open("https://papertrailapp.com#{request_uri(path)}",
+           @headers) do |conn|
+        FileUtils.copy_stream(conn, filepath)
       end
     end
 

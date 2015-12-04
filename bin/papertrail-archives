@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+require 'papertrail/cli_archives'
+
+begin
+  Papertrail::CliArchives.new.run
+rescue Interrupt
+  exit(0)
+end
