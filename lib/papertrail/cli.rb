@@ -19,7 +19,8 @@ module Papertrail
         :delay  => 2,
         :follow => false,
         :token  => ENV['PAPERTRAIL_API_TOKEN'],
-        :force_color => false
+        :color  => :program,
+        :force_color => false,
       }
 
       @query_options = {}
@@ -66,8 +67,8 @@ module Papertrail
         opts.on("-j", "--json", "Output raw JSON data (off)") do |v|
           options[:json] = true
         end
-        opts.on("--color [host_program|host|program|off] (host_program)",
-                [:host_program, :host, :program, :off],
+        opts.on("--color [program|sender|all|off] (program)",
+                [:program, :sender, :all, :off],
                 "Attribute(s) to colorize based on") do |v|
           options[:color] = v
         end
@@ -85,10 +86,6 @@ module Papertrail
 
       unless options[:token]
         abort 'Authentication token not found. Set config file "token" attribute or PAPERTRAIL_API_TOKEN.'
-      end
-
-      unless options[:color]
-        options[:color] = :host_program
       end
 
       @connection = Papertrail::Connection.new(options)
@@ -156,9 +153,9 @@ module Papertrail
     def colorize(event)
       attribs = ""
       attribs += event.data["hostname"] if
-        options[:color] == :host || options[:color] == :host_program
+        options[:color] == :sender || options[:color] == :all
       attribs += event.data["program"] if
-        options[:color] == :program || options[:color] == :host_program
+        options[:color] == :program || options[:color] == :all
 
       idx = attribs.hash % 5
       color = COLORS[idx]
@@ -207,7 +204,7 @@ module Papertrail
     papertrail 1.2.3 Failure
     papertrail -s ns1 "connection refused"
     papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
-    papertrail -f -g Production --color program "(nginx OR pgsql) -accepted"
+    papertrail -f -g Production --color all "(nginx OR pgsql) -accepted"
     papertrail --min-time 'yesterday at noon' --max-time 'today at 4am' -g Production
 
   More: https://github.com/papertrail/papertrail-cli
