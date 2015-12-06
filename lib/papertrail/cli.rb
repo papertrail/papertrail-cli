@@ -152,10 +152,12 @@ module Papertrail
 
     def colorize(event)
       attribs = ""
-      attribs += event.data["hostname"] if
-        options[:color] == :sender || options[:color] == :all
-      attribs += event.data["program"] if
-        options[:color] == :program || options[:color] == :all
+      if options[:color] == :sender || options[:color] == :all
+        attribs += event.data["hostname"]
+      end
+      if options[:color] == :program || options[:color] == :all
+        attribs += event.data["program"]
+      end
 
       idx = attribs.hash % 5
       color = COLORS[idx]
