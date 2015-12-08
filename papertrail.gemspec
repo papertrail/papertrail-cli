@@ -49,12 +49,12 @@ Gem::Specification.new do |s|
 
   ## List your runtime dependencies here. Runtime dependencies are those
   ## that are needed for an end user to actually USE your code.
-  s.add_dependency('chronic')
-  s.add_dependency('ansi')
+  s.add_dependency('chronic', '~> 0.10')
+  s.add_dependency('ansi', '~> 1.5')
 
   ## List your development dependencies here. Development dependencies are
   ## those that are only needed during development
-  s.add_development_dependency('rake')
+  s.add_development_dependency('rake', '~> 10.4')
 
   ## Leave this section as-is. It will be automatically generated from the
   ## contents of your Git repository via the gemspec task. DO NOT REMOVE
