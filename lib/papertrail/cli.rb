@@ -161,8 +161,8 @@ module Papertrail
 
       idx = attribs.hash % 5
       color = COLORS[idx]
-      pre = "#{event.received_at.strftime('%b %e %X')} #{event.data['hostname']} #{event.data['program']}:"
-      post =  " #{event.data['message']}"
+      pre  = "#{event.received_at.strftime('%b %e %X')} #{event.data['hostname']} #{event.data['program']}:"
+      post = " #{event.data['message']}"
       pre.ansi(color) + post
     end
 
@@ -172,11 +172,7 @@ module Papertrail
     end
 
     def display_result(event)
-      if display_colors?
-        event_str = colorize event
-      else
-        event_str = event.to_s
-      end
+      event_str = display_colors? ? colorize(event) : event.to_s
       $stdout.puts event_str
     end
 
