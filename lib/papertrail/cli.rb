@@ -67,8 +67,8 @@ module Papertrail
         opts.on("-j", "--json", "Output raw JSON data (off)") do |v|
           options[:json] = true
         end
-        opts.on("--color [program|sender|all|off] (program)",
-                [:program, :sender, :all, :off],
+        opts.on("--color [program|system|all|off] (program)",
+                [:program, :system, :all, :off],
                 "Attribute(s) to colorize based on") do |v|
           options[:color] = v
         end
@@ -152,7 +152,7 @@ module Papertrail
 
     def colorize(event)
       attribs = ""
-      if options[:color] == :sender || options[:color] == :all
+      if options[:color] == :system || options[:color] == :all
         attribs += event.data["hostname"]
       end
       if options[:color] == :program || options[:color] == :all
