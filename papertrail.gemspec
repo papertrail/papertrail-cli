@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   ## the sub! line in the Rakefile
   s.name              = 'papertrail'
   s.version           = '0.9.12'
-  s.date              = '2015-11-19'
+  s.date              = '2015-12-20'
   s.rubyforge_project = 'papertrail'
 
   ## Make sure your summary is short. The description may be as long
@@ -54,6 +54,7 @@ Gem::Specification.new do |s|
   ## List your development dependencies here. Development dependencies are
   ## those that are only needed during development
   s.add_development_dependency('rake')
+  s.add_development_dependency('webmock')
 
   ## Leave this section as-is. It will be automatically generated from the
   ## contents of your Git repository via the gemspec task. DO NOT REMOVE

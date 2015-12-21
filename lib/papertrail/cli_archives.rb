@@ -57,28 +57,27 @@ module Papertrail
         options.merge!(configfile_options)
       end
 
-      connection = Papertrail::Connection.new(options)
+      @connection = Papertrail::Connection.new(options)
 
-      seconds_per_day = 60 * 60 * 24
-      end_date = (options[:max_time] + seconds_per_day) or Time.now
-      if options[:newest]
-        start_date = Time.now - options[:newest] * seconds_per_day
-        end_date = Time.now # newest and max-time together don't make sense together
-      elsif options[:min_time]
-        start_date = options[:min_time]
-      else
-        raise ArgumentError, "Either :newest or :min-time must be specified"
+      raise ArgumentError, "Either :newest or :min_time must be specified" if
+        not options[:newest] || options[:min_time]
+
+      server_params = options.select do |k,v|
+        [:newest, :min_time, :max_time].include?(k)
       end
 
-      days = ((end_date - start_date) / seconds_per_day).floor
+      archives = get_file_list(server_params)
 
-      days.times do |offset|
-        d = (start_date + offset * seconds_per_day).strftime("%Y-%m-%d")
-        puts d
-        connection.connection.download("archives/#{d}/download", "#{d}.tgz")
+      archives.each do |archive|
+        #@connection.connection.download(archive["_links"]["download"], archive["filename"])
+        puts archive["filename"]
       end
 
 
+    end
+
+    def get_file_list(server_params)
+      @connection.get('archives.json', server_params).body
     end
 
     def usage
