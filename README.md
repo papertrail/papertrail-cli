@@ -62,37 +62,39 @@ You may want to alias "pt" to "papertrail", like:
 
 ## Usage & Examples
 
-    $ papertrail -h
+    $ papertrail --help
     papertrail - command-line tail and search for Papertrail log management service
         -h, --help                       Show usage
-        -f, --follow                     Continue running and print new events (off)
+        -f, --follow                     Continue running and printing new events (off)
+            --min-time MIN               Earliest time to search from
+            --max-time MAX               Latest time to search from
         -d, --delay SECONDS              Delay between refresh (2)
         -c, --configfile PATH            Path to config (~/.papertrail.yml)
-        -s, --system SYSTEM              System to search
         -g, --group GROUP                Group to search
         -S, --search SEARCH              Saved search to search
-        -j, --json                       Output raw json data
-        --min-time MIN                   Earliest time to search from.
-        --max-time MAX                   Latest time to search from.
+        -s, --system SYSTEM              System to search
+        -j, --json                       Output raw JSON data (off)
+            --color [program|system|all|off] (program)
+                                         Attribute(s) to colorize based on
+            --force-color                Force use of ANSI color characters even on non-tty outputs (off)
 
+      Usage:
+        papertrail [-f] [--min-time time] [--max-time time] [-g group] [-S search]
+          [-s system] [-d seconds] [-c papertrail.yml] [-j] [--color attributes]
+          [--force-color] [--] [query]
 
-    Usage:
-      papertrail [-f] [-s system] [-g group] [-d seconds] [-c papertrail.yml] [-j] [--min-time mintime] [--max-time maxtime] [query]
+      Examples:
+        papertrail -f
+        papertrail something
+        papertrail 1.2.3 Failure
+        papertrail -s ns1 "connection refused"
+        papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
+        papertrail -f -g Production --color all "(nginx OR pgsql) -accepted"
+        papertrail --min-time 'yesterday at noon' --max-time 'today at 4am' -g Production
+        papertrail -- -redis
 
-    Examples:
-      papertrail -f
-      papertrail something
-      papertrail --min-time "20 minutes ago" 1.2.3 Failure
-      papertrail -s ns1 "connection refused"
-      papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
-      papertrail -f -g Production "(nginx OR pgsql) -accepted"
-      papertrail -S "Critical errors"
-      papertrail -g Production --min-time 'yesterday at noon' --max-time 'today at 4am'
-
-    Includes 4 binaries to change Papertrail settings: papertrail-add-system, papertrail-remove-system,
-      papertrail-add-group, papertrail-leave-group. Run with --help or see README.
-
-    More: http://papertrailapp.com/
+      More: https://github.com/papertrail/papertrail-cli
+            https://papertrailapp.com/
 
 
 ### Count, pivot, and summarize
