@@ -194,7 +194,7 @@ module Papertrail
   Usage:
     papertrail [-f] [--min-time time] [--max-time time] [-g group] [-S search]
       [-s system] [-d seconds] [-c papertrail.yml] [-j] [--color attributes]
-      [--force-color] [query]
+      [--force-color] [--] [query]
 
   Examples:
     papertrail -f
@@ -204,6 +204,7 @@ module Papertrail
     papertrail -f "(www OR db) (nginx OR pgsql) -accepted"
     papertrail -f -g Production --color all "(nginx OR pgsql) -accepted"
     papertrail --min-time 'yesterday at noon' --max-time 'today at 4am' -g Production
+    papertrail -- -redis
 
   More: https://github.com/papertrail/papertrail-cli
         https://papertrailapp.com/
