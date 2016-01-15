@@ -220,7 +220,12 @@ To use multiple API tokens (such as for separate home and work Papertrail
 accounts), create a `.papertrail.yml` configuration file in each project's
 working directory and invoke the CLI in that directory. The CLI checks for
 `.papertrail.yml` in the current working directory prior to using
-`~/.papertrail.yml`. Alternatively, use shell aliases with different `-c` paths.
+`~/.papertrail.yml`.
+
+Alternatively, use shell aliases with different `-c` paths. For example:
+
+    echo "alias pt1='papertrail -c /path/to/papertrail-home.yml'" >> ~/.bashrc
+    echo "alias pt2='papertrail -c /path/to/papertrail-work.yml'" >> ~/.bashrc
 
 
 ## Add/Remove Systems, Create Group, Join Group
