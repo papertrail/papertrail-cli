@@ -149,7 +149,7 @@ work:
 
 If you frequently pipe output to a certain command, create a function which
 accepts optional arguments, invokes `papertrail` with any arguments, and pipes
-output to that command. For example, this `pt` function will pipes to `lnav`:
+output to that command. For example, this `pt` function will pipe to `lnav`:
 
     $ function pt() { papertrail -f -d 5 $* | lnav; }
 
