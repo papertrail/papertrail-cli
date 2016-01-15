@@ -126,34 +126,37 @@ For sum, mean, and statistics, see
 ANSI color codes are retained, so log messages which are already colorized
 will automatically render in color on ANSI-capable terminals.
 
-To colorize monochrome logs, pipe through [lnav]. Install `lnav` from your
+By default, the CLI will colorize the non-body portion of each log message
+based on the value of the program attribute. 5 colors are available, so colors
+may not be unique. When the sending system name is more important than the
+program, use `--color=system` to colorize based on its value. Use `--color=all`
+to colorize based on both together.
+
+For content-based colorization, pipe through [lnav]. Install `lnav` from your
 preferred package repository, such as `brew install lnav` or
 `apt-get install lnav`, then:
 
     $ papertrail -f | lnav
     $ papertrail --min-time "1 hour ago" error | lnav
 
-#### Shorthand
+### Redirecting output
 
-If you're using bash, create a function that accepts arguments, then
-invoke `pt` with optional search operators:
+Since output is line-buffered, pipes and output redirection will automatically
+work:
+
+    $ papertrail | less
+    $ papertrail --min-time '2016-01-15 10:00:00' > logs.txt
+
+If you frequently pipe output to a certain command, create a function which
+accepts optional arguments, invokes `papertrail` with any arguments, and pipes
+output to that command. For example, this `pt` function will pipes to `lnav`:
 
     $ function pt() { papertrail -f -d 5 $* | lnav; }
+
+Add the `function` line to your `~/.bashrc`. It can be invoked with search
+parameters:
+
     $ pt 1.2.3 Failure
-
-Add the function line to your `~/.bashrc`.
-
-#### Advanced
-
-For complete color control, pipe through anything capable of inserting ANSI
-control characters. Here's an example that colorizes 3 fields separately
-(the first 15 characters for the date, a word for the hostname, and a
-word for the program name):
-
-    $ papertrail | perl -pe 's/^(.{15})(.)([\S]+)(.)([\S]+)/\e[1;31;43m\1\e[0m\2\e[1;31;43m\3\e[0m\4\e[1;31;43m\5\e[0m/g'
-
-the `1;31;43` are bold (1), foreground red (31), background yellow (43),
-and can be any ANSI [escape characters].
 
 ### UTF-8 (non-English searches)
 
