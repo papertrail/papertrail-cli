@@ -59,7 +59,6 @@ You may want to alias "pt" to "papertrail", like:
 
     echo "alias pt=papertrail" >> ~/.bashrc
 
-
 ## Usage & Examples
 
     $ papertrail --help
@@ -134,7 +133,7 @@ preferred package repository, such as `brew install lnav` or
     $ papertrail -f | lnav
     $ papertrail --min-time "1 hour ago" error | lnav
 
-### Shorthand
+#### Shorthand
 
 If you're using bash, create a function that accepts arguments, then
 invoke `pt` with optional search operators:
@@ -144,9 +143,9 @@ invoke `pt` with optional search operators:
 
 Add the function line to your `~/.bashrc`.
 
-### Advanced
+#### Advanced
 
-For complete control, pipe through anything capable of inserting ANSI
+For complete color control, pipe through anything capable of inserting ANSI
 control characters. Here's an example that colorizes 3 fields separately
 (the first 15 characters for the date, a word for the hostname, and a
 word for the program name):
@@ -214,6 +213,20 @@ even though one is for 4 words (AND) while the other is for a phrase:
 
     papertrail -f Connection reset by peer
     papertrail -f '"Connection reset by peer"'
+
+### Multiple API tokens
+
+To use multiple API tokens (such as for separate home and work Papertrail
+accounts), create a `.papertrail.yml` configuration file in each project's
+working directory and invoke the CLI in that directory. The CLI checks for
+`.papertrail.yml` in the current working directory prior to using
+`~/.papertrail.yml`.
+
+Alternatively, use shell aliases with different `-c` paths. For example:
+
+    echo "alias pt1='papertrail -c /path/to/papertrail-home.yml'" >> ~/.bashrc
+    echo "alias pt2='papertrail -c /path/to/papertrail-work.yml'" >> ~/.bashrc
+
 
 ## Add/Remove Systems, Create Group, Join Group
 
