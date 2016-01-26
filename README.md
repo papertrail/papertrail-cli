@@ -73,8 +73,8 @@ You may want to alias "pt" to "papertrail", like:
         -S, --search SEARCH              Saved search to search
         -s, --system SYSTEM              System to search
         -j, --json                       Output raw JSON data (off)
-            --color [program|system|all|off] (program)
-                                         Attribute(s) to colorize based on
+            --color [program|system|all|off]
+                                         Attribute(s) to colorize based on (program)
             --force-color                Force use of ANSI color characters even on non-tty outputs (off)
         -V, --version                    Display the version and exit
 

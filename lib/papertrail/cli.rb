@@ -69,9 +69,9 @@ module Papertrail
         opts.on("-j", "--json", "Output raw JSON data (off)") do |v|
           options[:json] = true
         end
-        opts.on("--color [program|system|all|off] (program)",
+        opts.on("--color [program|system|all|off]",
                 [:program, :system, :all, :off],
-                "Attribute(s) to colorize based on") do |v|
+                "Attribute(s) to colorize based on (program)") do |v|
           options[:color] = v
         end
         opts.on("--force-color", "Force use of ANSI color characters even on non-tty outputs (off)") do |v|
