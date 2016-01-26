@@ -3,6 +3,7 @@ require 'yaml'
 require 'chronic'
 require 'ansi/core'
 
+require 'papertrail'
 require 'papertrail/connection'
 require 'papertrail/cli_helpers'
 require 'papertrail/okjson'
@@ -34,7 +35,8 @@ module Papertrail
       end
 
       OptionParser.new do |opts|
-        opts.banner = "papertrail - command-line tail and search for Papertrail log management service"
+        opts.banner  = "papertrail - command-line tail and search for Papertrail log management service"
+        opts.version = Papertrail::VERSION
 
         opts.on("-h", "--help", "Show usage") do |v|
           puts opts
@@ -74,6 +76,10 @@ module Papertrail
         end
         opts.on("--force-color", "Force use of ANSI color characters even on non-tty outputs (off)") do |v|
           options[:force_color] = true
+        end
+        opts.on("-V", "--version", "Display the version and exit") do |v|
+          puts "papertrail version #{Papertrail::VERSION}"
+          exit
         end
 
         opts.separator usage
@@ -194,7 +200,7 @@ module Papertrail
   Usage:
     papertrail [-f] [--min-time time] [--max-time time] [-g group] [-S search]
       [-s system] [-d seconds] [-c papertrail.yml] [-j] [--color attributes]
-      [--force-color] [--] [query]
+      [--force-color] [--version] [--] [query]
 
   Examples:
     papertrail -f

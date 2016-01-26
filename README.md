@@ -76,6 +76,7 @@ You may want to alias "pt" to "papertrail", like:
             --color [program|system|all|off] (program)
                                          Attribute(s) to colorize based on
             --force-color                Force use of ANSI color characters even on non-tty outputs (off)
+        -V, --version                    Display the version and exit
 
       Usage:
         papertrail [-f] [--min-time time] [--max-time time] [-g group] [-S search]
