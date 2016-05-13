@@ -3,6 +3,6 @@ require 'papertrail/cli'
 
 begin
   Papertrail::Cli.new.run
-rescue Interrupt
+rescue Interrupt, Errno::EPIPE
   exit(0)
 end
