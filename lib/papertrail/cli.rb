@@ -29,6 +29,10 @@ module Papertrail
     end
 
     def run
+      # Exit when downstream program closes pipe. For example:
+      #   $ papertrail | head -n 2
+      Signal.trap('PIPE') { exit }
+
       if configfile = find_configfile
         configfile_options = load_configfile(configfile)
         options.merge!(configfile_options)
