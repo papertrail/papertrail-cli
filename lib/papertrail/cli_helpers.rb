@@ -1,15 +1,13 @@
 module Papertrail
   module CliHelpers
     def find_configfile
-      begin
-        if File.exists?(path = File.expand_path('.papertrail.yml'))
-          return path
-        end
-        if File.exists?(path = File.expand_path('~/.papertrail.yml'))
-          return path
-        end
-      rescue ArgumentError => e
+      if File.exists?(path = File.expand_path('.papertrail.yml'))
+        return path
       end
+      if File.exists?(path = File.expand_path('~/.papertrail.yml'))
+        return path
+      end
+    rescue ArgumentError
     end
 
     def load_configfile(file_path)
