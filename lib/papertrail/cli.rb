@@ -122,20 +122,26 @@ module Papertrail
 
       @query ||= ARGV[0]
 
-      if options[:follow]
-        search_query = connection.query(@query, query_options)
+      begin
+        if options[:follow]
+          search_query = connection.query(@query, query_options)
 
-        loop do
+          loop do
+            display_results(search_query.search)
+            sleep options[:delay]
+          end
+        elsif options[:min_time]
+          query_time_range
+        else
+          set_min_max_time!(options, query_options)
+          search_query = connection.query(@query, query_options)
           display_results(search_query.search)
-          sleep options[:delay]
-        end
-      elsif options[:min_time]
-        query_time_range
-      else
-        set_min_max_time!(options, query_options)
-        search_query = connection.query(@query, query_options)
-        display_results(search_query.search)
+        end      
+      rescue ArgumentError => e
+        $stderr.puts "Argument Error: #{e.message}"
+        exit 1
       end
+
     end
 
     def query_time_range
