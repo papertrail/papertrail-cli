@@ -34,7 +34,7 @@ module Papertrail
         options.merge!(configfile_options)
       end
 
-      OptionParser.new do |opts|
+      option_parser = OptionParser.new do |opts|
         opts.banner  = "papertrail - command-line tail and search for Papertrail log management service"
         opts.version = Papertrail::VERSION
 
@@ -83,7 +83,14 @@ module Papertrail
         end
 
         opts.separator usage
-      end.parse!
+      end
+
+      begin
+        option_parser.parse!
+      rescue OptionParser::InvalidOption => e
+        $stderr.puts e.message
+        exit 1
+      end        
 
       if options[:configfile]
         configfile_options = load_configfile(options[:configfile])
