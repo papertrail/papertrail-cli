@@ -120,7 +120,7 @@ module Papertrail
         @query = search['query']
       end
 
-      @query ||= ARGV[0]
+      @query ||= ARGV.join ' '
 
       if options[:follow]
         search_query = connection.query(@query, query_options)
