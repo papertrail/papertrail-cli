@@ -29,7 +29,7 @@ module Papertrail
     end
 
     def run
-      if configfile = find_configfile
+      if configfile
         configfile_options = load_configfile(configfile)
         options.merge!(configfile_options)
       end
@@ -38,11 +38,11 @@ module Papertrail
         opts.banner  = "papertrail - command-line tail and search for Papertrail log management service"
         opts.version = Papertrail::VERSION
 
-        opts.on("-h", "--help", "Show usage") do |v|
+        opts.on("-h", "--help", "Show usage") do
           puts opts
           exit
         end
-        opts.on("-f", "--follow", "Continue running and printing new events (off)") do |v|
+        opts.on("-f", "--follow", "Continue running and printing new events (off)") do
           options[:follow] = true
         end
         opts.on("--min-time MIN", "Earliest time to search from") do |v|
@@ -66,15 +66,15 @@ module Papertrail
         opts.on("-s", "--system SYSTEM", "System to search") do |v|
           options[:system] = v
         end
-        opts.on("-j", "--json", "Output raw JSON data (off)") do |v|
+        opts.on("-j", "--json", "Output raw JSON data (off)") do
           options[:json] = true
         end
-        opts.on("--color [program|system|all|off]",
-                [:program, :system, :all, :off],
-                "Attribute(s) to colorize based on (program)") do |v|
+        opts.on("--color [program|system|all|off]", 
+          [:program, :system, :all, :off], "Attribute(s) to colorize based on (program)") do |v|
+
           options[:color] = v
         end
-        opts.on("--force-color", "Force use of ANSI color characters even on non-tty outputs (off)") do |v|
+        opts.on("--force-color", "Force use of ANSI color characters even on non-tty outputs (off)") do
           options[:force_color] = true
         end
         opts.on("-V", "--version", "Display the version and exit") do |v|

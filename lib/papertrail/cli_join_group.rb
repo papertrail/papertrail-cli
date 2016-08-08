@@ -14,7 +14,7 @@ module Papertrail
         :token => ENV['PAPERTRAIL_API_TOKEN'],
       }
 
-      if configfile = find_configfile
+      if configfile
         configfile_options = load_configfile(configfile)
         options.merge!(configfile_options)
       end

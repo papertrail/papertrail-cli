@@ -16,7 +16,7 @@ module Papertrail
         :token => ENV['PAPERTRAIL_API_TOKEN'],
       }
 
-      if configfile = find_configfile
+      if configfile
         configfile_options = load_configfile(configfile)
         options.merge!(configfile_options)
       end
@@ -59,7 +59,7 @@ module Papertrail
         opts.separator ''
         opts.separator "Common options:"
 
-        opts.on("-h", "--help", "Show usage") do |v|
+        opts.on("-h", "--help", "Show usage") do
           puts opts
           exit
         end

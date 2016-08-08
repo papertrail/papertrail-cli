@@ -14,7 +14,7 @@ module Papertrail
         :token => ENV['PAPERTRAIL_API_TOKEN'],
       }
 
-      if configfile = find_configfile
+      if configfile
         configfile_options = load_configfile(configfile)
         options.merge!(configfile_options)
       end
@@ -22,7 +22,7 @@ module Papertrail
       OptionParser.new do |opts|
         opts.banner = "papertrail-add-group"
 
-        opts.on("-h", "--help", "Show usage") do |v|
+        opts.on("-h", "--help", "Show usage") do
           puts opts
           exit
         end
