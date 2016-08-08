@@ -6,7 +6,6 @@ engines:
       languages:
       - ruby
 
-
   fixme:
     enabled: true
 
@@ -15,8 +14,7 @@ engines:
 
 ratings:
   paths:
-
   - "**.rb"
 
 exclude_paths: 
-  - lib/papertrail/okjson.rb
+- lib/papertrail/okjson.rb
