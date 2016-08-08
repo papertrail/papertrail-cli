@@ -85,12 +85,7 @@ module Papertrail
         opts.separator usage
       end
 
-      begin
-        option_parser.parse!
-      rescue OptionParser::InvalidOption => e
-        $stderr.puts e.message
-        exit 1
-      end        
+      option_parser.parse!
 
       if options[:configfile]
         configfile_options = load_configfile(options[:configfile])
@@ -129,26 +124,20 @@ module Papertrail
 
       @query ||= ARGV.join ' '
 
-      begin
-        if options[:follow]
-          search_query = connection.query(@query, query_options)
+      if options[:follow]
+        search_query = connection.query(@query, query_options)
 
-          loop do
-            display_results(search_query.search)
-            sleep options[:delay]
-          end
-        elsif options[:min_time]
-          query_time_range
-        else
-          set_min_max_time!(options, query_options)
-          search_query = connection.query(@query, query_options)
+        loop do
           display_results(search_query.search)
-        end      
-      rescue ArgumentError => e
-        $stderr.puts "Argument Error: #{e.message}"
-        exit 1
+          sleep options[:delay]
+        end
+      elsif options[:min_time]
+        query_time_range
+      else
+        set_min_max_time!(options, query_options)
+        search_query = connection.query(@query, query_options)
+        display_results(search_query.search)
       end
-
     end
 
     def query_time_range
