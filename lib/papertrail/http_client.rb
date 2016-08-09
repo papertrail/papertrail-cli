@@ -42,47 +42,27 @@ module Papertrail
       if params.size > 0
         path = "#{path}?#{build_nested_query(params)}"
       end
-      attempts = 0
-      begin
+
+      attempt 3, 5.0 do
         on_complete(https.get(request_uri(path), @headers))
-      rescue SystemCallError, Net::HTTPFatalError => e
-        sleep 5.0
-        attempts += 1
-        retry if (attempts < 3)
-        raise e
       end
     end
 
     def put(path, params)
-      attempts = 0
-      begin
+      attempt do
         on_complete(https.put(request_uri(path), build_nested_query(params), @headers))
-      rescue SystemCallError, Net::HTTPFatalError => e
-        attempts += 1
-        retry if (attempts < 3)
-        raise e
       end
     end
 
     def post(path, params)
-      attempts = 0
-      begin
+      attempt do
         on_complete(https.post(request_uri(path), build_nested_query(params), @headers))
-      rescue SystemCallError, Net::HTTPFatalError => e
-        attempts += 1
-        retry if (attempts < 3)
-        raise e
       end
     end
 
     def delete(path)
-      attempts = 0
-      begin
+      attempt do
         on_complete(https.delete(request_uri(path), @headers))
-      rescue SystemCallError, Net::HTTPFatalError => e
-        attempts += 1
-        retry if (attempts < 3)
-        raise e
       end
     end
 
@@ -156,6 +136,21 @@ module Papertrail
         '%' + $&.unpack('H2' * $&.bytesize).join('%').upcase
       }.tr(' ', '+')
     end
+
+    def attempt(tries=3, wait=nil)
+      return unless block_given?
+
+      attempts = 0
+      begin
+        yield
+      rescue => e
+        sleep wait if wait
+        attempts += 1
+        retry if (attempts < tries)
+        raise e
+      end
+    end
+
   end
 
 end
