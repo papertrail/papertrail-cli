@@ -77,7 +77,7 @@ module Papertrail
         opts.on("--force-color", "Force use of ANSI color characters even on non-tty outputs (off)") do
           options[:force_color] = true
         end
-        opts.on("-V", "--version", "Display the version and exit") do |v|
+        opts.on("-V", "--version", "Display the version and exit") do
           puts "papertrail version #{Papertrail::VERSION}"
           exit
         end

@@ -43,25 +43,25 @@ module Papertrail
         path = "#{path}?#{build_nested_query(params)}"
       end
 
-      attempt 3, 5.0 do
+      attempt_http tries: 3, wait: 5.0 do
         on_complete(https.get(request_uri(path), @headers))
       end
     end
 
     def put(path, params)
-      attempt do
+      attempt_http do
         on_complete(https.put(request_uri(path), build_nested_query(params), @headers))
       end
     end
 
     def post(path, params)
-      attempt do
+      attempt_http do
         on_complete(https.post(request_uri(path), build_nested_query(params), @headers))
       end
     end
 
     def delete(path)
-      attempt do
+      attempt_http do
         on_complete(https.delete(request_uri(path), @headers))
       end
     end
@@ -137,13 +137,14 @@ module Papertrail
       }.tr(' ', '+')
     end
 
-    def attempt(tries=3, wait=nil)
-      return unless block_given?
+    def attempt_http(options={})
+      tries = options[:tries] || 3
+      wait  = options[:wait]
 
       attempts = 0
       begin
         yield
-      rescue => e
+      rescue SystemCallError, Net::HTTPFatalError => e
         sleep wait if wait
         attempts += 1
         retry if (attempts < tries)
