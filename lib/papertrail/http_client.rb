@@ -43,7 +43,7 @@ module Papertrail
         path = "#{path}?#{build_nested_query(params)}"
       end
 
-      attempt_http tries: 3, wait: 5.0 do
+      attempt_http wait: 5.0 do
         on_complete(https.get(request_uri(path), @headers))
       end
     end
@@ -138,7 +138,6 @@ module Papertrail
     end
 
     def attempt_http(options={})
-      tries = options[:tries] || 3
       wait  = options[:wait]
 
       attempts = 0
@@ -147,7 +146,7 @@ module Papertrail
       rescue SystemCallError, Net::HTTPFatalError => e
         sleep wait if wait
         attempts += 1
-        retry if (attempts < tries)
+        retry if (attempts < 3)
         raise e
       end
     end
