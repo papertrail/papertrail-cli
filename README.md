@@ -253,9 +253,9 @@ To see usage, run any of these commands with `--help`: `papertrail-add-system`,
 
 ### Install & Test
 
-1. Install to local rubygems: `$ gem install pkg/papertrail-0.9.17.gem`
+1. Install built gem: `$ gem install pkg/papertrail-0.9.17.gem`
 2. Check version in rubygems: `$ gem list papertrail`
-3. Verify: `$ which papertrail && papertrail --version`
+4. Verify installed version matches: `$ which papertrail && papertrail --version`
 4. Test: `$ papertrail test search string`
 5. Uninstall local gem `$ gem uninstall papertrail`
 
