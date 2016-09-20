@@ -244,6 +244,31 @@ To see usage, run any of these commands with `--help`: `papertrail-add-system`,
 `papertrail-remove-system`, `papertrail-add-group`, `papertrail-join-group`.
 
 
+## Releasing
+
+### Build
+
+1. Bump `VERSION` in `lib/papertrail.rb`
+2. Build the new gem: `$ rake build`
+
+### Install & Test
+
+1. Install to local rubygems: `$ gem install pkg/papertrail-0.9.17.gem`
+2. Check version in rubygems: `$ gem list papertrail`
+3. Verify: `$ which papertrail && papertrail --version`
+4. Test: `$ papertrail test search string`
+5. Uninstall local gem `$ gem uninstall papertrail`
+
+### Release
+
+1. Release: `$ rake release`
+2. Check latest published version: `$ gem list --versions --remote papertrail`
+3. Install release version: `$ gem install papertrail`
+4. Verify installed version matches: `$ which papertrail && papertrail --version`
+5. Test: `$ papertrail test search string`
+6. Party! :tada: :balloon: :confetti_ball:
+
+
 ## Contribute
 
 Bug report:
