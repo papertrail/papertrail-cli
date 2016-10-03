@@ -120,7 +120,7 @@ Count by source/system name (field 4):
       2 fastly
 
 For sum, mean, and statistics, see
-[datamash](http://www.gnu.org/software/datamash/).
+[datamash](http://www.gnu.org/software/datamash/) and [one-liners](https://www.gnu.org/software/datamash/alternatives/).
 
 ### Colors
 
