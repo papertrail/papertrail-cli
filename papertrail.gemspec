@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'papertrail'
-  s.version           = '0.9.17'
-  s.date              = '2016-09-20'
+  s.version           = '0.10.0'
+  s.date              = '2016-10-11'
   s.rubyforge_project = 'papertrail'
 
   ## Make sure your summary is short. The description may be as long
@@ -39,7 +39,7 @@ Gem::Specification.new do |s|
 #  s.extensions = %w[ext/extconf.rb]
 
   ## If your gem includes any executables, list them here.
-  s.executables = ["papertrail", "papertrail-add-system", "papertrail-remove-system", "papertrail-add-group", "papertrail-join-group", "papertrail-leave-group"]
+  s.executables = ["papertrail", "papertrail-add-system", "papertrail-remove-system", "papertrail-add-group", "papertrail-join-group", "papertrail-leave-group", "papertrail-add-user"]
   s.default_executable = 'papertrail'
 
   ## Specify any RDoc options here. You'll want to add your README and
@@ -69,6 +69,7 @@ Gem::Specification.new do |s|
     bin/papertrail
     bin/papertrail-add-group
     bin/papertrail-add-system
+    bin/papertrail-add-user
     bin/papertrail-join-group
     bin/papertrail-leave-group
     bin/papertrail-remove-system
@@ -77,6 +78,7 @@ Gem::Specification.new do |s|
     lib/papertrail/cli.rb
     lib/papertrail/cli_add_group.rb
     lib/papertrail/cli_add_system.rb
+    lib/papertrail/cli_add_user.rb
     lib/papertrail/cli_helpers.rb
     lib/papertrail/cli_join_group.rb
     lib/papertrail/cli_leave_group.rb

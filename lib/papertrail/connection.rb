@@ -91,6 +91,11 @@ module Papertrail
       return nil
     end
 
+    def add_user(email, read_only = 1)
+      user = { :user => { :email => email, :read_only => read_only } }
+      @connection.post("users/invite.json", user)
+    end
+
     def create_group(name, system_wildcard = nil)
       group = { :group => { :name => name } }
       if system_wildcard
