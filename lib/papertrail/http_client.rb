@@ -1,6 +1,11 @@
 require 'delegate'
 require 'net/https'
-require 'json'
+if RUBY_VERSION < '1.9'
+  # Ruby 1.8 doesn't have json in the standard lib - so we have to use okjson
+  require 'papertrail/okjson'
+else
+  require 'json'
+end
 
 module Papertrail
 
@@ -8,18 +13,12 @@ module Papertrail
   class HttpResponse < SimpleDelegator
 
     def initialize(response)
-      if RUBY_VERSION < '1.9'
-        # Ruby 1.8 doesn't have json in the standard lib - so we have to use okjson
-        require 'papertrail/okjson'
-      else
-        require 'json'
-      end
       super(response)
     end
 
     def body
       if RUBY_VERSION < '1.9'
-        # This is really slow. Avoid it if possible
+        # This is really slow. Avoid it if possible (by upgrading ruby)
         if __getobj__.body.respond_to?(:force_encoding)
           @body ||= Papertrail::OkJson.decode(__getobj__.body.dup.force_encoding('UTF-8'))
         else
