@@ -1,11 +1,5 @@
 require 'delegate'
 require 'net/https'
-if RUBY_VERSION < '1.9'
-  # Ruby 1.8 doesn't have json in the standard lib - so we have to use okjson
-  require 'papertrail/okjson'
-else
-  require 'json'
-end
 
 module Papertrail
 
@@ -16,19 +10,24 @@ module Papertrail
       super(response)
     end
 
-    def body
-      if RUBY_VERSION < '1.9'
-        # This is really slow. Avoid it if possible (by upgrading ruby)
+    if RUBY_VERSION < '1.9'
+      # Ruby 1.8 doesn't have json in the standard lib - so we have to use okjson
+      # This is really slow. Avoid it if possible (by upgrading ruby)
+      require 'papertrail/okjson'
+
+      def body
         if __getobj__.body.respond_to?(:force_encoding)
           @body ||= Papertrail::OkJson.decode(__getobj__.body.dup.force_encoding('UTF-8'))
         else
           @body ||= Papertrail::OkJson.decode(__getobj__.body.dup)
         end
-      else
+      end
+    else
+      require 'json'
+      def body
         @body ||= JSON.parse(__getobj__.body.dup)
       end
     end
-
   end
 
   class HttpClient

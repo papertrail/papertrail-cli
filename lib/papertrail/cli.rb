@@ -6,12 +6,6 @@ require 'ansi/core'
 require 'papertrail'
 require 'papertrail/connection'
 require 'papertrail/cli_helpers'
-if RUBY_VERSION < '1.9'
-  # Ruby 1.8 doesn't have json in the standard lib - so we have to use okjson
-  require 'papertrail/okjson'
-else
-  require 'json'
-end
 
 module Papertrail
   class Cli
@@ -199,11 +193,18 @@ module Papertrail
       $stdout.flush
     end
 
-    def output_raw_json(hash)
-      if RUBY_VERSION < '1.9'
-        # Ruby 1.8 doesn't have json in the standard lib - so we have to use okjson, which is slow
+    if RUBY_VERSION < '1.9'
+      # Ruby 1.8 doesn't have json in the standard lib - so we have to use okjson
+      # This is really slow. Avoid it if possible (by upgrading ruby)
+      require 'papertrail/okjson'
+
+      def output_raw_json(hash)
         $stdout.puts Papertrail::OkJson.encode(hash)
-      else
+      end
+    else
+      require 'json'
+
+      def output_raw_json(hash)
         $stdout.puts JSON.generate(hash)
       end
     end
