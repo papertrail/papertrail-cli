@@ -6,7 +6,6 @@ require 'ansi/core'
 require 'papertrail'
 require 'papertrail/connection'
 require 'papertrail/cli_helpers'
-require 'papertrail/okjson'
 
 module Papertrail
   class Cli
@@ -147,7 +146,7 @@ module Papertrail
 
       connection.each_event(@query, query_options.merge(:min_time => min_time, :max_time => max_time)) do |event|
         if options[:json]
-          $stdout.puts Papertrail::OkJson.encode(event.data)
+          output_raw_json(event.data)
         else
           display_result(event)
         end
@@ -184,7 +183,7 @@ module Papertrail
 
     def display_results(results)
       if options[:json]
-        $stdout.puts Papertrail::OkJson.encode(results.data)
+        output_raw_json(results.data)
       else
         results.events.each do |event|
           display_result(event)
@@ -192,6 +191,21 @@ module Papertrail
       end
 
       $stdout.flush
+    end
+
+    if RUBY_VERSION < '1.9'
+      # Ruby 1.8 doesn't have json in the standard lib - so we have to use okjson
+      require 'papertrail/okjson'
+
+      def output_raw_json(hash)
+        $stdout.puts Papertrail::OkJson.encode(hash)
+      end
+    else
+      require 'json'
+
+      def output_raw_json(hash)
+        $stdout.puts JSON.generate(hash)
+      end
     end
 
     def usage

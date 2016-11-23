@@ -1,8 +1,6 @@
 require 'delegate'
 require 'net/https'
 
-require 'papertrail/okjson'
-
 module Papertrail
 
   # Used because Net::HTTPOK in Ruby 1.8 has no body= method
@@ -12,14 +10,23 @@ module Papertrail
       super(response)
     end
 
-    def body
-      if __getobj__.body.respond_to?(:force_encoding)
-        @body ||= Papertrail::OkJson.decode(__getobj__.body.dup.force_encoding('UTF-8'))
-      else
-        @body ||= Papertrail::OkJson.decode(__getobj__.body.dup)
+    if RUBY_VERSION < '1.9'
+      # Ruby 1.8 doesn't have json in the standard lib - so we have to use okjson
+      require 'papertrail/okjson'
+
+      def body
+        if __getobj__.body.respond_to?(:force_encoding)
+          @body ||= Papertrail::OkJson.decode(__getobj__.body.dup.force_encoding('UTF-8'))
+        else
+          @body ||= Papertrail::OkJson.decode(__getobj__.body.dup)
+        end
+      end
+    else
+      require 'json'
+      def body
+        @body ||= JSON.parse(__getobj__.body.dup)
       end
     end
-
   end
 
   class HttpClient
