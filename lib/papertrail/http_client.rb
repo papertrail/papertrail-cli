@@ -12,7 +12,6 @@ module Papertrail
 
     if RUBY_VERSION < '1.9'
       # Ruby 1.8 doesn't have json in the standard lib - so we have to use okjson
-      # This is really slow. Avoid it if possible (by upgrading ruby)
       require 'papertrail/okjson'
 
       def body
