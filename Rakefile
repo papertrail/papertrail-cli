@@ -56,14 +56,12 @@ Rake::TestTask.new(:test) do |test|
   test.verbose = true
 end
 
-if RUBY_VERSION > '1.9'
-  require 'rdoc/task'
-  Rake::RDocTask.new do |rdoc|
-    rdoc.rdoc_dir = 'rdoc'
-    rdoc.title = "#{name} #{version}"
-    rdoc.rdoc_files.include('README*')
-    rdoc.rdoc_files.include('lib/**/*.rb')
-  end
+require 'rdoc/task'
+Rake::RDocTask.new do |rdoc|
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title = "#{name} #{version}"
+  rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
 desc "Open an irb session preloaded with this library"
