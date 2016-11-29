@@ -271,6 +271,10 @@ To see usage, run any of these commands with `--help`: `papertrail-add-system`,
 
 ## Contribute
 
+Testing:
+
+run `bundle exec guard` to run the tests when files save.
+
 Bug report:
 
 1. See whether the issue has already been reported:

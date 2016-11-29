@@ -7,3 +7,5 @@ Gemfile.lock
 .bundle
 vendor
 *.gem
+# Ignore ruby versioning
+.ruby-*
