@@ -1,4 +1,3 @@
-require 'minitest/unit'
 require 'minitest/autorun'
 require 'minitest/pride' # Color!
 require 'mocha/mini_test'
