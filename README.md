@@ -1,5 +1,7 @@
 # papertrail command-line tail & search client for Papertrail log management service
 
+[![Build Status](https://travis-ci.org/papertrail/papertrail-cli.svg?branch=master)](https://travis-ci.org/papertrail/papertrail-cli)
+
 Small standalone [binary] to retrieve, search, and tail recent app
 server log and system syslog messages from [Papertrail].
 
@@ -270,6 +272,12 @@ To see usage, run any of these commands with `--help`: `papertrail-add-system`,
 
 
 ## Contribute
+
+Testing:
+
+Run all the tests with `rake`
+
+To run the tests when files save, run `bundle exec guard` (requires ruby version >= 2.2.5).
 
 Bug report:
 

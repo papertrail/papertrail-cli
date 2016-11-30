@@ -1,0 +1,12 @@
+language: ruby
+rvm:
+  - 1.8
+  - 1.9.2
+  - 1.9.3
+  - 2.0
+  - 2.1
+  - 2.2
+  - 2.3
+  - ree
+before_install: # https://github.com/travis-ci/travis-ci/issues/5239
+  - gem install bundler

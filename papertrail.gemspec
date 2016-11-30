@@ -1,9 +1,3 @@
-## This is the rakegem gemspec template. Make sure you read and understand
-## all of the comments. Some sections require modification, and others can
-## be deleted if you don't need them. Once you understand the contents of
-## this file, feel free to delete any comments that begin with two hash marks.
-## You can find comprehensive Gem::Specification documentation, at
-## http://docs.rubygems.org/read/chapter/20
 Gem::Specification.new do |s|
   s.specification_version = 2 if s.respond_to? :specification_version=
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
@@ -56,6 +50,12 @@ Gem::Specification.new do |s|
   ## List your development dependencies here. Development dependencies are
   ## those that are only needed during development
   s.add_development_dependency('rake', '~> 10.4')
+  s.add_development_dependency('minitest')
+  s.add_development_dependency('mocha')
+  if RUBY_VERSION > '2.2.4' # ruby_dep dependency
+    s.add_development_dependency('guard', '~> 2.14.0')
+    s.add_development_dependency('guard-minitest', '~> 2.4.6')
+  end
 
   ## Leave this section as-is. It will be automatically generated from the
   ## contents of your Git repository via the gemspec task. DO NOT REMOVE
