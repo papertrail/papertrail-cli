@@ -12,7 +12,11 @@ class SearchQueryTest < Minitest::Test
     # Also testing that we set the initial_search_limit only for the first request
     connection.expects(:get).with(api_url, default_initial_params).returns(get_response)
     search_query.search_results(connection)
-    connection.expects(:get).with(api_url, { :min_id => 122 }).returns(get_response)
+    target = {
+      :min_id => 122,
+      limit: Papertrail::SearchQuery.subsequent_search_limits
+    }
+    connection.expects(:get).with(api_url, target).returns(get_response)
     search_query.search_results(connection)
   end
 
