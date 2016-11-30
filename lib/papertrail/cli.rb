@@ -122,18 +122,15 @@ module Papertrail
       @query ||= ARGV.join ' '
 
       if options[:follow]
-        search_query = connection.query(@query, query_options)
-
         loop do
-          display_results(search_query.search)
+          display_results(connection.search(@query, query_options))
           sleep options[:delay]
         end
       elsif options[:min_time]
         query_time_range
       else
         set_min_max_time!(options, query_options)
-        search_query = connection.query(@query, query_options)
-        display_results(search_query.search)
+        display_results(connection.search(@query, query_options))
       end
     end
 

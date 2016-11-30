@@ -38,6 +38,10 @@ module Papertrail
       end
     end
 
+    def search_query
+      @search_query ||= Papertrail::SearchQuery.new
+    end
+
     def find_id_for_source(name)
       response = @connection.get('systems.json')
 
@@ -165,8 +169,8 @@ module Papertrail
       end
     end
 
-    def query(query = nil, options = {})
-      Papertrail::SearchQuery.new(self, query, options)
+    def search(query = nil, options = {})
+      search_query.search_results(self, query, options)
     end
 
     def each_event(query_term = nil, options = {}, &block)
@@ -185,9 +189,9 @@ module Papertrail
 
       # Figure out where to start querying
       if min_id
-        search_results = query(query_term, options.merge(:min_id => min_id, :tail => false)).search
+        search_results = search(query_term, options.merge(:min_id => min_id, :tail => false))
       elsif min_time
-        search_results = query(query_term, options.merge(:min_time => min_time.to_i, :tail => false)).search
+        search_results = search(query_term, options.merge(:min_time => min_time.to_i, :tail => false))
       else
         raise ArgumentError, "Either :min_id or :min_time must be specified"
       end
@@ -222,7 +226,7 @@ module Papertrail
         end
 
         # Perform the next search
-        search_results = query(query_term, options.merge(:min_id => search_results.max_id, :tail => false)).search
+        search_results = search(query_term, options.merge(:min_id => search_results.max_id, :tail => false))
       end
 
       nil
