@@ -39,7 +39,7 @@ module Papertrail
     end
 
     def search_query
-      @search_query ||= Papertrail::SearchQuery.new
+      @search_query ||= Papertrail::SearchQuery.new(self)
     end
 
     def find_id_for_source(name)
@@ -170,7 +170,7 @@ module Papertrail
     end
 
     def search(query = nil, options = {})
-      search_query.search_results(self, query, options)
+      search_query.search_results(query, options)
     end
 
     def each_event(query_term = nil, options = {}, &block)

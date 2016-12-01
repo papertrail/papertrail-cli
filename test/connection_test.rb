@@ -6,7 +6,7 @@ class ConnectionTest < Minitest::Test
   let(:search_query) { connection.search_query }
 
   def test_search
-    search_query.expects(:search_results).with(connection, 'something', {})
+    search_query.expects(:search_results).with('something', {})
     connection.search('something')
   end
 end
