@@ -1,5 +1,5 @@
 module Papertrail
-  VERSION = '0.9.18'
+  VERSION = '0.10.0'
 end
 
 require 'papertrail/connection'

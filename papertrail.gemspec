@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'papertrail'
-  s.version           = '0.9.18'
-  s.date              = '2016-11-28'
+  s.version           = '0.10.0'
+  s.date              = '2016-12-02'
   s.rubyforge_project = 'papertrail'
 
   ## Make sure your summary is short. The description may be as long
@@ -66,6 +66,7 @@ Gem::Specification.new do |s|
   # = MANIFEST =
   s.files = %w[
     Gemfile
+    Guardfile
     LICENSE
     README.md
     Rakefile
@@ -91,6 +92,9 @@ Gem::Specification.new do |s|
     lib/papertrail/search_query.rb
     lib/papertrail/search_result.rb
     papertrail.gemspec
+    test/connection_test.rb
+    test/search_query_test.rb
+    test/test_helper.rb
   ]
   # = MANIFEST =
 
