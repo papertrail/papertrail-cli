@@ -10,3 +10,8 @@ rvm:
   - ree-1.8.7-2011.12
 before_install: # https://github.com/travis-ci/travis-ci/issues/5239
   - gem install bundler
+matrix:
+  allow_failures:
+  - rvm: ree-1.8.7-2011.12
+matrix:
+  fast_finish: true
