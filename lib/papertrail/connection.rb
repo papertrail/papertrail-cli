@@ -183,7 +183,7 @@ module Papertrail
       if min_id
         search = search_query(query_term, options.merge(:min_id => min_id))
       elsif min_time
-        search = search_query(query_term, options.merge!(:min_time => min_time.to_i))
+        search = search_query(query_term, options.merge(:min_time => min_time.to_i))
       else
         raise ArgumentError, "Either :min_id or :min_time must be specified"
       end
