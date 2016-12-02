@@ -38,10 +38,6 @@ module Papertrail
       end
     end
 
-    def search_query
-      @search_query ||= Papertrail::SearchQuery.new(self)
-    end
-
     def find_id_for_source(name)
       response = @connection.get('systems.json')
 
@@ -169,10 +165,6 @@ module Papertrail
       end
     end
 
-    def search(query = nil, options = {})
-      search_query.search_results(query, options)
-    end
-
     def each_event(query_term = nil, options = {}, &block)
       # If there was no query but there were options, shuffle around
       # the parameters
@@ -181,7 +173,7 @@ module Papertrail
       end
 
       # Remove all of the options that shouldn't be in each query
-      options  = options.dup
+      options  = { :tail => false }.merge(options)
       min_id   = options.delete(:min_id)
       max_id   = options.delete(:max_id)
       min_time = options.delete(:min_time)
@@ -189,47 +181,39 @@ module Papertrail
 
       # Figure out where to start querying
       if min_id
-        search_results = search(query_term, options.merge(:min_id => min_id, :tail => false))
+        search = search_query(query_term, options.merge(:min_id => min_id))
       elsif min_time
-        search_results = search(query_term, options.merge(:min_time => min_time.to_i, :tail => false))
+        search = search_query(query_term, options.merge!(:min_time => min_time.to_i))
       else
         raise ArgumentError, "Either :min_id or :min_time must be specified"
       end
 
       # Start processing events
       loop do
+        search_results = search.results_page
         search_results.events.each do |event|
           # If we've found an event beyond what we were looking for, we're done
-          if max_time && event.received_at > max_time
-            break
-          end
-
-          if max_id && event.id > max_id
-            break
-          end
+          break if max_time && event.received_at > max_time
+          break if max_id && event.id > max_id
 
           block.call(event)
         end
 
         # If we've found the end of what we're looking for, we're done
-        if max_time && search_results.max_time_at > max_time
-          break
-        end
-
-        if max_id && search_results.max_id > max_id
-          break
-        end
+        break if max_time && search_results.max_time_at > max_time
+        break if max_id && search_results.max_id > max_id
 
         # If we've reached the most current log message, we're done
-        if search_results.reached_end?
-          break
-        end
-
-        # Perform the next search
-        search_results = search(query_term, options.merge(:min_id => search_results.max_id, :tail => false))
+        break if search_results.reached_end?
       end
 
       nil
+    end
+
+    private
+
+    def search_query(query = nil, options = {})
+      Papertrail::SearchQuery.new(self, query, options)
     end
   end
 end
