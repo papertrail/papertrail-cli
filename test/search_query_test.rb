@@ -4,7 +4,7 @@ class SearchQueryTest < Minitest::Test
   let(:connection_options) { { :token => 'dummy' } }
   let(:connection) { Papertrail::Connection.new(connection_options) }
   let(:api_url) { Papertrail::SearchQuery.api_url }
-  let(:default_initial_params) { { limit: Papertrail::SearchQuery.initial_search_limit } }
+  let(:default_initial_params) { { :limit => Papertrail::SearchQuery.initial_search_limit } }
   let(:get_response) { OpenStruct.new(:body => { 'max_id' => 122, 'events' => [] }) }
 
   describe 'default options' do
