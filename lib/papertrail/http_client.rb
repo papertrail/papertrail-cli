@@ -47,7 +47,7 @@ module Papertrail
 
     def get(path, params = {})
       if params.size > 0
-        path = "#{path}?#{build_nested_query(params)}"
+        path = "#{path}?cli_version=#{Papertrail::VERSION}&#{build_nested_query(params)}"
       end
       attempts = 0
       begin
