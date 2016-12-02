@@ -19,10 +19,10 @@ class SearchQueryTest < Minitest::Test
     def test_sets_min_id_for_initial_and_subsequent_requests
       # Test that the first request happens with the default_initial_params
       connection.expects(:get).with(api_url, default_initial_params).returns(get_response)
-      search_query.results_page
+      search_query.next_results_page
       # And that subsequent requests use the updated min_id and limit
       connection.expects(:get).with(api_url, target_params).returns(get_response)
-      search_query.results_page
+      search_query.next_results_page
     end
   end
 
@@ -41,9 +41,9 @@ class SearchQueryTest < Minitest::Test
 
     def test_sets_options_from_passed_options_and_ups_min_id
       connection.expects(:get).with(api_url, target_first_params).returns(get_response)
-      search_query.results_page
+      search_query.next_results_page
       connection.expects(:get).with(api_url, target_subsequent_params).returns(get_response)
-      search_query.results_page
+      search_query.next_results_page
     end
   end
 end

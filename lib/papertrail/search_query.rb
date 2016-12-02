@@ -1,8 +1,8 @@
 require 'papertrail/search_result'
 
 # SearchQuery manages pagination.
-# Once initialized, call `results_page` for a page of results
-# call it again to get the next results, and again, and again
+# Once initialized, call `next_results_page` for a page of results
+# And call it again to get the next page, and again and again
 module Papertrail
   class SearchQuery
     def self.api_url
@@ -25,7 +25,7 @@ module Papertrail
 
     attr_accessor :max_id, :subsequent_request
 
-    def results_page
+    def next_results_page
       params = @options.dup
       params[:q] = @query if @query
       params[:min_id] = @max_id if @max_id

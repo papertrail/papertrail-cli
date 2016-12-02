@@ -190,7 +190,7 @@ module Papertrail
 
       # Start processing events
       loop do
-        search_results = search.results_page
+        search_results = search.next_results_page
         search_results.events.each do |event|
           # If we've found an event beyond what we were looking for, we're done
           break if max_time && event.received_at > max_time

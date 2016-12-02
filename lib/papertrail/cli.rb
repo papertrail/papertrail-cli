@@ -125,7 +125,7 @@ module Papertrail
         search_query = Papertrail::SearchQuery.new(connection, @query, query_options)
 
         loop do
-          display_results(search_query.results_page)
+          display_results(search_query.next_results_page)
           sleep options[:delay]
         end
       elsif options[:min_time]
@@ -133,7 +133,7 @@ module Papertrail
       else
         set_min_max_time!(options, query_options)
         search_query = Papertrail::SearchQuery.new(connection, @query, query_options)
-        display_results(search_query.results_page)
+        display_results(search_query.next_results_page)
       end
     end
 
