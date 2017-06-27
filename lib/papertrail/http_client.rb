@@ -46,9 +46,8 @@ module Papertrail
     end
 
     def get(path, params = {})
-      if params.size > 0
-        path = "#{path}?cli_version=#{Papertrail::VERSION}&#{build_nested_query(params)}"
-      end
+      params.merge!(cli_version)
+      path = "#{path}?#{build_nested_query(params)}"
       attempts = 0
       begin
         on_complete(https.get(request_uri(path), @headers))
@@ -63,7 +62,7 @@ module Papertrail
     def put(path, params)
       attempts = 0
       begin
-        on_complete(https.put(request_uri(path), build_nested_query(params), @headers))
+        on_complete(https.put(request_uri(path), build_nested_query(params.merge(cli_version)), @headers))
       rescue SystemCallError, Net::HTTPFatalError => e
         attempts += 1
         retry if (attempts < 3)
@@ -74,7 +73,7 @@ module Papertrail
     def post(path, params)
       attempts = 0
       begin
-        on_complete(https.post(request_uri(path), build_nested_query(params), @headers))
+        on_complete(https.post(request_uri(path), build_nested_query(params.merge(cli_version)), @headers))
       rescue SystemCallError, Net::HTTPFatalError => e
         attempts += 1
         retry if (attempts < 3)
@@ -113,6 +112,10 @@ module Papertrail
       http.ssl_version  = @ssl[:version]      if @ssl[:version]
 
       http
+    end
+
+    def cli_version
+      { :cli_version => Papertrail::VERSION }
     end
 
     def ssl_verify_mode
