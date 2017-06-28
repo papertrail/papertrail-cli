@@ -1,6 +1,9 @@
+gem "minitest"
 require 'minitest/autorun'
 require 'minitest/pride' # Color!
 require 'mocha/mini_test'
+require 'webmock/minitest'
+WebMock.disable_net_connect!
 
 require 'pp'
 

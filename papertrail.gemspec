@@ -52,6 +52,7 @@ Gem::Specification.new do |s|
   ## List your development dependencies here. Development dependencies are
   ## those that are only needed during development
   s.add_development_dependency('rake', '~> 10.4')
+  s.add_development_dependency('webmock')
   s.add_development_dependency('minitest')
   s.add_development_dependency('mocha')
 

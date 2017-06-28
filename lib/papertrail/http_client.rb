@@ -66,7 +66,12 @@ module Papertrail
     def request(http_method, path, params = {})
       attempts = 0
       begin
-        on_complete(https.send(http_method, request_uri(path), build_nested_query(params.merge(cli_version)), @headers))
+        if http_method == :get || http_method == :delete
+          uri = request_uri(path) + "?" + build_nested_query(params.merge(cli_version))
+          on_complete(https.send(http_method, uri, @headers))
+        else
+          on_complete(https.send(http_method, request_uri(path), build_nested_query(params.merge(cli_version)), @headers))
+        end
       rescue SystemCallError, Net::HTTPFatalError => e
         attempts += 1
         retry if (attempts < 3)
