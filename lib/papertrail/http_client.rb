@@ -46,53 +46,33 @@ module Papertrail
     end
 
     def get(path, params = {})
-      params.merge!(cli_version)
-      path = "#{path}?#{build_nested_query(params)}"
-      attempts = 0
-      begin
-        on_complete(https.get(request_uri(path), @headers))
-      rescue SystemCallError, Net::HTTPFatalError => e
-        sleep 5.0
-        attempts += 1
-        retry if (attempts < 3)
-        raise e
-      end
+      request(:get, path, params)
     end
 
     def put(path, params)
-      attempts = 0
-      begin
-        on_complete(https.put(request_uri(path), build_nested_query(params.merge(cli_version)), @headers))
-      rescue SystemCallError, Net::HTTPFatalError => e
-        attempts += 1
-        retry if (attempts < 3)
-        raise e
-      end
+      request(:put, path, params)
     end
 
     def post(path, params)
-      attempts = 0
-      begin
-        on_complete(https.post(request_uri(path), build_nested_query(params.merge(cli_version)), @headers))
-      rescue SystemCallError, Net::HTTPFatalError => e
-        attempts += 1
-        retry if (attempts < 3)
-        raise e
-      end
+      request(:post, path, params)
     end
 
     def delete(path)
+      request(:delete, path)
+    end
+
+    private
+
+    def request(http_method, path, params = {})
       attempts = 0
       begin
-        on_complete(https.delete(request_uri(path), @headers))
+        on_complete(https.send(http_method, request_uri(path), build_nested_query(params.merge(cli_version)), @headers))
       rescue SystemCallError, Net::HTTPFatalError => e
         attempts += 1
         retry if (attempts < 3)
         raise e
       end
     end
-
-    private
 
     def request_uri(path)
       path.start_with?('/api/v1/') ? path : "/api/v1/#{path}"
