@@ -52,11 +52,13 @@ Gem::Specification.new do |s|
   ## List your development dependencies here. Development dependencies are
   ## those that are only needed during development
   s.add_development_dependency('rake', '~> 10.4')
-  s.add_development_dependency('addressable',  '~> 2.4.0')
-  s.add_development_dependency('webmock',  '~> 1.24.6')
   s.add_development_dependency('minitest')
   s.add_development_dependency('mocha')
 
+  if RUBY_VERSION > '1.9'
+    s.add_development_dependency('addressable',  '~> 2.4.0')
+    s.add_development_dependency('webmock',  '~> 1.24.6')
+  end
   if RUBY_VERSION > '2.2.4' # ruby_dep dependency
     s.add_development_dependency('guard', '~> 2.14.0')
     s.add_development_dependency('guard-minitest', '~> 2.4.6')
