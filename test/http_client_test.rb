@@ -6,6 +6,7 @@ class HttpClientTest < Minitest::Test
       Papertrail::HttpClient.new({})
     }
     def test_cli_version_present_in_http_methods
+      return if RUBY_VERSION < '1.9'
       # if webmock.disable_net_connect intervenes with a stack trace,
       # we know the http methods are not sending cli_version in params
       stub_request(:get, /https:\/\/papertrailapp.com\/api\/v1\/some-path\?cli_version=#{Papertrail::VERSION}/)
