@@ -25,7 +25,7 @@ class HttpClientTest < Minitest::Test
   describe "build_nested_query" do
     def test_value_accepts_hash
       assert_equal(http.send(:build_nested_query, {}), "")
-      assert_equal(http.send(:build_nested_query, {a:1}), "a=1")
+      assert_equal(http.send(:build_nested_query, {:a => 1}), "a=1")
     end
     def test_value_accepts_array
       assert_equal(http.send(:build_nested_query, []), "")
