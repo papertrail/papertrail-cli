@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'rake'
 require 'date'
+require File.expand_path('../lib/papertrail/version', __FILE__)
 
 #############################################################################
 #
@@ -16,11 +17,6 @@ def module_name
   name.split('-').first
 end
 
-def version
-  line = File.read("lib/#{name}.rb")[/^\s*VERSION\s*=\s*.*/]
-  line.match(/.*VERSION\s*=\s*['"](.*)['"]/)[1]
-end
-
 def date
   Date.today.to_s
 end
@@ -34,7 +30,7 @@ def gemspec_file
 end
 
 def gem_file
-  "#{name}-#{version}.gem"
+  "#{name}-#{Papertrail::VERSION}.gem"
 end
 
 def replace_header(head, header_name)
@@ -75,17 +71,17 @@ end
 #
 #############################################################################
 
-desc "Create tag v#{version} and build and push #{gem_file} to Rubygems"
+desc "Create tag v#{Papertrail::VERSION} and build and push #{gem_file} to Rubygems"
 task :release => :build do
   unless `git branch` =~ /^\* master$/
     puts "You must be on the master branch to release!"
     exit!
   end
-  sh "git commit --allow-empty -a -m 'Release #{version}'"
-  sh "git tag v#{version}"
+  sh "git commit --allow-empty -a -m 'Release #{Papertrail::VERSION}'"
+  sh "git tag v#{Papertrail::VERSION}"
   sh "git push origin master"
-  sh "git push origin v#{version}"
-  sh "gem push pkg/#{name}-#{version}.gem"
+  sh "git push origin v#{Papertrail::VERSION}"
+  sh "gem push pkg/#{name}-#{Papertrail::VERSION}.gem"
 end
 
 desc "Build #{gem_file} into the pkg directory"
@@ -103,7 +99,7 @@ task :gemspec => :validate do
 
   # replace name version and date
   replace_header(head, :name)
-  replace_header(head, :version)
+  replace_header(head, Papertrail::VERSION)
   replace_header(head, :date)
   #comment this out if your rubyforge_project has a different name
   replace_header(head, :rubyforge_project)
