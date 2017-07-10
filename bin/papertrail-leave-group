@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'papertrail'
 require 'papertrail/cli_leave_group'
 
 begin
