@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Papertrail
   module CliHelpers
     def find_configfile

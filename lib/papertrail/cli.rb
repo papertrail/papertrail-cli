@@ -1,11 +1,5 @@
-require 'optparse'
-require 'yaml'
 require 'chronic'
 require 'ansi/core'
-
-require 'papertrail'
-require 'papertrail/connection'
-require 'papertrail/cli_helpers'
 
 module Papertrail
   class Cli

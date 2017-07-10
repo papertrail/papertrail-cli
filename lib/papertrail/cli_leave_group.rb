@@ -1,9 +1,3 @@
-require 'optparse'
-require 'yaml'
-
-require 'papertrail/cli_helpers'
-require 'papertrail/connection'
-
 module Papertrail
   class CliLeaveGroup
     include Papertrail::CliHelpers

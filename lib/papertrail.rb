@@ -1,5 +1,8 @@
+require 'papertrail/version'
+require 'optparse'
+
 module Papertrail
-  VERSION = '0.10.3'
 end
 
 require 'papertrail/connection'
+require 'papertrail/cli_helpers'
