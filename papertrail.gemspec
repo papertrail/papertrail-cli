@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   ## the sub! line in the Rakefile
   s.name              = 'papertrail'
   s.version           = '0.10.1'
-  s.date              = '2016-12-08'
+  s.date              = '2017-06-28'
   s.rubyforge_project = 'papertrail'
 
   ## Make sure your summary is short. The description may be as long
@@ -55,6 +55,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency('minitest')
   s.add_development_dependency('mocha')
 
+  if RUBY_VERSION > '1.9'
+    s.add_development_dependency('addressable',  '~> 2.4.0')
+    s.add_development_dependency('webmock',  '~> 1.24.6')
+  end
   if RUBY_VERSION > '2.2.4' # ruby_dep dependency
     s.add_development_dependency('guard', '~> 2.14.0')
     s.add_development_dependency('guard-minitest', '~> 2.4.6')
@@ -93,6 +97,7 @@ Gem::Specification.new do |s|
     lib/papertrail/search_result.rb
     papertrail.gemspec
     test/connection_test.rb
+    test/http_client_test.rb
     test/search_query_test.rb
     test/test_helper.rb
   ]
