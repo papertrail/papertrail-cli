@@ -1,3 +1,5 @@
+require 'optparse'
+
 module Papertrail
   class CliAddSystem
     include Papertrail::CliHelpers

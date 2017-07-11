@@ -1,5 +1,4 @@
 require 'papertrail/version'
-require 'optparse'
 
 module Papertrail
 end

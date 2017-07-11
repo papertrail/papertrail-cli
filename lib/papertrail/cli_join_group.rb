@@ -1,3 +1,5 @@
+require 'optparse'
+
 module Papertrail
   class CliJoinGroup
     include Papertrail::CliHelpers

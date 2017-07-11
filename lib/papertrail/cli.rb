@@ -1,3 +1,4 @@
+require 'optparse'
 require 'chronic'
 require 'ansi/core'
 

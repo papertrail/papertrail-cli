@@ -1,3 +1,5 @@
+require 'optparse'
+
 module Papertrail
   class CliRemoveSystem
     include Papertrail::CliHelpers
