@@ -95,6 +95,7 @@ Gem::Specification.new do |s|
     lib/papertrail/okjson.rb
     lib/papertrail/search_query.rb
     lib/papertrail/search_result.rb
+    lib/papertrail/version.rb
     papertrail.gemspec
     test/connection_test.rb
     test/http_client_test.rb

@@ -1,8 +1,4 @@
-require 'optparse'
-require 'yaml'
-
-require 'papertrail/cli_helpers'
-require 'papertrail/connection'
+require 'papertrail'
 
 module Papertrail
   class CliAddSystem

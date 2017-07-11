@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-require 'papertrail'
 require 'papertrail/cli_add_system'
 
 begin
