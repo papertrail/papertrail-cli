@@ -1,4 +1,4 @@
-require 'optparse'
+require 'papertrail'
 
 module Papertrail
   class CliRemoveSystem

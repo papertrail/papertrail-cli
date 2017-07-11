@@ -1,6 +1,6 @@
-require 'optparse'
 require 'chronic'
 require 'ansi/core'
+require 'papertrail'
 
 module Papertrail
   class Cli
