@@ -59,6 +59,9 @@ module Papertrail
         opts.on("-g", "--group GROUP", "Group to search") do |v|
           options[:group] = v
         end
+        opts.on("-i", "--group-id GROUPID", "Group id to search") do |v|
+          options[:grpid] = v
+        end
         opts.on("-S", "--search SEARCH", "Saved search to search") do |v|
           options[:search] = v
         end
@@ -102,6 +105,13 @@ module Papertrail
         end
       end
 
+      if options[:grpid]
+        query_options[:group_id] = options[:grpid]
+        unless query_options[:group_id]
+          abort "Group id not found"
+        end
+      end
+        
       if options[:group]
         query_options[:group_id] = connection.find_id_for_group(options[:group])
         unless query_options[:group_id]
