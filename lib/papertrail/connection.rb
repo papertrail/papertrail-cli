@@ -39,18 +39,18 @@ module Papertrail
     end
 
     def find_id_for_source(name)
-      response = @connection.get('systems.json')
+      response = @connection.get('systems.json', :system_name => name)
 
       find_id_for_item(response.body, name)
     end
 
     def find_id_for_group(name)
-      response = @connection.get('groups.json')
+      response = @connection.get('groups.json', :group_name => name)
       find_id_for_item(response.body, name)
     end
 
     def find_search(name, group_id = nil)
-      response = @connection.get('searches.json')
+      response = @connection.get('searches.json', :search_name => name)
 
       candidates = find_items_by_name(response.body, name)
       return nil if candidates.empty?
