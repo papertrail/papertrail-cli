@@ -46,15 +46,15 @@ module Papertrail
 
       raise OptionParser::MissingArgument, 'group' if options[:group].nil?
 
-      connection = Papertrail::Connection.new(options)
+      Papertrail::Connection.new(options).start do |connection|
+        # Bail if group already exists
+        if connection.show_group(options[:group])
+          exit 0
+        end
 
-      # Bail if group already exists
-      if connection.show_group(options[:group])
-        exit 0
-      end
-
-      if connection.create_group(options[:group], options[:wildcard])
-        exit 0
+        if connection.create_group(options[:group], options[:wildcard])
+          exit 0
+        end
       end
 
       exit 1

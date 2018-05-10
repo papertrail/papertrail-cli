@@ -38,6 +38,19 @@ module Papertrail
       end
     end
 
+    def start
+      if block_given?
+        @connection.start { yield self }
+      else
+        @connection.start
+        self
+      end
+    end
+
+    def finish
+      @connection.finish
+    end
+
     def find_id_for_source(name)
       response = @connection.get('systems.json', :system_name => name)
 

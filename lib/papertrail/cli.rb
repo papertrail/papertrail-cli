@@ -95,6 +95,9 @@ module Papertrail
 
       @connection = Papertrail::Connection.new(options)
 
+      # Use HTTP Keep-Alive unless delay is too long
+      connection.start if options[:delay] < 10
+
       if options[:system]
         query_options[:system_id] = connection.find_id_for_source(options[:system])
         unless query_options[:system_id]

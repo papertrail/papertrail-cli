@@ -84,19 +84,19 @@ module Papertrail
         error 'Either --ip-address or --destination-port most be provided'
       end
 
-      connection = Papertrail::Connection.new(options)
+      Papertrail::Connection.new(options).start do |connection|
+        # Bail if system already exists
+        if connection.show_source(options[:system])
+          exit 0
+        end
 
-      # Bail if system already exists
-      if connection.show_source(options[:system])
-        exit 0
-      end
+        if options[:destination_port] && !options[:hostname]
+          options[:hostname] = options[:system]
+        end
 
-      if options[:destination_port] && !options[:hostname]
-        options[:hostname] = options[:system]
-      end
-
-      if connection.register_source(options[:system], options)
-        exit 0
+        if connection.register_source(options[:system], options)
+          exit 0
+        end
       end
 
       exit 1
