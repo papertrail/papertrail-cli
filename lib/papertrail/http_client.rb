@@ -37,6 +37,19 @@ module Papertrail
       @headers = {}
     end
 
+    def start
+      if block_given?
+        https.start { yield self }
+      else
+        https.start
+        self
+      end
+    end
+
+    def finish
+      https.finish
+    end
+
     def basic_auth(login, pass)
       @headers['Authorization'] = 'Basic ' + ["#{login}:#{pass}"].pack('m').delete("\r\n")
     end
@@ -72,7 +85,7 @@ module Papertrail
         else
           on_complete(https.send(http_method, uri, build_nested_query(params), @headers))
         end
-      rescue SystemCallError, Net::HTTPFatalError => e
+      rescue IOError, SystemCallError, Net::HTTPFatalError => e
         attempts += 1
         retry if (attempts < 3)
         raise e
@@ -84,19 +97,20 @@ module Papertrail
     end
 
     def https
-      http = Net::HTTP.new('papertrailapp.com', 443)
-      http.use_ssl      = true
-      http.verify_mode  = ssl_verify_mode
-      http.cert_store   = ssl_cert_store
+      @https ||= Net::HTTP.new('papertrailapp.com', 443).tap do |http|
+        http.use_ssl      = true
+        http.verify_mode  = ssl_verify_mode
+        http.cert_store   = ssl_cert_store
 
-      http.cert         = @ssl[:client_cert]  if @ssl[:client_cert]
-      http.key          = @ssl[:client_key]   if @ssl[:client_key]
-      http.ca_file      = @ssl[:ca_file]      if @ssl[:ca_file]
-      http.ca_path      = @ssl[:ca_path]      if @ssl[:ca_path]
-      http.verify_depth = @ssl[:verify_depth] if @ssl[:verify_depth]
-      http.ssl_version  = @ssl[:version]      if @ssl[:version]
+        http.cert         = @ssl[:client_cert]  if @ssl[:client_cert]
+        http.key          = @ssl[:client_key]   if @ssl[:client_key]
+        http.ca_file      = @ssl[:ca_file]      if @ssl[:ca_file]
+        http.ca_path      = @ssl[:ca_path]      if @ssl[:ca_path]
+        http.verify_depth = @ssl[:verify_depth] if @ssl[:verify_depth]
+        http.ssl_version  = @ssl[:version]      if @ssl[:version]
 
-      http
+        http.keep_alive_timeout = 10 if http.respond_to?(:keep_alive_timeout=)
+      end
     end
 
     def cli_version

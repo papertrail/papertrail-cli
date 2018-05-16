@@ -2,7 +2,17 @@ require 'test_helper'
 
 class HttpClientTest < Minitest::Test
   let(:http) { Papertrail::HttpClient.new({}) }
-  describe "http methods" do
+  describe 'http methods' do
+    def test_start_finish
+      assert_same http, http.start
+      assert_nil http.finish
+
+      block_args = nil
+      http.start {|*args| block_args = args}
+      assert_equal [http], block_args
+
+      assert_raises { http.finish }
+    end
 
     def test_cli_version_present_in_http_methods
       return if RUBY_VERSION < '2.0'
@@ -22,7 +32,8 @@ class HttpClientTest < Minitest::Test
       http.delete('some-path')
     end
   end
-  describe "build_nested_query" do
+
+  describe 'build nested query' do
     def test_value_accepts_hash
       assert_equal(http.send(:build_nested_query, {}), "")
       assert_equal(http.send(:build_nested_query, {:a => 1}), "a=1")
