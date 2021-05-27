@@ -48,7 +48,8 @@ module Papertrail
 
       Papertrail::Connection.new(options).start do |connection|
         # Bail if group already exists
-        if connection.show_group(options[:group])
+        existing = connection.show_group(options[:group])
+        if existing && existing['name'].upcase == options[:group].upcase
           exit 0
         end
 
