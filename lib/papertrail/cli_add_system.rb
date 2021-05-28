@@ -86,7 +86,8 @@ module Papertrail
 
       Papertrail::Connection.new(options).start do |connection|
         # Bail if system already exists
-        if connection.show_source(options[:system])
+        existing = connection.show_source(options[:system])
+        if existing && existing['name'].upcase == options[:system].upcase
           exit 0
         end
 
