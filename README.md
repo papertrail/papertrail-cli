@@ -188,9 +188,8 @@ example, to search for `-whatever`, run:
 
 ### Time zones
 
-Times are interpreted in the client itself, which means it uses the time
-zone that your local PC is set to. Log timestamps are also output in the
-same local PC time zone.
+Times are returned using the timezone configured in your Papertrail
+[account profile](https://papertrailapp.com/account/profile).
 
 When providing absolute times, append `UTC` to provide the input time in
 UTC. For example, regardless of the local PC time zone, this will show
