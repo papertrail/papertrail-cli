@@ -3,6 +3,16 @@ require 'papertrail/cli'
 
 begin
   Papertrail::Cli.new.run
+
 rescue Interrupt, Errno::EPIPE
-  exit(0)
+  exit 0
+
+rescue ArgumentError => e
+  $stderr.puts "Argument Error: #{e.message}"
+  exit 1
+
+rescue OptionParser::InvalidOption => e
+  $stderr.puts e.message
+  exit 1
+
 end
