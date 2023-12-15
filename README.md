@@ -299,6 +299,6 @@ to your enhancement.
 [Connection]: https://github.com/papertrail/papertrail-cli/blob/master/lib/papertrail/connection.rb
 [HTTP API]: http://help.papertrailapp.com/kb/how-it-works/http-api
 [User Profile]: https://papertrailapp.com/account/profile
-[RubyGems]: https://rubygems.org/gems/papertrail-cli
+[RubyGems]: https://rubygems.org/gems/papertrail
 [lnav]: http://lnav.org/
 [escape characters]: http://en.wikipedia.org/wiki/ANSI_escape_code#Colors
